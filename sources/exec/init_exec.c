@@ -1,15 +1,14 @@
 #include "pruebas_bash.h"
 
 /*
-cat Makefile > salida | ls | cat << eof >> salidaT_RIN
+cat Makefile > salida | ls | cat << eof >> salida2
 */
-
 
 void print_node(t_def *node, int i)
 {
 	int j;
 
-	printf("NODE %d \n -------------------------- \n", i);
+	printf("\nNODE %d \n -------------------------- \n", i);
 	j = 0;
 	while(node->argv[j])
 	{
@@ -19,31 +18,89 @@ void print_node(t_def *node, int i)
 	}
 }
 
+int *get_array(char *pipes)
+{
+	char **split;
+	int i;
+	int j;
+	int *array;
+
+	i = 0;
+	split = ft_split(pipes, ' ');
+	while(split[i])
+		i++;
+	array = malloc(sizeof(int) * i + 1);
+	if(array == NULL)
+		print_error("memory alloc");
+	j = 0;
+	while(j < i)
+	{
+		if(ft_strncmp("<<", split[j], ft_strlen(split[j])) == 0)
+		{
+			array[j] = T_HD;
+			array[j + 1] = T_HD;
+			j += 2;
+		}
+		else if(ft_strncmp("<", split[j], ft_strlen(split[j])) == 0)
+		{
+			array[j] = T_RIN;
+			array[j + 1] = T_RIN;
+			j += 2;
+		}
+		else if(ft_strncmp(">", split[j], ft_strlen(split[j])) == 0)
+		{
+			array[j] = T_ROUT;
+			array[j + 1] = T_ROUT;
+			j += 2;
+		}
+		else if(ft_strncmp(">>", split[j], ft_strlen(split[j])) == 0)
+		{
+			array[j] = T_ROUT;
+			array[j + 1] = T_ROUT;
+			j += 2;
+		}
+		else
+		{
+			array[j] = 4;
+			j++;
+		}
+	}
+	array[j] = '\0';
+	return(array);
+}
+
 
 int main(int argc, char **argv)
 {
 	char **split;
 	t_def	*def;
 	int i;
-	int array0[] = {T_CMD, T_ARG, T_RIN, T_RIN};
-	int array1[] = {T_CMD};
-	int arrayT_RIN[] = {T_CMD, T_HD, T_RIN, T_APP, T_RIN};
+	int j;
 
-	if(argc != T_RIN)
+	if(argc != 2)
 		print_error("Error. Arguments");
 
 	split = ft_split(argv[1], '|');
-	def = ft_lstnew(split[0], array0);
-	ft_lstadd_back(&def, ft_lstnew(split[1], array1));
-	ft_lstadd_back(&def, ft_lstnew(split[T_RIN], arrayT_RIN));
+	j = 0;
+	while(split[j])
+		j++;
 
-	i = ft_lstsize(def);
-	while(i)
+	i = 0;
+	while(i < j)
 	{
-		print_node(def, i);
-		def = def->next;
-		i--;
+		if(i == 0)
+			def = ft_lstnew(split[i], get_array(split[i]));
+		else
+			ft_lstadd_back(&def, ft_lstnew(split[i], get_array(split[i])));
+		i++;
 	}
-	
+
+	// while(i)
+	// {
+	// 	print_node(def, i);
+	// 	def = def->next;
+	// 	i--;
+	// }
+
 
 }

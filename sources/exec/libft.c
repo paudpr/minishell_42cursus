@@ -22,6 +22,7 @@ void print_error(char *str)
 		i++;
 	}
 	write(1, "\n", 1);
+	exit(0);
 }
 
 char	*ft_strdup(const char *s1)
