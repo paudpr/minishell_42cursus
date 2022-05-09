@@ -25,7 +25,7 @@ SRC_PATH = sources
 INC_PATH = includes
 LIBFT_PATH = libft
 
-SOURCES = readline.c
+SOURCES = main.c
 
 # SRCS_NAME = $(addprefix $(SRC_PATH)/, $(SOURCES))
 # OBJS_PATH = $(addprefix $(OBJ_PATH)/, $(SOURCES))

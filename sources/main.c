@@ -14,7 +14,7 @@ int main(void)
 	eof = "exit";
 
 	line = readline("minishell > ");
-	while(ft_strncmp(line, eof, ft_strlen(eof)) != 0)
+	while(strncmp(line, eof, strlen(eof)) != 0)
 	{
 		line = readline("minishell > ");
 		if(line != NULL)

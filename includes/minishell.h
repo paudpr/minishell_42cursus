@@ -19,7 +19,8 @@
 typedef struct s_def
 {
 	char **argv;
-	int type;
+	int *type;
+	t_def *next;
 }	t_def;
 
 

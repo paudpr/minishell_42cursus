@@ -24,6 +24,15 @@ typedef struct s_def
 	struct s_def *next;
 }	t_def;
 
+typedef struct s_cmds
+{
+	char	**env;
+	char	**cmds_path;
+	char	**cmds_argv;
+	int		pipe_fd[2];
+	int		num;
+}	t_cmds;
+
 
 void print_error(char *str);
 size_t	ft_strlen(const char *s);
