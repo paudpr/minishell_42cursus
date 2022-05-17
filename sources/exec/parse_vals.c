@@ -1,7 +1,7 @@
 #include "pruebas_bash.h"
 
 
-void init_vals(t_cmds *vals, char **environ, t_def *def)
+void init_vals(t_cmds *vals, char **environ, t_def **def)
 {
 	int i;
 
@@ -19,34 +19,59 @@ void init_vals(t_cmds *vals, char **environ, t_def *def)
 	}
 	vals->env[i] =  NULL;
 	ft_bzero(vals->pipe_fd, 2);
-	vals->cmds_path = get_path(vals, def);
-	vals->cmds_argv = get_argv(vals, def);
+
+
+	printf("INIT_VALS AQUI\n");
+	// vals->cmds_path = get_path(vals, def);
+	vals->cmds_argv = get_argv(def);
+	printf("En init vals -> %s\n", vals->cmds_argv[0]);
 }
 
-char **get_argv(t_cmds *vals, t_def *def)
+
+char **get_argv(t_def **def)
 {
+	t_def *copy;
 	char **cmd_argv;
+	char *aux;
+	char *temp;
 	int i;
 	int j;
-	int num;
 
-	i = 0;
-	num = 0;
 	j = 0;
-	num = ft_lstsize(def);
-	cmd_argv = malloc(sizeof(char *) * (num) + 1);
-	while(def)
+	copy = *def;
+	cmd_argv = malloc(sizeof(char *) * (ft_lstsize(*def)) + 1);
+	while(copy && copy->type[i]) //aqui me puede dar error de recorrer el array por ser números
 	{
-		if(def->type && def->type[i] != 4)
-			i++;
-		else if(def->type[i] == 4  && def->type[i - 1] != 4)
-		{
-			cmd_argv[j] = def->argv[i];
-		}
-		def = def->next;
 		i = 0;
+		printf("len -> %d\n", ft_double_len(copy->argv));
+		while(copy->type[i] && i < ft_double_len(copy->argv))
+		{
+			if(copy->type[i] != 4)
+				i++;
+			else if(copy->type[i] == 4)
+			{
+				printf("%d\n", i);
+				if(!cmd_argv[j])
+					cmd_argv[j] = copy->argv[i];
+				else
+				{
+					printf("command es tipo 4\n");
+					aux = ft_strjoin(cmd_argv[j], " ");
+					temp = copy->argv[i];
+					printf("%s\n", aux);
+					printf("%s\n", temp);
+					cmd_argv[j] = ft_strjoin(aux, temp);
+					free(aux);
+					free(temp);
+				}
+				printf("--------> %s\n", cmd_argv[j]);
+			}
+			i++;
+		}
+		j++;
+		copy = copy->next;
 	}
-
+	return(cmd_argv);
 }
 
 
@@ -143,4 +168,4 @@ char	**get_path(t_vals *vals, int argc, char **argv)
 	}
 	cmd_path[j] = NULL;
 	return (cmd_path);
-}
+}*/

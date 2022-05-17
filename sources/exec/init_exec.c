@@ -4,18 +4,27 @@
 cat Makefile > salida | ls | cat << eof >> salida2
 */
 
-void print_node(t_def *node, int i)
+
+void print_node(t_def **node, int i)
 {
 	int j;
+	t_def *copy;
 
-	printf("\nNODE %d \n -------------------------- \n", i);
-	j = 0;
-	while(node->argv[j])
+	copy = *node;
+	while(i)
 	{
-		printf("argv[%d] -> %s\n", j, node->argv[j]);
-		printf("%d\n", node->type[j]);
-		j++;
+		printf("\nNODE %d \n -------------------------- \n", i);
+		j = 0;
+		while(copy->argv[j])
+		{
+			printf("argv[%d] -> %s\n", j, copy->argv[j]);
+			printf("%d\n", copy->type[j]);
+			j++;
+		}
+		copy = copy->next;
+		i--;	
 	}
+	printf("\n");
 }
 
 int *get_array(char *pipes)
@@ -31,7 +40,7 @@ int *get_array(char *pipes)
 		i++;
 	array = malloc(sizeof(int) * i + 1);
 	if(array == NULL)
-		print_error("memory alloc");
+		print_error("memory malloc :)//:]");
 	j = 0;
 	while(j < i)
 	{
@@ -76,7 +85,7 @@ int main(int argc, char **argv, char **environ)
 	t_def	*def;
 	int i;
 	int j;
-	// t_cmds vals;
+	t_cmds vals;
 
 	if(argc != 2)
 		print_error("Error. Arguments");
@@ -96,16 +105,8 @@ int main(int argc, char **argv, char **environ)
 		i++;
 	}
 
-	while(i)
-	{
-		print_node(def, i);
-		def = def->next;
-		i--;
-	}
+	init_vals(&vals, environ, &def);
 
-
-	(void)environ;
-	// init_vals(vals, environ, def);
 	//pipex(def)
 
 

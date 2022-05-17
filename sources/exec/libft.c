@@ -44,25 +44,6 @@ char	*ft_strdup(const char *s1)
 }
 
 
-size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
-{
-	size_t	i;
-
-	if (!src || !dst)
-		return (0);
-	if (dstsize == 0)
-		return (ft_strlen(src));
-	i = 0;
-	while (i < (dstsize - 1) && src[i] != 0)
-	{
-		dst[i] = src[i];
-		i++;
-	}
-	dst[i] = '\0';
-	return (ft_strlen(src));
-}
-
-
 size_t	ft_count_strings(char const *s, char c)
 {
 	int		new_str;
@@ -201,4 +182,93 @@ int	ft_lstsize(t_def *lst)
 		i++;
 	}
 	return (i);
+}
+
+void	ft_bzero(void *s, size_t n)
+{
+	ft_memset(s, 0, n);
+}
+
+void	*ft_memset(void *b, int c, size_t len)
+{
+	char	*p;
+	size_t	i;
+
+	p = b;
+	i = 0;
+	while (i < len)
+	{
+		p[i] = c;
+		i++;
+	}
+	return (b);
+}
+
+char	*ft_strjoin(char const *s1, char const *s2)
+{
+	char	*t;
+
+	if (!s1 || !s2)
+		return (NULL);
+	t = malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
+	if (t == 0)
+		return (NULL);
+	if (s1 != 0 && s2 != 0)
+	{
+		ft_strlcpy(t, s1, ft_strlen(s1) + 1);
+		ft_strlcat(t, s2, (ft_strlen(s1) + ft_strlen(s2) + 1));
+		return (t);
+	}
+	return (0);
+}
+
+size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
+{
+	size_t	d_len;
+	size_t	i;
+	size_t	d_len_save;
+
+	d_len = ft_strlen(dst);
+	d_len_save = ft_strlen(dst);
+	if (dstsize == 0)
+		return (ft_strlen(src));
+	if (dstsize < d_len)
+		return (ft_strlen(src) + dstsize);
+	i = 0;
+	while (src[i] != '\0' && d_len < (dstsize - 1))
+	{
+		dst[d_len] = src[i];
+		i++;
+		d_len++;
+	}
+	dst[d_len] = '\0';
+	return (d_len_save + ft_strlen(src));
+}
+
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
+{
+	size_t	i;
+
+	if (!src || !dst)
+		return (0);
+	if (dstsize == 0)
+		return (ft_strlen(src));
+	i = 0;
+	while (i < (dstsize - 1) && src[i] != 0)
+	{
+		dst[i] = src[i];
+		i++;
+	}
+	dst[i] = '\0';
+	return (ft_strlen(src));
+}
+
+int ft_double_len(char **str)
+{
+	int i;
+
+	i = 0;
+	while(str[i])
+			i++;
+	return(i);
 }

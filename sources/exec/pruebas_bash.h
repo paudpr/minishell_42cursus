@@ -47,7 +47,16 @@ t_def	*ft_lstnew(void *content, int *array);
 void	ft_lstadd_back(t_def **lst, t_def *new);
 t_def	*ft_lstlast(t_def *lst);
 int	ft_lstsize(t_def *lst);
+void	ft_bzero(void *s, size_t n);
+void	*ft_memset(void *b, int c, size_t len);
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
+size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
+char	*ft_strjoin(char const *s1, char const *s2);
+int ft_double_len(char **str);
 
+
+void init_vals(t_cmds *vals, char **environ, t_def **def);
+char **get_argv(t_def **def);
 
 
 
