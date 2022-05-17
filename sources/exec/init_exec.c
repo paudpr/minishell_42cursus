@@ -70,12 +70,13 @@ int *get_array(char *pipes)
 }
 
 
-int main(int argc, char **argv)
+int main(int argc, char **argv, char **environ)
 {
 	char **split;
 	t_def	*def;
 	int i;
 	int j;
+	// t_cmds vals;
 
 	if(argc != 2)
 		print_error("Error. Arguments");
@@ -95,14 +96,17 @@ int main(int argc, char **argv)
 		i++;
 	}
 
-	// while(i)
-	// {
-	// 	print_node(def, i);
-	// 	def = def->next;
-	// 	i--;
-	// }
+	while(i)
+	{
+		print_node(def, i);
+		def = def->next;
+		i--;
+	}
 
-	pipex(def)
+
+	(void)environ;
+	// init_vals(vals, environ, def);
+	//pipex(def)
 
 
 }
