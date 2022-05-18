@@ -1,7 +1,7 @@
 #include "pruebas_bash.h"
 
 /*
-cat Makefile > salida | ls | cat << eof >> salida2
+"cat Makefile > salida | ls | cat << eof >> salida2"
 */
 
 
@@ -78,6 +78,10 @@ int *get_array(char *pipes)
 	return(array);
 }
 
+void check_leaks()
+{
+	system("leaks -q a.out");
+}
 
 int main(int argc, char **argv, char **environ)
 {
@@ -87,6 +91,7 @@ int main(int argc, char **argv, char **environ)
 	int j;
 	t_cmds vals;
 
+	atexit(check_leaks);
 	if(argc != 2)
 		print_error("Error. Arguments");
 

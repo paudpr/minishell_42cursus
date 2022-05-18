@@ -53,6 +53,9 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
 char	*ft_strjoin(char const *s1, char const *s2);
 int ft_double_len(char **str);
+char	*ft_strnstr(const char *haystack, const char *needle, size_t len);
+char **get_path(t_cmds *vals, t_def **def);
+void ft_free_double(char **tab);
 
 
 void init_vals(t_cmds *vals, char **environ, t_def **def);

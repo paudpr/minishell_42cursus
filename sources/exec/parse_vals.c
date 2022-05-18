@@ -1,5 +1,18 @@
 #include "pruebas_bash.h"
 
+char	*find_path(char **env)
+{
+	int	i;
+
+	i = 0;
+	while (env[i])
+	{
+		if (ft_strnstr(env[i], "PATH=", 5))
+			return (env[i]);
+		i++;
+	}
+	return (NULL);
+}
 
 void init_vals(t_cmds *vals, char **environ, t_def **def)
 {
@@ -22,110 +35,79 @@ void init_vals(t_cmds *vals, char **environ, t_def **def)
 
 
 	printf("INIT_VALS AQUI\n");
-	// vals->cmds_path = get_path(vals, def);
 	vals->cmds_argv = get_argv(def);
-	printf("En init vals -> %s\n", vals->cmds_argv[0]);
+	vals->cmds_path = get_path(vals, def);
 }
 
-
-char **get_argv(t_def **def)
+char *check_valid(char *path, char *command)
 {
-	t_def *copy;
-	char **cmd_argv;
+	int i;
+	char **split_path;
+	char *cmd_str;
+	char *cmd_path;
 	char *aux;
-	char *temp;
+
+	split_path = ft_split(path, ':');
+	cmd_path = NULL;
+	i = 0;
+	while(split_path[i])
+	{
+		aux = ft_strjoin(split_path[i], "/");
+		cmd_str = ft_strjoin(aux, command);
+		if(access(cmd_str, F_OK) == 0)
+			cmd_path = ft_strdup(aux);
+		free(aux);
+		free(cmd_str);
+		i++;
+	}
+	ft_free_double(split_path);
+	if(cmd_path == NULL)
+		access(cmd_path, F_OK);
+	perror("");
+	return(cmd_path);
+}
+
+char **get_path(t_cmds *vals, t_def **def)
+{
 	int i;
 	int j;
+	char **split_cmd;
+	char *path;
+	char **cmd_path;
+	t_def *copy;
 
-	j = 0;
 	copy = *def;
-	cmd_argv = malloc(sizeof(char *) * (ft_lstsize(*def)) + 1);
-	while(copy && copy->type[i]) //aqui me puede dar error de recorrer el array por ser números
+	path = find_path(vals->env);
+	if(path == NULL)
+		print_error("No path");
+	cmd_path = malloc(sizeof(char *) * (ft_lstsize(copy)) + 1);
+	if(cmd_path == NULL)
+		print_error("Error de memoria en get_path");
+	j = 0;
+	while(copy)
 	{
-		i = 0;
-		printf("len -> %d\n", ft_double_len(copy->argv));
-		while(copy->type[i] && i < ft_double_len(copy->argv))
+		while(i < ft_double_len(copy->argv) && copy->type[i])
 		{
+			i = 0;
 			if(copy->type[i] != 4)
 				i++;
-			else if(copy->type[i] == 4)
+			else
 			{
-				printf("%d\n", i);
-				if(!cmd_argv[j])
-					cmd_argv[j] = copy->argv[i];
-				else
-				{
-					printf("command es tipo 4\n");
-					aux = ft_strjoin(cmd_argv[j], " ");
-					temp = copy->argv[i];
-					printf("%s\n", aux);
-					printf("%s\n", temp);
-					cmd_argv[j] = ft_strjoin(aux, temp);
-					free(aux);
-					free(temp);
-				}
-				printf("--------> %s\n", cmd_argv[j]);
+				split_cmd = ft_split(vals->cmds_argv[i], ' ');
+				cmd_path[j] = check_valid(path, split_cmd[0]);
 			}
+			j++;
 			i++;
 		}
-		j++;
-		copy = copy->next;
+		ft_free_double(split_cmd);
 	}
-	return(cmd_argv);
+	cmd_path[j] = NULL;
+	return (cmd_path);
 }
-
 
 
 /*
-char	**get_argv(t_vals *vals, char **argv, int argc)
-{
-	char	**cmd_argv;
-	int		i;
-	int		j;
 
-	(void)vals;
-	cmd_argv = malloc(sizeof(char *) * argc - 3 + 1);
-	if (cmd_argv == NULL)
-		print_error(0);
-	i = 2;
-	j = 0;
-	while (argv[i] && i > 1 && i < argc - 1)
-	{
-		cmd_argv[j] = argv[i];
-		i++;
-		j++;
-	}
-	cmd_argv[j] = NULL;
-	return (cmd_argv);
-}
-
-
-
-char	*find_path(char **env)
-{
-	int	i;
-
-	i = 0;
-	while (env[i])
-	{
-		if (ft_strnstr(env[i], "PATH=", 5))
-			return (env[i]);
-		i++;
-	}
-	return (NULL);
-}
-
-char	*check_valid(char *path, char *argv)
-{
-	int		i;
-	char	**path_div;
-	char	*aux;
-	char	*str_cmd;
-	char	*cmd_path;
-
-	path_div = ft_split(path, ':');
-	cmd_path = NULL;
-	i = 0;
 	while (path_div[i])
 	{
 		aux = ft_strjoin(path_div[i], "/");
@@ -169,3 +151,47 @@ char	**get_path(t_vals *vals, int argc, char **argv)
 	cmd_path[j] = NULL;
 	return (cmd_path);
 }*/
+
+
+
+
+char **get_argv(t_def **def)
+{
+	t_def *copy;
+	char **cmd_argv;
+	char *aux;
+	char *temp;
+	int i;
+	int j;
+
+	j = 0;
+	copy = *def;
+	cmd_argv = malloc(sizeof(char *) * (ft_lstsize(*def)) + 1);
+	while(copy)
+	{
+		i = 0;
+		while(copy->type[i] && i < ft_double_len(copy->argv))
+		{
+			if(copy->type[i] != 4)
+				i++;
+			else if(copy->type[i] == 4)
+			{
+				if(!cmd_argv[j])
+					cmd_argv[j] = copy->argv[i];
+				else
+				{
+					aux = ft_strjoin(cmd_argv[j], " ");
+					temp = copy->argv[i];
+					cmd_argv[j] = ft_strjoin(aux, temp);
+					free(aux);
+					free(temp);
+				}
+			}
+			i++;
+		}
+		j++;
+		copy = copy->next;
+	}
+	cmd_argv[j] = NULL;
+	return(cmd_argv);
+}
