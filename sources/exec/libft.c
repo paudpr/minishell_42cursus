@@ -6,6 +6,8 @@ size_t	ft_strlen(const char *s)
 	int	c;
 
 	c = 0;
+	if(!s)
+		return(0);
 	while (s[c] != 0)
 		c++;
 	return (c);
@@ -142,7 +144,7 @@ t_def	*ft_lstnew(void *content, int *array)
 		return (0);
 	a->argv = ft_split(content, ' ');
 	a->type = array;
-	a->next = 0;
+	a->next = NULL;
 	return (a);
 }
 
@@ -308,4 +310,15 @@ void ft_free_double(char **tab)
 		i++;
 	}
 	free(tab);
+}
+
+void	*ft_calloc(size_t count, size_t size)
+{
+	void	*ptr;
+
+	ptr = malloc(count * size);
+	if (ptr == NULL)
+		return (ptr);
+	ft_bzero(ptr, (count * size));
+	return (ptr);
 }

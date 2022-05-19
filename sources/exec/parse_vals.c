@@ -34,8 +34,8 @@ void init_vals(t_cmds *vals, char **environ, t_def **def)
 	ft_bzero(vals->pipe_fd, 2);
 
 
-	printf("INIT_VALS AQUI\n");
 	vals->cmds_argv = get_argv(def);
+	printf("INIT_VALS AQUI\n");
 	vals->cmds_path = get_path(vals, def);
 }
 
@@ -80,23 +80,23 @@ char **get_path(t_cmds *vals, t_def **def)
 	path = find_path(vals->env);
 	if(path == NULL)
 		print_error("No path");
-	cmd_path = malloc(sizeof(char *) * (ft_lstsize(copy)) + 1);
+	cmd_path = ft_calloc(sizeof(char *), ft_lstsize(copy) + 1);
 	if(cmd_path == NULL)
 		print_error("Error de memoria en get_path");
 	j = 0;
 	while(copy)
 	{
+		i = 0;
 		while(i < ft_double_len(copy->argv) && copy->type[i])
 		{
-			i = 0;
-			if(copy->type[i] != 4)
+			if (copy->type[i] != 4)
 				i++;
 			else
 			{
 				split_cmd = ft_split(vals->cmds_argv[i], ' ');
 				cmd_path[j] = check_valid(path, split_cmd[0]);
+				j++;
 			}
-			j++;
 			i++;
 		}
 		ft_free_double(split_cmd);
@@ -104,56 +104,6 @@ char **get_path(t_cmds *vals, t_def **def)
 	cmd_path[j] = NULL;
 	return (cmd_path);
 }
-
-
-/*
-
-	while (path_div[i])
-	{
-		aux = ft_strjoin(path_div[i], "/");
-		str_cmd = ft_strjoin(aux, argv);
-		if (access(str_cmd, F_OK) == 0)
-			cmd_path = ft_strdup(aux);
-		free(aux);
-		free(str_cmd);
-		i++;
-	}
-	ft_free_double(path_div);
-	if (cmd_path == NULL)
-		print_error(0);
-	return (cmd_path);
-}
-
-char	**get_path(t_vals *vals, int argc, char **argv)
-{
-	int		i;
-	int		j;
-	char	*path;
-	char	**cmd_path;
-	char	**argv_split;
-
-	path = find_path(vals->env);
-	if (path == NULL)
-		print_error(0);
-	cmd_path = malloc(sizeof(char *) * (argc - 3 + 1));
-	if (cmd_path == NULL)
-		print_error(0);
-	i = 2;
-	j = 0;
-	while (argv[i] && i > 1 && i < argc - 1)
-	{
-		argv_split = ft_split(argv[i], ' ');
-		cmd_path[j] = check_valid(path, argv_split[0]);
-		j++;
-		i++;
-		ft_free_double(argv_split);
-	}
-	cmd_path[j] = NULL;
-	return (cmd_path);
-}*/
-
-
-
 
 char **get_argv(t_def **def)
 {
@@ -166,7 +116,7 @@ char **get_argv(t_def **def)
 
 	j = 0;
 	copy = *def;
-	cmd_argv = malloc(sizeof(char *) * (ft_lstsize(*def)) + 1);
+	cmd_argv = ft_calloc(sizeof(char *), ft_lstsize(copy) + 1);
 	while(copy)
 	{
 		i = 0;

@@ -56,6 +56,7 @@ int ft_double_len(char **str);
 char	*ft_strnstr(const char *haystack, const char *needle, size_t len);
 char **get_path(t_cmds *vals, t_def **def);
 void ft_free_double(char **tab);
+void	*ft_calloc(size_t count, size_t size);
 
 
 void init_vals(t_cmds *vals, char **environ, t_def **def);

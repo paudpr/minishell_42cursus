@@ -34,13 +34,12 @@ int *get_array(char *pipes)
 	int j;
 	int *array;
 
-	i = 0;
+	
 	split = ft_split(pipes, ' ');
-	while(split[i])
-		i++;
-	array = malloc(sizeof(int) * i + 1);
+	i = ft_double_len(split);
+	array = ft_calloc(sizeof(int), i + 1);
 	if(array == NULL)
-		print_error("memory malloc :)//:]");
+		print_error("Error de memoria en get_array");
 	j = 0;
 	while(j < i)
 	{
@@ -74,12 +73,13 @@ int *get_array(char *pipes)
 			j++;
 		}
 	}
-	array[j] = '\0';
+	array[j] = 0;
 	return(array);
 }
 
 void check_leaks()
 {
+	printf("\n");
 	system("leaks -q a.out");
 }
 
@@ -91,15 +91,12 @@ int main(int argc, char **argv, char **environ)
 	int j;
 	t_cmds vals;
 
-	atexit(check_leaks);
+	// atexit(check_leaks);
 	if(argc != 2)
 		print_error("Error. Arguments");
 
 	split = ft_split(argv[1], '|');
-	j = 0;
-	while(split[j])
-		j++;
-
+	j = ft_double_len(split);
 	i = 0;
 	while(i < j)
 	{
@@ -109,6 +106,7 @@ int main(int argc, char **argv, char **environ)
 			ft_lstadd_back(&def, ft_lstnew(split[i], get_array(split[i])));
 		i++;
 	}
+	ft_free_double(split);
 
 	init_vals(&vals, environ, &def);
 
