@@ -40,7 +40,6 @@ int *get_array(char *pipes)
 	array = ft_calloc(sizeof(int), i + 1);
 	if(array == NULL)
 		print_error("Error de memoria en get_array");
-	// printf("%p\n", array);       // <------------------ leak [32]
 	j = 0;
 	while(j < i)
 	{
@@ -49,34 +48,29 @@ int *get_array(char *pipes)
 			array[j] = T_HD;
 			array[j + 1] = T_HD;
 			j += 2;
-			printf("A\n");
 		}
 		else if(ft_strncmp("<", split[j], ft_strlen(split[j])) == 0)
 		{
 			array[j] = T_RIN;
 			array[j + 1] = T_RIN;
 			j += 2;
-			printf("B\n");
 		}
 		else if(ft_strncmp(">", split[j], ft_strlen(split[j])) == 0)
 		{
 			array[j] = T_ROUT;
 			array[j + 1] = T_ROUT;
 			j += 2;
-			printf("C\n");
 		}
 		else if(ft_strncmp(">>", split[j], ft_strlen(split[j])) == 0)
 		{
 			array[j] = T_ROUT;
 			array[j + 1] = T_ROUT;
 			j += 2;
-			printf("D\n");
 		}
 		else
 		{
 			array[j] = 4;
 			j++;
-			printf("\n");
 		}
 	}
 	ft_free_double(split);
@@ -113,13 +107,14 @@ int main(int argc, char **argv, char **environ)
 			ft_lstadd_back(&def, ft_lstnew(split[i], get_array(split[i])));
 		i++;
 	}
-	print_node(&def, ft_lstsize(def));
+	// print_node(&def, ft_lstsize(def));
 	ft_free_double(split);
-
 	init_vals(&vals, environ, &def);
 	// system("leaks -q a.out");
 	//pipex(def)
 
 	free_list(&def);
+	// ft_free_double(vals.env);
+	free_struct(vals);
 	return (0);
 }

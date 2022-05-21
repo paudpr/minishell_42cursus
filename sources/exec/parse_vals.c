@@ -18,23 +18,19 @@ void init_vals(t_cmds *vals, char **environ, t_def **def)
 {
 	int i;
 
-	i = 0;
-	while(environ[i])
-		i++;
-	vals->env = malloc(sizeof(char *) * (i + 1));
+	vals->env = ft_calloc(sizeof(char *), ft_double_len(environ) + 1);
 	if(vals->env == NULL)
-		return ;
+		print_error("Memoria en init_vals");
 	i = 0;
+	// printf("%p\n", environ);
 	while(environ[i])
 	{
 		vals->env[i] = ft_strdup(environ[i]);
 		i++;
 	}
-	vals->env[i] =  NULL;
 	ft_bzero(vals->pipe_fd, 2);
-
-	(void)def;
-	// vals->cmds_argv = get_argv(def);
+	
+	vals->cmds_argv = get_argv(def);
 	// vals->cmds_path = get_path(vals, def);
 }
 
@@ -108,43 +104,97 @@ char **get_path(t_cmds *vals, t_def **def)
 	return (cmd_path);
 }
 
-char **get_argv(t_def **def)
+// char **get_argv(t_def **def)
+// {
+// 	t_def *copy;
+// 	char **cmd_argv;
+// 	char *aux;
+// 	char *temp;
+// 	int i;
+// 	int j;
+
+// 	j = 0;
+// 	copy = *def;
+// 	cmd_argv = ft_calloc(sizeof(char *), ft_lstsize(copy) + 1);
+// 	while(copy)
+// 	{
+// 		i = 0;
+// 		while(copy->type[i] && i < ft_double_len(copy->argv))
+// 		{
+// 			// if(copy->type[i] != 4)
+// 			// 	i++;
+// 			if(copy->type[i] == 4)
+// 			{
+// 				if(!cmd_argv[j])
+// 					cmd_argv[j] = ft_strdup(copy->argv[i]);
+// 				else
+// 				{
+// 					aux = ft_strjoin(cmd_argv[j], " ");
+// 					temp = copy->argv[i];
+// 					free(cmd_argv[j]);
+// 					cmd_argv[j] = ft_strjoin(aux, temp);
+// 					free(aux);
+
+// 					free(temp);
+// 				}
+// 			}
+// 			i++;
+// 		}
+// 		j++;
+// 		copy = copy->next;
+// 			printf("%s \n", cmd_argv[j]);
+// 	}
+// 	// 				printf("%p \n", aux);
+// 	// free(aux);
+// 	return(cmd_argv);
+// }
+
+
+char *save_argv(t_def *copy, t_cmds *vals)
 {
-	t_def *copy;
-	char **cmd_argv;
+	int i;
+	char *cmd_argv;
 	char *aux;
 	char *temp;
-	int i;
-	int j;
 
-	j = 0;
+	i = 0;
+	
+	if (copy->type[i] == 4 && i < ft_double_len(copy->argv))
+	{
+		if(!cmd_argv)
+			cmd_argv = ft_strdup(copy->argv[i]);
+		else
+		{
+			aux = ft_strjoin(cmd_argv, " ");
+			temp = ft_strdup(copy->argv[i]);
+			free(cmd_argv);
+			cmd_argv = ft_strjoin(aux, temp);
+			free(aux);
+			free(temp);
+		}
+		i++;
+	}
+
+	return(cmd_argv);
+}
+
+char **get_argv(t_def **def, t_cmds *vals)
+{
+	int j;
+	char **cmd_argv;
+	t_def *copy;
+
 	copy = *def;
 	cmd_argv = ft_calloc(sizeof(char *), ft_lstsize(copy) + 1);
+	j = 0;
 	while(copy)
 	{
-		i = 0;
-		while(copy->type[i] && i < ft_double_len(copy->argv))
+		while(j < ft_lstsize(copy))
 		{
-			if(copy->type[i] != 4)
-				i++;
-			else if(copy->type[i] == 4)
-			{
-				if(!cmd_argv[j])
-					cmd_argv[j] = copy->argv[i];
-				else
-				{
-					aux = ft_strjoin(cmd_argv[j], " ");
-					temp = copy->argv[i];
-					cmd_argv[j] = ft_strjoin(aux, temp);
-					free(aux);
-					free(temp);
-				}
-			}
-			i++;
+			cmd_argv[j] = save_cmd(copy, vals);
+			j++;
 		}
-		j++;
 		copy = copy->next;
 	}
-	cmd_argv[j] = NULL;
 	return(cmd_argv);
 }

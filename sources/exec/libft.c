@@ -299,19 +299,6 @@ char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 	return (NULL);
 }
 
-void ft_free_double(char **tab)
-{
-	int i;
-
-	i = 0;
-	while(tab[i])
-	{
-		free(tab[i]);
-		i++;
-	}
-	free(tab);
-}
-
 void	*ft_calloc(size_t count, size_t size)
 {
 	void	*ptr;
@@ -337,4 +324,27 @@ void free_list(t_def **def)
 		*def = (*def)->next;
 		i--;
 	}
+}
+
+void free_struct(t_cmds vals)
+{
+	ft_free_double(vals.env);
+	// ft_free_double(vals.cmds_path);
+	// ft_free_double(vals.cmds_argv);
+}
+
+
+void ft_free_double(char **str)
+{
+	int i;
+
+	i = 0;
+	if(!str)
+		return ;
+	while(str[i])
+	{
+		free(str[i]);
+		i++;
+	}
+	free(str);
 }
