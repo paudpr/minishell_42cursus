@@ -178,7 +178,7 @@ int	ft_lstsize(t_def *lst)
 	i = 1;
 	if (!lst)
 		return (0);
-	while (lst -> next)
+	while (lst->next)
 	{
 		lst = lst -> next;
 		i++;
@@ -271,7 +271,7 @@ int ft_double_len(char **str)
 
 	i = 0;
 	while(str[i])
-			i++;
+		i++;
 	return(i);
 }
 
@@ -321,4 +321,20 @@ void	*ft_calloc(size_t count, size_t size)
 		return (ptr);
 	ft_bzero(ptr, (count * size));
 	return (ptr);
+}
+
+
+void free_list(t_def **def)
+{
+	int i;
+
+	i = ft_lstsize(*def);
+	while(i)
+	{
+		ft_free_double((*def)->argv);
+		free((*def)->type);
+		free(*def);
+		*def = (*def)->next;
+		i--;
+	}
 }

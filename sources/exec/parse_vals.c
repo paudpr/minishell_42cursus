@@ -33,10 +33,9 @@ void init_vals(t_cmds *vals, char **environ, t_def **def)
 	vals->env[i] =  NULL;
 	ft_bzero(vals->pipe_fd, 2);
 
-
-	vals->cmds_argv = get_argv(def);
-	printf("INIT_VALS AQUI\n");
-	vals->cmds_path = get_path(vals, def);
+	(void)def;
+	// vals->cmds_argv = get_argv(def);
+	// vals->cmds_path = get_path(vals, def);
 }
 
 char *check_valid(char *path, char *command)
@@ -62,8 +61,10 @@ char *check_valid(char *path, char *command)
 	}
 	ft_free_double(split_path);
 	if(cmd_path == NULL)
+	{
 		access(cmd_path, F_OK);
-	perror("");
+		perror("");
+	}
 	return(cmd_path);
 }
 
@@ -84,24 +85,26 @@ char **get_path(t_cmds *vals, t_def **def)
 	if(cmd_path == NULL)
 		print_error("Error de memoria en get_path");
 	j = 0;
+
 	while(copy)
 	{
 		i = 0;
-		while(i < ft_double_len(copy->argv) && copy->type[i])
+		while(i < ft_double_len(copy->argv))
 		{
 			if (copy->type[i] != 4)
 				i++;
 			else
 			{
-				split_cmd = ft_split(vals->cmds_argv[i], ' ');
+				split_cmd = ft_split(vals->cmds_argv[j], ' ');
 				cmd_path[j] = check_valid(path, split_cmd[0]);
+				i += ft_double_len(copy->argv);
 				j++;
 			}
-			i++;
 		}
 		ft_free_double(split_cmd);
+		copy = copy->next;
 	}
-	cmd_path[j] = NULL;
+	// cmd_path[j] = NULL;
 	return (cmd_path);
 }
 

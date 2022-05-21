@@ -6,21 +6,21 @@
 
 
 
-int main(void)
-{
-	char *line;
-	char *eof;
+// int main(void)
+// {
+// 	char *line;
+// 	char *eof;
 
-	eof = "exit";
+// 	eof = "exit";
 
-	line = readline("minishell > ");
-	while(strncmp(line, eof, strlen(eof)) != 0)
-	{
-		line = readline("minishell > ");
-		if(line != NULL)
-			add_history(line);
-		free(line);
-	}
-	return(0);
-}
+// 	line = readline("minishell > ");
+// 	while(strncmp(line, eof, strlen(eof)) != 0)
+// 	{
+// 		line = readline("minishell > ");
+// 		if(line != NULL)
+// 			add_history(line);
+// 		free(line);
+// 	}
+// 	return(0);
+// }
 
