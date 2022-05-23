@@ -314,23 +314,32 @@ void	*ft_calloc(size_t count, size_t size)
 void free_list(t_def **def)
 {
 	int i;
-
+	t_def *copy;
+	
 	i = ft_lstsize(*def);
 	while(i)
 	{
 		ft_free_double((*def)->argv);
 		free((*def)->type);
-		free(*def);
+		copy = *def;
 		*def = (*def)->next;
+		free(copy);
 		i--;
-	}
+	}	
+}
+
+void free_env(t_env *env)
+{
+	ft_free_double(env->path);
+	ft_free_double(env->env);
+	free(env);
 }
 
 void free_struct(t_cmds vals)
 {
-	ft_free_double(vals.env);
-	// ft_free_double(vals.cmds_path);
-	// ft_free_double(vals.cmds_argv);
+	// free_env(&vals.env);
+	ft_free_double(vals.cmds_path);
+	free(vals.cmds_argv);
 }
 
 

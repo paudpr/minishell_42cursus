@@ -24,14 +24,23 @@ typedef struct s_def
 	struct s_def *next;
 }	t_def;
 
+
+typedef struct s_env
+{
+	char **env;
+	char **path;
+}	t_env;
+
+
 typedef struct s_cmds
 {
-	char	**env;
+	t_env	env;
 	char	**cmds_path;
-	char	**cmds_argv;
+	char	*cmds_argv;
 	int		pipe_fd[2];
 	int		num; // pos de comando
 }	t_cmds;
+
 
 
 void print_error(char *str);
@@ -62,8 +71,15 @@ void free_list(t_def **def);
 void free_struct(t_cmds vals);
 
 
+void check_leaks();
+void free_env(t_env *env);
+t_env *get_struct_env(char **environ);
+void get_list(t_def **def, char *argv);
+int *get_array(char *pipes);
 void init_vals(t_cmds *vals, char **environ, t_def **def);
-char **get_argv(t_def **def);
+char *get_argv(t_def *def);
+t_cmds *get_struct_cmds(t_def *def, t_env *env);
+void free_struct(t_cmds vals);
 
 
 
