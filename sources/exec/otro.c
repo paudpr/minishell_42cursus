@@ -28,7 +28,6 @@ int main(int argc, char **argv, char **environ)
     }
 
 
-
     free_env(env);
     free_list(&def);
     return(0);

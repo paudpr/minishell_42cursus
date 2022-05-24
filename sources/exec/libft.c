@@ -335,6 +335,7 @@ void free_struct(t_cmds *vals)
 	// free_env(vals->env);
 	// ft_free_double(vals->cmds_path);
 	free(vals->cmds_argv);
+	free(vals->cmds_path);
 	
 }
 

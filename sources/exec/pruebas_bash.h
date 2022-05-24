@@ -35,7 +35,7 @@ typedef struct s_env
 typedef struct s_cmds
 {
 	t_env	*env;
-	char	**cmds_path;
+	char	*cmds_path;
 	char	*cmds_argv;
 	int		pipe_fd[2];
 	int		num; // pos de comando
@@ -63,7 +63,6 @@ size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
 char	*ft_strjoin(char const *s1, char const *s2);
 int ft_double_len(char **str);
 char	*ft_strnstr(const char *haystack, const char *needle, size_t len);
-char **get_path(t_cmds *vals, t_def **def);
 void ft_free_double(char **str);
 void	*ft_calloc(size_t count, size_t size);
 void print_node(t_def **node, int i);
@@ -79,6 +78,11 @@ void init_vals(t_cmds *vals, char **environ, t_def **def);
 char *get_argv(t_def *def);
 t_cmds *get_struct_cmds(t_def *def, t_env *env);
 void free_struct(t_cmds *vals);
+char    *get_path(t_def *def, char **path, char *argvs);
+char *check_valid(char **path, char *cmd);
+
+
+
 
 
 

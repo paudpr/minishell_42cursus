@@ -30,18 +30,59 @@ t_cmds  *get_struct_cmds(t_def *def, t_env *env)
     cmds->num = 0;
     ft_bzero(cmds->pipe_fd, 2);
     cmds->cmds_argv = get_argv(def);
-    // cmds->cmds_path = get_path(def);
+    cmds->cmds_path = get_path(def, env->path, cmds->cmds_argv);
     // printf("%p   %p \n", cmds->env, env);
     return (cmds);
 }
 
-// char    *get_path(t_def *def)
-// {
+char *check_valid(char **path, char *cmd)
+{
+    int i;
+    char *cmd_str;
+    char *cmd_path;
+    char *aux;
 
+    i = 0;
+    cmd_path = NULL;
+    while(path[i])
+    {
+        aux = ft_strjoin(path[i], "/");
+        cmd_str = ft_strjoin(aux, cmd);
+        if(access(cmd_str, F_OK) == 0)
+            cmd_path = ft_strdup(aux);
+        free(aux);
+        free(cmd_str);
+        i++;
+    }
+    if(cmd_path == NULL)
+    {
+        access(cmd_path, F_OK);
+        perror("");
+    }
+    return(cmd_path);
+}
 
+char    *get_path(t_def *def, char **path, char *argvs)
+{
+    int i;
+    char *cmd_path;
+    char **split_argv;
 
-
-// }
+    // cmd_path = ft_calloc(sizeof(char), ft_lstsize(def) + 1);
+    i = 0;
+    while(def->argv[i])
+    {
+        if(def->type[i] == 4)
+        {
+            split_argv = ft_split(argvs, ' ');
+            (void)path;
+            cmd_path = check_valid(path, split_argv[0]);
+        }
+        i++;
+    }
+    ft_free_double(split_argv);
+    return(cmd_path);
+}
 
 char    *get_argv(t_def *def)
 {
@@ -73,6 +114,6 @@ char    *get_argv(t_def *def)
     return (cmd);
 }
 
-
+   
 
 
