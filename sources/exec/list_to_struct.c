@@ -1,15 +1,15 @@
 #include "pruebas_bash.h"
 
-t_env *get_struct_env(char **environ)
+t_env   *get_struct_env(char **environ)
 {
-    int i;
-    t_env *env;
-    char *path;
+    int     i;
+    t_env   *env;
+    char    *path;
 
     i = 0;
     env =  malloc(sizeof(t_env));
     env->env = ft_calloc(sizeof(char *), ft_double_len(environ) + 1);
-    while(environ[i])
+    while (environ[i])
     {
         env->env[i] = ft_strdup(environ[i]);
         if (ft_strnstr(environ[i], "PATH=", 5))
@@ -18,46 +18,61 @@ t_env *get_struct_env(char **environ)
     }
     env->path = ft_split(path, ':');
     free(path);
-    return(env);
+    return (env);
 }
 
-t_cmds *get_struct_cmds(t_def *def, t_env *env)
+t_cmds  *get_struct_cmds(t_def *def, t_env *env)
 {
-    t_cmds *cmds;
+    t_cmds  *cmds;
 
     cmds = malloc(sizeof(t_cmds));
-    cmds->env = *env;
+    cmds->env = env;
     cmds->num = 0;
     ft_bzero(cmds->pipe_fd, 2);
-    // cmds->cmds_argv = get_argv(def);
-    // cmds->cmds_path = get_path(cmds, def);
-    printf("%p  %p  %p\n", &cmds->env, env, cmds);
-    (void)def;
-    return(cmds);
+    cmds->cmds_argv = get_argv(def);
+    // cmds->cmds_path = get_path(def);
+    // printf("%p   %p \n", cmds->env, env);
+    return (cmds);
 }
 
-char *get_argv(t_def *def)
+// char    *get_path(t_def *def)
+// {
+
+
+
+
+// }
+
+char    *get_argv(t_def *def)
 {
-    int i;
-    char *cmd;
-    char *aux;
+    int     i;
+    char   *cmd;
+    char   *aux;
+    char   *temp;
 
     i = 0;
-    while(def->argv[i])
+    cmd = NULL;
+    while (def->argv[i])
     {
-        if(def->type[i] == 4)
+        if (def->type[i] == 4)
         {
-            if(!cmd)
+            if (!cmd)
                 cmd = ft_strdup(def->argv[i]);
             else
             {
                 aux = ft_strjoin(cmd, " ");
+                temp = ft_strdup(def->argv[i]);
                 free(cmd);
-                cmd = ft_strjoin(aux, ft_strdup(def->argv[i]));
+                cmd = ft_strjoin(aux, temp);
                 free(aux);
+                free(temp);
             }
         }
         i++;
     }
-    return(cmd);
+    return (cmd);
 }
+
+
+
+

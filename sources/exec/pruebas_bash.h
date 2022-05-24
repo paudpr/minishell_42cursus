@@ -34,7 +34,7 @@ typedef struct s_env
 
 typedef struct s_cmds
 {
-	t_env	env;
+	t_env	*env;
 	char	**cmds_path;
 	char	*cmds_argv;
 	int		pipe_fd[2];
@@ -68,7 +68,6 @@ void ft_free_double(char **str);
 void	*ft_calloc(size_t count, size_t size);
 void print_node(t_def **node, int i);
 void free_list(t_def **def);
-void free_struct(t_cmds vals);
 
 
 void check_leaks();
@@ -79,7 +78,7 @@ int *get_array(char *pipes);
 void init_vals(t_cmds *vals, char **environ, t_def **def);
 char *get_argv(t_def *def);
 t_cmds *get_struct_cmds(t_def *def, t_env *env);
-void free_struct(t_cmds vals);
+void free_struct(t_cmds *vals);
 
 
 

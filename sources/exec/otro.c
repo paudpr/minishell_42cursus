@@ -22,17 +22,14 @@ int main(int argc, char **argv, char **environ)
     {
         cmds = get_struct_cmds(copy, env);
         // exec() supongo????
-        // free_struct(*cmds);
+        free_struct(cmds);
+        free(cmds);
         copy = copy->next;
     }
-
-    // print_node(&def, ft_lstsize(def));
-
 
 
 
     free_env(env);
     free_list(&def);
     return(0);
-
 }

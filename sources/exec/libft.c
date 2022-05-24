@@ -45,7 +45,6 @@ char	*ft_strdup(const char *s1)
 	return (cpy);
 }
 
-
 size_t	ft_count_strings(char const *s, char c)
 {
 	int		new_str;
@@ -116,7 +115,6 @@ char	**ft_split(char const *s, char c)
 	return (split);
 }
 
-
 int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
 	size_t	i;
@@ -134,7 +132,6 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	return (0);
 }
 
-
 t_def	*ft_lstnew(void *content, int *array)
 {
 	t_def	*a;
@@ -147,7 +144,6 @@ t_def	*ft_lstnew(void *content, int *array)
 	a->next = NULL;
 	return (a);
 }
-
 
 void	ft_lstadd_back(t_def **lst, t_def *new)
 {
@@ -310,7 +306,6 @@ void	*ft_calloc(size_t count, size_t size)
 	return (ptr);
 }
 
-
 void free_list(t_def **def)
 {
 	int i;
@@ -335,13 +330,13 @@ void free_env(t_env *env)
 	free(env);
 }
 
-void free_struct(t_cmds vals)
+void free_struct(t_cmds *vals)
 {
-	// free_env(&vals.env);
-	ft_free_double(vals.cmds_path);
-	free(vals.cmds_argv);
+	// free_env(vals->env);
+	// ft_free_double(vals->cmds_path);
+	free(vals->cmds_argv);
+	
 }
-
 
 void ft_free_double(char **str)
 {
