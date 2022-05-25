@@ -67,6 +67,7 @@ void ft_free_double(char **str);
 void	*ft_calloc(size_t count, size_t size);
 void print_node(t_def **node, int i);
 void free_list(t_def **def);
+char	*ft_strchr(const char *s, int c);
 
 
 void check_leaks();

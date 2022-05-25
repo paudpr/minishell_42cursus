@@ -52,6 +52,8 @@ size_t	ft_count_strings(char const *s, char c)
 
 	new_str = 0;
 	str_n = 0;
+	if(s == NULL)
+		return (0);
 	while (*s)
 	{
 		if (*s != c && new_str == 0)
@@ -70,6 +72,8 @@ size_t	ft_count_chrs(char const *s, char c)
 {
 	size_t	len;
 
+	if(s ==  NULL)
+		return (0);
 	len = 0;
 	while (*s && *s++ != c)
 		len++;
@@ -294,6 +298,26 @@ char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 	}
 	return (NULL);
 }
+
+char	*ft_strchr(const char *s, int c)
+{
+	int	i;
+
+	if (c == '\0')
+	{
+		i = ft_strlen(s);
+		return ((char *)&s[i]);
+	}
+	i = 0;
+	while (s[i] != 0)
+	{
+		if (s[i] == (char)c)
+			return ((char *)&s[i]);
+		i++;
+	}
+	return ((char *) '\0');
+}
+
 
 void	*ft_calloc(size_t count, size_t size)
 {

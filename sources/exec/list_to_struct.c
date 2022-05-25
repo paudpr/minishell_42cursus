@@ -5,6 +5,7 @@ t_env   *get_struct_env(char **environ)
     int     i;
     t_env   *env;
     char    *path;
+    char    *aux;
 
     i = 0;
     env =  malloc(sizeof(t_env));
@@ -13,11 +14,12 @@ t_env   *get_struct_env(char **environ)
     {
         env->env[i] = ft_strdup(environ[i]);
         if (ft_strnstr(environ[i], "PATH=", 5))
-			path = ft_strdup(environ[i]);
+			aux = ft_strdup(environ[i]);
 		i++;
     }
+    path = ft_strchr(aux, '/');
     env->path = ft_split(path, ':');
-    free(path);
+    free(aux);
     return (env);
 }
 
@@ -31,7 +33,6 @@ t_cmds  *get_struct_cmds(t_def *def, t_env *env)
     ft_bzero(cmds->pipe_fd, 2);
     cmds->cmds_argv = get_argv(def);
     cmds->cmds_path = get_path(def, env->path, cmds->cmds_argv);
-    // printf("%p   %p \n", cmds->env, env);
     return (cmds);
 }
 
@@ -68,15 +69,16 @@ char    *get_path(t_def *def, char **path, char *argvs)
     char *cmd_path;
     char **split_argv;
 
-    // cmd_path = ft_calloc(sizeof(char), ft_lstsize(def) + 1);
     i = 0;
+    split_argv = NULL;
+    cmd_path = NULL;
     while(def->argv[i])
     {
         if(def->type[i] == 4)
         {
             split_argv = ft_split(argvs, ' ');
-            (void)path;
             cmd_path = check_valid(path, split_argv[0]);
+            break ;
         }
         i++;
     }
