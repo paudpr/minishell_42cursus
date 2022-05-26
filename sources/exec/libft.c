@@ -360,7 +360,6 @@ void free_struct(t_cmds *vals)
 	// ft_free_double(vals->cmds_path);
 	free(vals->cmds_argv);
 	free(vals->cmds_path);
-	
 }
 
 void ft_free_double(char **str)

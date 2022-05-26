@@ -30,7 +30,7 @@ t_cmds  *get_struct_cmds(t_def *def, t_env *env)
     cmds = malloc(sizeof(t_cmds));
     cmds->env = env;
     cmds->num = 0;
-    ft_bzero(cmds->pipe_fd, 2);
+    ft_bzero(cmds->pipe_fd, 2 * sizeof(int));
     cmds->cmds_argv = get_argv(def);
     cmds->cmds_path = get_path(def, env->path, cmds->cmds_argv);
     return (cmds);

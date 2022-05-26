@@ -35,8 +35,8 @@ typedef struct s_env
 typedef struct s_cmds
 {
 	t_env	*env;
-	char	*cmds_path;
-	char	*cmds_argv;
+	char	*cmds_path;		//guarda el path con / al final
+	char	*cmds_argv;		//guarda el comando con sus flags y argumentos
 	int		pipe_fd[2];
 	int		num; // pos de comando
 }	t_cmds;
