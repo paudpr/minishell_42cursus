@@ -3,3 +3,4 @@
 no
 *.o
 /libft/*.o
+*a.out

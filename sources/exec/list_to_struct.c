@@ -23,17 +23,14 @@ t_env   *get_struct_env(char **environ)
     return (env);
 }
 
-t_cmds  *get_struct_cmds(t_def *def, t_env *env)
+void get_struct_cmds(t_def *def, t_env *env, t_cmds *cmds, int i)
 {
-    t_cmds  *cmds;
-
-    cmds = malloc(sizeof(t_cmds));
     cmds->env = env;
     cmds->num = 0;
-    ft_bzero(cmds->pipe_fd, 2 * sizeof(int));
-    cmds->cmds_argv = get_argv(def);
-    cmds->cmds_path = get_path(def, env->path, cmds->cmds_argv);
-    return (cmds);
+    ft_bzero(cmds->pipe_fd, 2 * i * sizeof(int));
+    (void)def;
+    // cmds->cmds_argv = get_argv(def);
+    // cmds->cmds_path = get_path(def, env->path, cmds->cmds_argv);
 }
 
 char *check_valid(char **path, char *cmd)

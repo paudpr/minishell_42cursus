@@ -6,7 +6,7 @@
 /*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 17:17:08 by pdel-pin          #+#    #+#             */
-/*   Updated: 2021/10/28 12:14:36 by pdel-pin         ###   ########.fr       */
+/*   Updated: 2022/05/25 16:10:01 by pdel-pin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ size_t	ft_count_strings(char const *s, char c)
 
 	new_str = 0;
 	str_n = 0;
+	if(s == NULL)
+		return (0);
 	while (*s)
 	{
 		if (*s != c && new_str == 0)
@@ -37,6 +39,8 @@ size_t	ft_count_chrs(char const *s, char c)
 {
 	size_t	len;
 
+	if(s == NULL)
+		return (0);
 	len = 0;
 	while (*s && *s++ != c)
 		len++;

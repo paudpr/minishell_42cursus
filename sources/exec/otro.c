@@ -7,11 +7,12 @@
 
 int main(int argc, char **argv, char **environ)
 {
-    // atexit(check_leaks);
+    atexit(check_leaks);
     t_def *def;
     t_def *copy;
     t_env *env;
     t_cmds *cmds;
+    int n_pipes;
 
 	if(argc != 2)
 		print_error("Error. Arguments");
@@ -26,22 +27,31 @@ int main(int argc, char **argv, char **environ)
     // while(env->path[++i])
     //     printf("path -> %s\n", env->path[i]);
 
-
+    n_pipes = ft_lstsize(def) - 1;
     copy = def;
-    // guardar memoria para cmds aqui y proteger
-    cmds = get_struct_cmds(copy, env);
+    cmds = ft_calloc(sizeof(t_cmds), 1);
+    if(cmds == NULL)
+        print_error("memoria struct cmds");
+    get_struct_cmds(copy, env, cmds, n_pipes);
+    // printf("%s\n%s\n", cmds->cmds_argv, cmds->cmds_path);
 
 
     while(copy)
     {
-        // exec() supongo????
-
-        free_struct(cmds);
+        cmds->cmds_argv = get_argv(copy);
+        cmds->cmds_path = get_path(copy, env->path, cmds->cmds_argv);
+        // do_command(cmds);
+        printf("------------------\n");
         copy = copy->next;
+        free_struct(cmds);
+        // if(copy->next == NULL)
+        // {
+        //     do_command2(cmds);
+        //     break;
+        // }
     }
-    free(cmds);
 
-    
+    free(cmds);
     free_env(env);
     free_list(&def);
     return(0);
@@ -77,4 +87,29 @@ int main(int argc, char **argv, char **environ)
 // 	dup2(fd, STDOUT_FILENO);
 // 	close(fd);
 // 	exec(vals);
+// }
+
+// pid_t	exec_child(t_vals *vals)
+// {
+// 	pid_t	pid;
+
+// 	if (pipe(vals->pipe_fd) < 0)
+// 		print_error(0);
+// 	pid = fork();
+// 	if (pid < 0)
+// 		print_error(0);
+// 	if (pid == 0)
+// 	{
+// 		close(vals->pipe_fd[0]);
+// 		dup2(vals->pipe_fd[1], STDOUT_FILENO);
+// 		close(vals->pipe_fd[1]);
+// 		exec(vals);
+// 	}
+// 	else
+// 	{
+// 		close(vals->pipe_fd[1]);
+// 		dup2(vals->pipe_fd[0], STDIN_FILENO);
+// 		close(vals->pipe_fd[0]);
+// 	}
+// 	return (pid);
 // }
