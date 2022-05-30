@@ -50,7 +50,7 @@ int main(int argc, char **argv, char **environ)
         cmds->num++;
     }
 
-    //gestionar waiiiiiiiiiiiiiiit
+    //gestionar waiiiiiiiiiiiiiiit aquí
     free_pipe(cmds);
     free(cmds);
     free_env(env);
