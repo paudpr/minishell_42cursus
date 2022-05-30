@@ -7,7 +7,7 @@
 
 int main(int argc, char **argv, char **environ)
 {
-    atexit(check_leaks);
+    // atexit(check_leaks);
     t_def *def;
     t_def *copy;
     t_env *env;
@@ -19,38 +19,39 @@ int main(int argc, char **argv, char **environ)
     get_list(&def, argv[1]);
     env = get_struct_env(environ);
 
-    // int i = -1;
-    // while(env->env[++i])
-    //     printf("env -> %s\n", env->env[i]);
-    // i = -1;
-    // printf("\n\n");
-    // while(env->path[++i])
-    //     printf("path -> %s\n", env->path[i]);
-
     n_pipes = ft_lstsize(def) - 1;
     copy = def;
     cmds = ft_calloc(sizeof(t_cmds), 1);
     if(cmds == NULL)
         print_error("memoria struct cmds");
-    get_struct_cmds(copy, env, cmds, n_pipes);
-    // printf("%s\n%s\n", cmds->cmds_argv, cmds->cmds_path);
+    get_struct_cmds(env, cmds, n_pipes);
+    // printf("%d\n", cmds->pipe_fd[0][0]);
 
 
     while(copy)
     {
+        printf("-----------------> %d\n", cmds->num);
         cmds->cmds_argv = get_argv(copy);
         cmds->cmds_path = get_path(copy, env->path, cmds->cmds_argv);
-        // do_command(cmds);
+        if(copy->next == NULL && cmds->num == 0)
+        {
+            do_one_command(cmds);
+            break;
+        }
+        if(copy->next == NULL)
+        {
+            do_last_command(cmds);
+            break;
+        }
+        do_commands(cmds);
         printf("------------------\n");
         copy = copy->next;
         free_struct(cmds);
-        // if(copy->next == NULL)
-        // {
-        //     do_command2(cmds);
-        //     break;
-        // }
+        cmds->num++;
     }
 
+    //gestionar waiiiiiiiiiiiiiiit
+    free_pipe(cmds);
     free(cmds);
     free_env(env);
     free_list(&def);

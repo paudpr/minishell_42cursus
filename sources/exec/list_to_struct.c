@@ -23,12 +23,14 @@ t_env   *get_struct_env(char **environ)
     return (env);
 }
 
-void get_struct_cmds(t_def *def, t_env *env, t_cmds *cmds, int i)
+void get_struct_cmds(t_env *env, t_cmds *cmds, int i)
 {
     cmds->env = env;
     cmds->num = 0;
-    ft_bzero(cmds->pipe_fd, 2 * i * sizeof(int));
-    (void)def;
+    // cmds->pipe_fd = malloc(sizeof(int *) * i + 1);
+    cmds->pipe_fd = malloc(sizeof(int *) * (i + 1));
+    // ft_bzero(cmds->pipe_fd, 2 * i * sizeof(int));
+    // printf("get-struct-cmds -> pipe -> %d\n", cmds->pipe_fd[0][0]);
     // cmds->cmds_argv = get_argv(def);
     // cmds->cmds_path = get_path(def, env->path, cmds->cmds_argv);
 }

@@ -18,76 +18,64 @@ void	check_access(char *path)
 		print_error(0);
 }
 
-void do_command(t_cmds *cmds)
+void do_commands(t_cmds *cmds)
 {
-
-    // check_heredoc();
-    // gestionar_redir();
-    // dups_ejecutar();
     pid_t pid;
-    // int fd;
 
-    // fd = open(infile, O_RDONLY);
-
-    /* ejecuta como proceso hijo*/
-    if(pipe(cmds->pipe_fd) < 0)
+    cmds->pipe_fd[cmds->num] = ft_calloc(2, sizeof(int));
+    if(pipe(cmds->pipe_fd[cmds->num]) < 0)
         perror("");
     pid = fork();
     if(pid < 0)
         perror("");
     if(pid == 0)
     {
-        // close(cmds->pipe_fd[0]);
-        // dup2(cmds->pipe_fd[1], STDOUT_FILENO);
-        // close(cmds->pipe_fd[1]);
+        close(cmds->pipe_fd[cmds->num][0]);
+        dup2(cmds->pipe_fd[cmds->num][1], STDOUT_FILENO);
+        close(cmds->pipe_fd[cmds->num][1]);
         exec(cmds);
     }
     else
     {
-        close(cmds->pipe_fd[1]);
-        dup2(cmds->pipe_fd[0], STDIN_FILENO);
-        close(cmds->pipe_fd[0]);
+        close(cmds->pipe_fd[cmds->num][1]);
+        dup2(cmds->pipe_fd[cmds->num][0], STDIN_FILENO);
+        close(cmds->pipe_fd[cmds->num][0]);
     }
-    printf("pid -> %d\n", pid);
-
-    /*hasta aqui*/
-
-
 }
 
-void do_command2(t_cmds *cmds)
+void do_last_command(t_cmds *cmds)
 {
-
-    // check_heredoc();
-    // gestionar_redir();
-    // dups_ejecutar();
     pid_t pid;
-    // int fd;
 
-    // fd = open(infile, O_RDONLY);
-
-    /* ejecuta como proceso hijo*/
-    if(pipe(cmds->pipe_fd) < 0)
+    cmds->pipe_fd[cmds->num] = ft_calloc(2, sizeof(int));
+    if(pipe(cmds->pipe_fd[cmds->num]) < 0)
         perror("");
     pid = fork();
     if(pid < 0)
         perror("");
     if(pid == 0)
-    {
-        // close(cmds->pipe_fd[0]);
-        // dup2(cmds->pipe_fd[1], STDOUT_FILENO);
-        // close(cmds->pipe_fd[1]);
         exec(cmds);
-    }
     else
     {
-        close(cmds->pipe_fd[1]);
-        dup2(cmds->pipe_fd[0], STDIN_FILENO);
-        close(cmds->pipe_fd[0]);
+        close(cmds->pipe_fd[cmds->num][1]);
+        dup2(cmds->pipe_fd[cmds->num][0], STDIN_FILENO);
+        close(cmds->pipe_fd[cmds->num][0]);
+        wait(&pid);
     }
-    printf("pid -> %d\n", pid);
+}
 
-    /*hasta aqui*/
+void do_one_command(t_cmds *cmds)
+{
+    pid_t pid;
 
-
+    cmds->pipe_fd[cmds->num] = ft_calloc(2, sizeof(int));
+    if(pipe(cmds->pipe_fd[cmds->num]) < 0)
+        perror("");
+    pid = fork();
+    if(pid < 0)
+        perror("");
+    if(pid == 0)
+        exec(cmds);
+    else
+        wait(&pid);     //esto tendrá que ir fuera del bbucle de while(copy)
 }

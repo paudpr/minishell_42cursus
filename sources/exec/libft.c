@@ -376,3 +376,13 @@ void ft_free_double(char **str)
 	}
 	free(str);
 }
+
+void free_pipe(t_cmds *cmds)
+{
+	while(cmds->num)
+	{
+		free(cmds->pipe_fd[cmds->num - 1]);
+		cmds->num--;
+	}
+	free(cmds->pipe_fd);
+}
