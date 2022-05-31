@@ -7,7 +7,7 @@
 
 int main(int argc, char **argv, char **environ)
 {
-    // atexit(check_leaks);
+    atexit(check_leaks);
     t_def *def;
     t_def *copy;
     t_env *env;
@@ -30,7 +30,6 @@ int main(int argc, char **argv, char **environ)
 
     while(copy)
     {
-        printf("-----------------> %d\n", cmds->num);
         cmds->cmds_argv = get_argv(copy);
         cmds->cmds_path = get_path(copy, env->path, cmds->cmds_argv);
         if(copy->next == NULL && cmds->num == 0)
@@ -50,7 +49,8 @@ int main(int argc, char **argv, char **environ)
         cmds->num++;
     }
 
-    //gestionar waiiiiiiiiiiiiiiit aquí
+    printf("%p\n", cmds->cmds_argv);
+    wait_process(def);
     free_pipe(cmds);
     free(cmds);
     free_env(env);
@@ -58,59 +58,3 @@ int main(int argc, char **argv, char **environ)
     return(0);
 }
 
-
-
-
-// void	pipex(char *infile, char *outfile, t_vals *vals)
-// {
-// 	int		i;
-// 	int		fd;
-// 	pid_t	pid;
-
-// 	i = 0;
-// 	while (vals->cmds_argv[i])
-// 		i++;
-// 	fd = open(infile, O_RDONLY);
-// 	if (fd < 0)
-// 		print_error(0);
-// 	unlink("/tmp/file");
-// 	dup2(fd, STDIN_FILENO);
-// 	close(fd);
-// 	while (vals->cmds_argv[vals->num] && vals->num < i - 1)
-// 	{
-// 		pid = exec_child(vals);
-// 		vals->num += 1;
-// 	}
-// 	check_herefile(infile);
-// 	wait(&pid);
-// 	fd = open(outfile, O_RDWR | O_CREAT | O_TRUNC, 0644);
-// 	check_access(outfile);
-// 	dup2(fd, STDOUT_FILENO);
-// 	close(fd);
-// 	exec(vals);
-// }
-
-// pid_t	exec_child(t_vals *vals)
-// {
-// 	pid_t	pid;
-
-// 	if (pipe(vals->pipe_fd) < 0)
-// 		print_error(0);
-// 	pid = fork();
-// 	if (pid < 0)
-// 		print_error(0);
-// 	if (pid == 0)
-// 	{
-// 		close(vals->pipe_fd[0]);
-// 		dup2(vals->pipe_fd[1], STDOUT_FILENO);
-// 		close(vals->pipe_fd[1]);
-// 		exec(vals);
-// 	}
-// 	else
-// 	{
-// 		close(vals->pipe_fd[1]);
-// 		dup2(vals->pipe_fd[0], STDIN_FILENO);
-// 		close(vals->pipe_fd[0]);
-// 	}
-// 	return (pid);
-// }

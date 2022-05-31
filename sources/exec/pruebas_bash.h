@@ -68,6 +68,9 @@ void	*ft_calloc(size_t count, size_t size);
 void print_node(t_def **node, int i);
 void free_list(t_def **def);
 char	*ft_strchr(const char *s, int c);
+char	*ft_strrchr(const char *s, int c);
+
+void wait_process(t_def *def);
 
 
 void check_leaks();
@@ -84,9 +87,9 @@ char *check_valid(char **path, char *cmd);
 void	check_access(char *path);
 void exec(t_cmds *cmds);
 void free_pipe(t_cmds *cmds);
+void check_relative_path(char *cmd);
 
 void do_commands(t_cmds *cmds);
 void do_one_command(t_cmds *cmds);
 void do_last_command(t_cmds *cmds);
-
 #endif

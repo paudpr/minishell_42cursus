@@ -76,6 +76,47 @@ void do_one_command(t_cmds *cmds)
         perror("");
     if(pid == 0)
         exec(cmds);
-    else
-        wait(&pid);     //esto tendrá que ir fuera del bbucle de while(copy)
+}
+
+
+
+void check_relative_path(char *cmd)
+{
+    char *chr;
+
+    chr = NULL;
+    if(ft_strrchr(cmd, '/') != NULL)
+    {
+        chr = ft_strdup(ft_strrchr(cmd, '/') + 1);
+        free(cmd);
+        cmd = chr;
+    }
+}
+
+void get_relative_path(char *cmd)
+{
+    //coger la parte de alante del str para guardar el path relativo
+    char *chr;
+
+    chr = NULL;
+    if(ft_strrchr(cmd, '/') != NULL)
+    {
+        chr = ft_strdup(ft_strrchr(cmd, '/') + 1);
+        free(cmd);
+        cmd = chr;
+    }
+}
+
+void wait_process(t_def *def)
+{
+    int i;
+    int *s;
+
+    s = NULL;
+    i = ft_lstsize(def);
+    while(i)
+    {
+        waitpid(-1, s, 0);
+        i--;
+    }
 }

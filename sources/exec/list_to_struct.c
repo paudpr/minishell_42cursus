@@ -112,6 +112,9 @@ char    *get_argv(t_def *def)
         }
         i++;
     }
+    printf("dentro de get_argv  -->  %p    \n", cmd);
+    check_relative_path(cmd);
+    printf("get_argv -> %s\n", cmd);
     return (cmd);
 }
 
