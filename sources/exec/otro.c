@@ -7,7 +7,7 @@
 
 int main(int argc, char **argv, char **environ)
 {
-    atexit(check_leaks);
+    // atexit(check_leaks);
     t_def *def;
     t_def *copy;
     t_env *env;
@@ -31,21 +31,21 @@ int main(int argc, char **argv, char **environ)
     while(copy)
     {
         get_argv_path(copy, cmds);
-        // if(copy->next == NULL && cmds->num == 0)
-        // {
-        //     do_one_command(cmds);
-        //     break;
-        // }
-        // if(copy->next == NULL)
-        // {
-        //     do_last_command(cmds);
-        //     break;
-        // }
-        // do_commands(cmds);
-        // printf("------------------\n");
+        if(copy->next == NULL && cmds->num == 0)
+        {
+            do_one_command(cmds);
+            break;
+        }
+        if(copy->next == NULL)
+        {
+            do_last_command(cmds);
+            break;
+        }
+        do_commands(cmds);
+        printf("------------------\n");
         copy = copy->next;
-        // free_struct(cmds);
-        // cmds->num++;
+        free_struct(cmds);
+        cmds->num++;
     }
 
     // printf("%p\n", cmds->cmds_argv);
