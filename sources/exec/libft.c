@@ -275,6 +275,34 @@ int ft_double_len(char **str)
 	return(i);
 }
 
+char	*ft_substr(char const *s, unsigned int start, size_t len)
+{
+	char	*s1;
+	size_t	i;
+
+	if (!s)
+		return (0);
+	if (len > ft_strlen(s))
+		len = ft_strlen(s);
+	s1 = malloc(sizeof(char) * (len + 1));
+	if (s1 == NULL)
+		return (s1);
+	if (start > ft_strlen(s))
+	{
+		s1[0] = '\0';
+		return (s1);
+	}
+	i = 0;
+	while (i < len)
+	{
+		s1[i] = s[start + i];
+		i++;
+	}
+	s1[i] = '\0';
+	return (s1);
+}
+
+
 char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 {
 	size_t	i;

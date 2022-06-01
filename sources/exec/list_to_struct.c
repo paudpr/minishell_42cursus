@@ -112,12 +112,67 @@ char    *get_argv(t_def *def)
         }
         i++;
     }
-    printf("dentro de get_argv  -->  %p    \n", cmd);
-    check_relative_path(cmd);
-    printf("get_argv -> %s\n", cmd);
     return (cmd);
 }
 
-   
+char *get_relative_path(char *cmd)
+{
+    char *chr;
+    char *path;
+    int len;
 
+    chr = ft_strrchr(cmd, '/');
+    len = ft_strlen(cmd) - ft_strlen(chr);
+    path = ft_substr(cmd, 0, len);
+    return(path);
+}
 
+char *get_relative_argv(char *cmd)
+{
+    char *chr;
+
+    chr = NULL;
+    if(ft_strrchr(cmd, '/') != NULL)
+    {
+        chr = ft_strdup(ft_strrchr(cmd, '/') + 1);
+        free(cmd);
+    }
+    return(chr);
+}
+
+void wait_process(t_def *def)
+{
+    int i;
+    int *s;
+
+    s = NULL;
+    i = ft_lstsize(def);
+    while(i)
+    {
+        waitpid(-1, s, 0);
+        i--;
+    }
+}
+
+char *join_argv(char *cmd, char **split)
+{
+    char *aux;
+    char *temp;
+    int i;
+
+    i = 1;
+    temp = cmd;
+    printf("\n dentro de join_argv\n\n");
+    while(i < ft_double_len(split))
+    {
+        aux = ft_strjoin(temp, " ");
+        printf("aux -> %s\n", aux);
+        free(temp);
+        temp = ft_strjoin(aux, split[i]);
+        printf("temp -> %s\n", temp);
+        free(aux);
+        printf("i -> %d\n", i);
+        i++;
+    }
+    return(temp);
+}
