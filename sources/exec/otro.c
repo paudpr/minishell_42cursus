@@ -25,7 +25,8 @@ int main(int argc, char **argv, char **environ)
     if(cmds == NULL)
         print_error("memoria struct cmds");
     get_struct_cmds(env, cmds, n_pipes);
-    // printf("%d\n", cmds->pipe_fd[0][0]);
+
+
 
 
     while(copy)
@@ -42,13 +43,10 @@ int main(int argc, char **argv, char **environ)
             break;
         }
         do_commands(cmds);
-        printf("------------------\n");
         copy = copy->next;
         free_struct(cmds);
         cmds->num++;
     }
-
-    // printf("%p\n", cmds->cmds_argv);
     wait_process(def);
     free_pipe(cmds);
     free(cmds);
@@ -57,28 +55,4 @@ int main(int argc, char **argv, char **environ)
     return(0);
 }
 
-
-void get_argv_path(t_def *def, t_cmds *cmds)
-{
-    char **split_argv;
-    char *rel_cmd;
-
-    cmds->cmds_argv = get_argv(def);
-    split_argv = ft_split(cmds->cmds_argv, ' ');
-    if(ft_strrchr(split_argv[0], '/') != NULL)
-    {
-        printf("ENTRO AQUI\n");
-        rel_cmd = get_relative_argv(split_argv[0]);
-        free(cmds->cmds_argv);
-        cmds->cmds_argv = join_argv(rel_cmd, split_argv);
-        printf("!!!!!!!!!!!!!!!!!!!!!! leak  cmds->cmds_argvs -> %s\n", cmds->cmds_argv);
-        cmds->cmds_path = get_relative_path(split_argv[0]);
-    }
-    else
-        cmds->cmds_path = get_path(def, cmds->env->path, cmds->cmds_argv);
-    ft_free_double(split_argv);
-
-
-
-}
 

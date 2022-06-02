@@ -401,6 +401,8 @@ void free_struct(t_cmds *vals)
 {
 	// free_env(vals->env);
 	// ft_free_double(vals->cmds_path);
+	// printf("%p    %s\n", vals->cmds_argv, vals->cmds_argv);
+	// printf("%p    %s\n", vals->cmds_path, vals->cmds_path);
 	free(vals->cmds_argv);
 	free(vals->cmds_path);
 }

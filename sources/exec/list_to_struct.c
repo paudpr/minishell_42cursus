@@ -76,6 +76,7 @@ char    *get_path(t_def *def, char **path, char *argvs)
         if(def->type[i] == 4)
         {
             split_argv = ft_split(argvs, ' ');
+            printf("%s\n%s\n", path[0], split_argv[0]);
             cmd_path = check_valid(path, split_argv[0]);
             break ;
         }
@@ -121,7 +122,7 @@ char *get_relative_path(char *cmd)
     char *path;
     int len;
 
-    chr = ft_strrchr(cmd, '/');
+    chr = ft_strrchr(cmd, '/') + 1;
     len = ft_strlen(cmd) - ft_strlen(chr);
     path = ft_substr(cmd, 0, len);
     return(path);
@@ -162,17 +163,36 @@ char *join_argv(char *cmd, char **split)
 
     i = 1;
     temp = cmd;
-    printf("\n dentro de join_argv\n\n");
     while(i < ft_double_len(split))
     {
         aux = ft_strjoin(temp, " ");
-        printf("aux -> %s\n", aux);
         free(temp);
         temp = ft_strjoin(aux, split[i]);
-        printf("temp -> %s\n", temp);
         free(aux);
-        printf("i -> %d\n", i);
+        free(split[i]);
         i++;
     }
     return(temp);
+}
+
+void get_argv_path(t_def *def, t_cmds *cmds)
+{
+    char **split_argv;
+    char *rel_cmd;
+
+    cmds->cmds_argv = get_argv(def);
+    split_argv = ft_split(cmds->cmds_argv, ' ');
+    if(ft_strrchr(split_argv[0], '/') != NULL)
+    {
+        cmds->cmds_path = get_relative_path(split_argv[0]);
+        rel_cmd = get_relative_argv(split_argv[0]);
+        free(cmds->cmds_argv);
+        cmds->cmds_argv = join_argv(rel_cmd, split_argv);
+        free(split_argv);
+    }
+    else
+    {
+        cmds->cmds_path = get_path(def, cmds->env->path, cmds->cmds_argv);
+        ft_free_double(split_argv);
+    }
 }
