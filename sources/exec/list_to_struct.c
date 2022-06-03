@@ -76,7 +76,6 @@ char    *get_path(t_def *def, char **path, char *argvs)
         if(def->type[i] == 4)
         {
             split_argv = ft_split(argvs, ' ');
-            printf("%s\n%s\n", path[0], split_argv[0]);
             cmd_path = check_valid(path, split_argv[0]);
             break ;
         }

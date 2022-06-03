@@ -34,19 +34,23 @@ int main(int argc, char **argv, char **environ)
         get_argv_path(copy, cmds);
         if(copy->next == NULL && cmds->num == 0)
         {
+            printf("condición solo uno\n");
             do_one_command(cmds);
             break;
         }
         if(copy->next == NULL)
         {
+            printf("condición ultimo\n");
             do_last_command(cmds);
             break;
         }
+        printf("jhgfgdhfgds\n");
         do_commands(cmds);
         copy = copy->next;
         free_struct(cmds);
         cmds->num++;
     }
+    // printf("estoy aqui\n");
     wait_process(def);
     free_pipe(cmds);
     free(cmds);

@@ -66,16 +66,14 @@ void do_last_command(t_cmds *cmds)
 
 void do_one_command(t_cmds *cmds)
 {
-    pid_t pid;
+    // pid_t pid;
 
     cmds->pipe_fd[cmds->num] = ft_calloc(2, sizeof(int));
-    if(pipe(cmds->pipe_fd[cmds->num]) < 0)
-        perror("");
-    pid = fork();
-    if(pid < 0)
-        perror("");
-    if(pid == 0)
-        exec(cmds);
+    // printf("num -> %d\n", cmds->num);
+    // printf("pipe -> %d\n", pipe(cmds->pipe_fd[cmds->num]));
+    // if(pipe(cmds->pipe_fd[cmds->num]) < 0)
+    //     perror("");
+    exec(cmds);
 }
 
 
