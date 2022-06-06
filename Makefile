@@ -25,7 +25,8 @@ SRCS_PARSE_DIR = parse
 
 SRCS_EXEC = otro.c \
 			list_to_struct.c \
-			exec.c
+			exec.c \
+			utils.c
 
 SRCS_PARSE = init_exec.c
 
@@ -45,9 +46,14 @@ OBJS = $(addprefix $(OBJ_DIR)/, $(OBJS_NAME))
 
 all: $(NAME)
 
-$(NAME): $(OBJS)
-	make -C $(LIBFT_DIR)
-	$(CC) $^ -o $@ $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) $(LDLIBS)
+
+# $(LIBFT_NAME):
+# 	$(MAKE) all -sC $(LIBFT_DIR)
+# 	cp -r $(addprefix $(LIBFT_DIR)/, $(LIBFT_NAME)) $(LIBFT_NAME)
+
+$(NAME): $(OBJS) 
+	make -C $(LIBFT_DIR) $(LIBFT_NAME)
+	$(CC) $^ -o $@ $(CFLAGS) $(LDFLAGS) $(LDLIBS)
 
 debug: CFLAGS += -fsanitize=address -g3
 debug: $(NAME)
@@ -64,7 +70,7 @@ $(OBJS_DIR):
 	mkdir -p $(OBJS_DIR) 2> /dev/null
 
 clean:
-	make fclean -C $(LBFT_DIR)
+	make fclean -C $(LIBFT_DIR)
 	rm -rf $(OBJ_DIR)
 
 fclean: clean

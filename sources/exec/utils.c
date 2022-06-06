@@ -15,7 +15,7 @@ void print_error(char *str)
 	exit(0);
 }
 
-t_def	*ft_lstnew(void *content, int *array)
+t_def	*mini_lstnew(void *content, int *array)
 {
 	t_def	*a;
 
@@ -28,7 +28,7 @@ t_def	*ft_lstnew(void *content, int *array)
 	return (a);
 }
 
-void	ft_lstadd_back(t_def **lst, t_def *new)
+void	mini_lstadd_back(t_def **lst, t_def *new)
 {
 	t_def	*p;
 
@@ -36,12 +36,12 @@ void	ft_lstadd_back(t_def **lst, t_def *new)
 		*lst = new;
 	else
 	{
-		p = ft_lstlast(*lst);
+		p = mini_lstlast(*lst);
 		p -> next = new;
 	}
 }
 
-t_def	*ft_lstlast(t_def *lst)
+t_def	*mini_lstlast(t_def *lst)
 {
 	if (!lst)
 		return (0);
@@ -49,22 +49,6 @@ t_def	*ft_lstlast(t_def *lst)
 		lst = lst -> next;
 	return (lst);
 }
-
-int	ft_lstsize(t_def *lst)
-{
-	int	i;
-
-	i = 1;
-	if (!lst)
-		return (0);
-	while (lst->next)
-	{
-		lst = lst -> next;
-		i++;
-	}
-	return (i);
-}
-
 
 int ft_double_len(char **str)
 {
@@ -76,14 +60,12 @@ int ft_double_len(char **str)
 	return(i);
 }
 
-
-
 void free_list(t_def **def)
 {
 	int i;
 	t_def *copy;
 	
-	i = ft_lstsize(*def);
+	i = mini_lstsize(*def);
 	while(i)
 	{
 		ft_free_double((*def)->argv);
@@ -95,6 +77,21 @@ void free_list(t_def **def)
 	}	
 }
 
+int	mini_lstsize(t_def *def)
+{
+	int	i;
+
+	i = 1;
+	if (!def)
+		return (0);
+	while (def->next)
+	{
+		def = def->next;
+		i++;
+	}
+	return (i);
+}
+
 void free_env(t_env *env)
 {
 	ft_free_double(env->path);
@@ -104,10 +101,6 @@ void free_env(t_env *env)
 
 void free_struct(t_cmds *vals)
 {
-	// free_env(vals->env);
-	// ft_free_double(vals->cmds_path);
-	// printf("%p    %s\n", vals->cmds_argv, vals->cmds_argv);
-	// printf("%p    %s\n", vals->cmds_path, vals->cmds_path);
 	free(vals->cmds_argv);
 	free(vals->cmds_path);
 }

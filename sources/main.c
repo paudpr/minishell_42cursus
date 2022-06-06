@@ -26,7 +26,7 @@
 // 	return(0);
 // }
 
-int main(int argc, char **argv, char **environ)
+
 {
     // atexit(check_leaks);
     t_def *def;
@@ -40,7 +40,7 @@ int main(int argc, char **argv, char **environ)
     get_list(&def, argv[1]);
     env = get_struct_env(environ);
 
-    n_pipes = ft_lstsize(def) - 1;
+    n_pipes = mini_lstsize(def) - 1;
     copy = def;
     cmds = ft_calloc(sizeof(t_cmds), 1);
     if(cmds == NULL)

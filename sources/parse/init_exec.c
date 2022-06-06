@@ -1,4 +1,4 @@
-#include "pruebas_bash.h"
+#include "minishell.h"
 
 /*
 "cat Makefile > salida | ls | cat << eof >> salida2"
@@ -88,9 +88,9 @@ void get_list(t_def **def, char *argv)
     while(j < i)
     {
         if(j == 0)
-            *def = ft_lstnew(split[j], get_array(split[j]));
+            *def = mini_lstnew(split[j], get_array(split[j]));
         else
-            ft_lstadd_back(def, ft_lstnew(split[j], get_array(split[j])));
+            mini_lstadd_back(def, mini_lstnew(split[j], get_array(split[j])));
         j++;
     }
     ft_free_double(split);
@@ -99,5 +99,5 @@ void get_list(t_def **def, char *argv)
 void check_leaks()
 {
 	printf("\n");
-	system("leaks -q a.out");
+	system("leaks -q minishell");
 }

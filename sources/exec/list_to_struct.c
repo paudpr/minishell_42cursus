@@ -146,7 +146,7 @@ void wait_process(t_def *def)
     int *s;
 
     s = NULL;
-    i = ft_lstsize(def);
+    i = mini_lstsize(def);
     while(i)
     {
         waitpid(-1, s, 0);

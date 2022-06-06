@@ -15,14 +15,7 @@
 
 #include <readline/readline.h>
 #include <readline/history.h>
-
-
-typedef struct s_def
-{
-	char **argv;
-	int *type;
-	t_def *next;
-}	t_def;
+#include "../libft/libft.h"
 
 
 
@@ -51,6 +44,14 @@ typedef struct s_cmds
 }	t_cmds;
 
 
+t_def	*mini_lstnew(void *content, int *array);
+void	mini_lstadd_back(t_def **lst, t_def *new);
+t_def	*mini_lstlast(t_def *lst);
+int	mini_lstsize(t_def *def);
+
+
+
+
 
 
 void wait_process(t_def *def);
@@ -73,6 +74,13 @@ char *get_relative_argv(char *cmd);
 char *get_relative_path(char *cmd);
 void get_argv_path(t_def *def, t_cmds *cmds);
 char *join_argv(char *cmd, char **split);
+int ft_double_len(char **str);
+void free_list(t_def **def);
+void free_env(t_env *env);
+void ft_free_double(char **str);
+void free_pipe(t_cmds *cmds);
+void print_error(char *str);
+
 
 
 void do_commands(t_cmds *cmds);
