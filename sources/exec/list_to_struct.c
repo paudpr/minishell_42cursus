@@ -1,4 +1,4 @@
-#include "pruebas_bash.h"
+#include "minishell.h"
 
 t_env   *get_struct_env(char **environ)
 {
@@ -57,7 +57,7 @@ char *check_valid(char **path, char *cmd)
     if(cmd_path == NULL)
     {
         access(cmd_path, F_OK);
-        perror("");
+        perror("este es el error de accesss -> ");
     }
     return(cmd_path);
 }

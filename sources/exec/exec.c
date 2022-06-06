@@ -1,4 +1,4 @@
-#include "pruebas_bash.h"
+#include "minishell.h"
 
 
 void exec(t_cmds *cmds)
@@ -9,13 +9,7 @@ void exec(t_cmds *cmds)
     split = ft_split(cmds->cmds_argv, ' ');
     cmd = ft_strjoin(cmds->cmds_path, split[0]);
     if(execve(cmd, split, cmds->env->env) < 0)
-        print_error("falla execve");
-}
-
-void	check_access(char *path)
-{
-	if (access(path, R_OK | W_OK) != 0)
-		print_error(0);
+        perror("falla execve ->");
 }
 
 void do_commands(t_cmds *cmds)

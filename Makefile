@@ -3,62 +3,73 @@ NAME = minishell
 LIBFT_NAME = libft.a
 READLINE_NAME = readline.a
 
-MAKE = make
-
 CC = gcc
 
 CFLAGS = -Wall -Werror -Wextra -g3
-#CFLAGS += -L/usr/local/opt/readline/lib
-CFLAGS += -I $(INC_PATH) -I $(LIBFT_PATH) -I /Users/$(USER)/.brew/opt/readline/include
+CFLAGS += -I $(INC_DIR) -I $(LIBFT_DIR) -I /Users/$(USER)/.brew/opt/readline/include
 CFLAGS += "-I/Users/$(USER)/.brew/opt/readline/include"
-#CFLAGS += -I/usr/local/include
 
-LDFLAGS = -L $(LIBFT_PATH)
+LDFLAGS = -L $(LIBFT_DIR)
 LDFLAGS += "-L/Users/$(USER)/.brew/opt/readline/lib"
-#LDFLAGS += -L /usr/local/lib
 
 LDLIBS = -lft
 LDLIBS += -lreadline
 
-OBJ_PATH = objects
-SRC_PATH = sources
-INC_PATH = includes
-LIBFT_PATH = libft
+OBJ_DIR = objects
+SRC_DIR = sources
+INC_DIR = includes
+LIBFT_DIR = libft
 
-SOURCES = main.c
+SRCS_EXEC_DIR = exec
+SRCS_PARSE_DIR = parse
 
-# SRCS_NAME = $(addprefix $(SRC_PATH)/, $(SOURCES))
-# OBJS_PATH = $(addprefix $(OBJ_PATH)/, $(SOURCES))
-OBJS_NAME = $(SOURCES:%.c=%.o)
-OBJS = $(addprefix $(OBJ_PATH)/, $(OBJS_NAME))
+SRCS_EXEC = otro.c \
+			list_to_struct.c \
+			exec.c
+
+SRCS_PARSE = init_exec.c
+
+SRCS = main.c
+
+SRCS_NAME = $(addprefix $(SRCS_EXEC_DIR)/, $(SRCS_EXEC)) \
+			$(addprefix $(SRCS_PARSE_DIR)/, $(SRCS_PARSE)) \
+			$(SRCS)
+
+OBJS_NAME_DIR = $(SRCS_EXEC_DIR) $(SRCS_PARSE_DIR)
+OBJS_DIR = $(addprefix $(OBJ_DIR)/,$(OBJS_NAME_DIR))
+OBJS_NAME = $(SRCS_NAME:%.c=%.o)
+OBJS = $(addprefix $(OBJ_DIR)/, $(OBJS_NAME))
+
+
+.PHONY: all re clean fclean
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	make -C $(LIBFT_PATH)
-	$(CC) $^ -o $@  $(CFLAGS) $(LDFLAGS) $(LDLIBS) 
-
-$(OBJ_PATH)/%.o: $(SRC_PATH)/%.c
-	$(CC) $(CFLAGS) -c $< -o $@
-
-$(OBJS): | $(OBJ_PATH)
-
-$(OBJ_PATH): 
-	mkdir -p $(OBJ_PATH) 2> /dev/null
-
-# $(OBJS_PATH): 
-# 	mkdir -p $(OBJ_PATH)
+	make -C $(LIBFT_DIR)
+	$(CC) $^ -o $@ $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) $(LDLIBS)
 
 debug: CFLAGS += -fsanitize=address -g3
 debug: $(NAME)
 
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(OBJS): | $(OBJ_DIR) $(OBJS_DIR)
+
+$(OBJ_DIR): 
+	mkdir -p $(OBJ_DIR) 2> /dev/null
+
+$(OBJS_DIR): 
+	mkdir -p $(OBJS_DIR) 2> /dev/null
+
 clean:
-	make fclean -C $(LIBFT_PATH)
-	rm -rf $(OBJ_PATH)
+	make fclean -C $(LBFT_DIR)
+	rm -rf $(OBJ_DIR)
 
 fclean: clean
 	rm -rf $(NAME)
 
 re: fclean all
 
-.PHONY: all re clean fclean
+

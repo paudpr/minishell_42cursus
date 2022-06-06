@@ -85,7 +85,6 @@ void    get_struct_cmds(t_env *env, t_cmds *cmds, int i);
 void free_struct(t_cmds *vals);
 char    *get_path(t_def *def, char **path, char *argvs);
 char *check_valid(char **path, char *cmd);
-void	check_access(char *path);
 void exec(t_cmds *cmds);
 void free_pipe(t_cmds *cmds);
 char *get_relative_argv(char *cmd);

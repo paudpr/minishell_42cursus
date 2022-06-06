@@ -1,5 +1,5 @@
 #ifndef MINISHELL_H
-# define MMINISHELL_H
+# define MINISHELL_H
 
 # define T_HD	0
 # define T_RIN	1
@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 #include <readline/readline.h>
 #include <readline/history.h>
@@ -22,6 +23,75 @@ typedef struct s_def
 	int *type;
 	t_def *next;
 }	t_def;
+
+
+
+typedef struct s_def
+{
+	char **argv;
+	int *type;
+	struct s_def *next;
+}	t_def;
+
+
+typedef struct s_env
+{
+	char **env;
+	char **path;
+}	t_env;
+
+
+typedef struct s_cmds
+{
+	t_env	*env;
+	char	*cmds_path;		//guarda el path con / al final
+	char	*cmds_argv;		//guarda el comando con sus flags y argumentos
+	int		**pipe_fd;
+	int		num; // pos de comando
+}	t_cmds;
+
+
+
+
+void wait_process(t_def *def);
+
+
+void check_leaks();
+void free_env(t_env *env);
+t_env *get_struct_env(char **environ);
+void get_list(t_def **def, char *argv);
+int *get_array(char *pipes);
+void init_vals(t_cmds *vals, char **environ, t_def **def);
+char *get_argv(t_def *def);
+void    get_struct_cmds(t_env *env, t_cmds *cmds, int i);
+void free_struct(t_cmds *vals);
+char    *get_path(t_def *def, char **path, char *argvs);
+char *check_valid(char **path, char *cmd);
+void exec(t_cmds *cmds);
+void free_pipe(t_cmds *cmds);
+char *get_relative_argv(char *cmd);
+char *get_relative_path(char *cmd);
+void get_argv_path(t_def *def, t_cmds *cmds);
+char *join_argv(char *cmd, char **split);
+
+
+void do_commands(t_cmds *cmds);
+void do_one_command(t_cmds *cmds);
+void do_last_command(t_cmds *cmds);
+void wait_process(t_def *def);
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
