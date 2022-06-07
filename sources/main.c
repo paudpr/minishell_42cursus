@@ -1,44 +1,42 @@
-#include <stdio.h>
-#include <stdlib.h>
-
-#include <readline/readline.h>
-#include <readline/history.h>
+# define RED "\033[1;31m"
+# define RESET "\033[0m"
 
 #include "minishell.h"
 
 
 
-// int main(void)
-// {
-// 	char *line;
-// 	char *eof;
+int main(void)
+{
+	char *line;
+    extern char **environ;
+    t_def *def;
+    t_env *env;
 
-// 	eof = "exit";
+	line = readline(RED"minishell > "RESET);
+	while(1)
+	{
+		if(line != NULL)
+			add_history(line);
+        printf("line -> %s\n", line);
+        get_list(&def, line);
+        env = get_struct_env(environ);
+        main_exec(def, env);
+		free(line);
+		line = readline(RED"minishell > "RESET);
+        // printf("peto aqui\n");
+        free_list(&def);
+	}
+    free_env(env);
+	return(0);
+}
 
-// 	line = readline("minishell > ");
-// 	while(strncmp(line, eof, strlen(eof)) != 0)
-// 	{
-// 		line = readline("minishell > ");
-// 		if(line != NULL)
-// 			add_history(line);
-// 		free(line);
-// 	}
-// 	return(0);
-// }
-
-
+void main_exec(t_def *def, t_env *env)
 {
     // atexit(check_leaks);
-    t_def *def;
     t_def *copy;
-    t_env *env;
     t_cmds *cmds;
     int n_pipes;
 
-	if(argc != 2)
-		print_error("Error. Arguments");
-    get_list(&def, argv[1]);
-    env = get_struct_env(environ);
 
     n_pipes = mini_lstsize(def) - 1;
     copy = def;
@@ -72,7 +70,4 @@
     wait_process(def);
     free_pipe(cmds);
     free(cmds);
-    free_env(env);
-    free_list(&def);
-    return(0);
 }

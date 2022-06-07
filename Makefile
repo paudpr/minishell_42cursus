@@ -47,12 +47,8 @@ OBJS = $(addprefix $(OBJ_DIR)/, $(OBJS_NAME))
 all: $(NAME)
 
 
-# $(LIBFT_NAME):
-# 	$(MAKE) all -sC $(LIBFT_DIR)
-# 	cp -r $(addprefix $(LIBFT_DIR)/, $(LIBFT_NAME)) $(LIBFT_NAME)
-
 $(NAME): $(OBJS) 
-	make -C $(LIBFT_DIR) $(LIBFT_NAME)
+	make -C $(LIBFT_DIR)
 	$(CC) $^ -o $@ $(CFLAGS) $(LDFLAGS) $(LDLIBS)
 
 debug: CFLAGS += -fsanitize=address -g3
@@ -77,5 +73,3 @@ fclean: clean
 	rm -rf $(NAME)
 
 re: fclean all
-
-

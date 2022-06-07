@@ -56,7 +56,7 @@ int	mini_lstsize(t_def *def);
 
 void wait_process(t_def *def);
 
-
+void main_exec(t_def *def, t_env *env);
 void check_leaks();
 void free_env(t_env *env);
 t_env *get_struct_env(char **environ);

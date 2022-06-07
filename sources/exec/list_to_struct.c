@@ -57,7 +57,7 @@ char *check_valid(char **path, char *cmd)
     if(cmd_path == NULL)
     {
         access(cmd_path, F_OK);
-        perror("este es el error de accesss -> ");
+        // perror("este es el error de accesss -> ");
     }
     return(cmd_path);
 }
