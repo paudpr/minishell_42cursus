@@ -55,7 +55,9 @@ int ft_double_len(char **str)
 	int i;
 
 	i = 0;
-	while(str[i])
+	if(!str)
+		return (0);
+	while(str[i] != NULL)
 		i++;
 	return(i);
 }

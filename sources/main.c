@@ -12,17 +12,18 @@ int main(void)
     t_def *def;
     t_env *env;
 
-	line = readline(RED"minishell > "RESET);
+	// line = readline(RED"minishell > "RESET);
 	while(1)
 	{
+        dprintf(2, "--->este es el proceso: %d\n", getpid());
+		line = readline(RED"minishell > "RESET);
 		if(line != NULL)
 			add_history(line);
-        printf("line -> %s\n", line);
+        // printf("line -> %s\n", line);
         get_list(&def, line);
         env = get_struct_env(environ);
         main_exec(def, env);
 		free(line);
-		line = readline(RED"minishell > "RESET);
         // printf("peto aqui\n");
         free_list(&def);
 	}
@@ -32,7 +33,7 @@ int main(void)
 
 void main_exec(t_def *def, t_env *env)
 {
-    // atexit(check_leaks);
+    //atexit(check_leaks);
     t_def *copy;
     t_cmds *cmds;
     int n_pipes;
@@ -62,7 +63,7 @@ void main_exec(t_def *def, t_env *env)
             break;
         }
         do_commands(cmds);
-        printf("%p     %p    %p\n", cmds, cmds->cmds_argv, cmds->cmds_path);
+        // printf("%p     %p    %p\n", cmds, cmds->cmds_argv, cmds->cmds_path);
         free_struct(cmds);
         cmds->num++;
         copy = copy->next;

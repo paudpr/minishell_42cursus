@@ -31,6 +31,7 @@ void do_commands(t_cmds *cmds)
         dup2(cmds->pipe_fd[cmds->num][1], STDOUT_FILENO);
         close(cmds->pipe_fd[cmds->num][1]);
         exec(cmds);
+        exit(-1);
     }
     else
     {
@@ -74,7 +75,10 @@ void do_one_command(t_cmds *cmds)
     if(pid < 0)
         perror("");
     if(pid == 0)
+    {
         exec(cmds);
+        exit(-1);
+    }
     // getchar();
 }
 
