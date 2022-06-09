@@ -6,7 +6,7 @@
 /*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/12 16:05:41 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/05/03 18:57:44 by pdel-pin         ###   ########.fr       */
+/*   Updated: 2022/06/09 13:34:15 by pdel-pin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,5 +92,8 @@ Added
 */
 
 char	*get_next_line(int fd);
+int		ft_double_len(char **str);
+void	ft_free_double(char **str);
+
 
 #endif

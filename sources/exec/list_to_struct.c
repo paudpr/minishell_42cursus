@@ -2,7 +2,7 @@
 
 t_env   *get_struct_env(char **environ)
 {
-    int     i;
+    int  i;
     t_env   *env;
     char    *path;
     char    *aux;
@@ -23,19 +23,16 @@ t_env   *get_struct_env(char **environ)
     return (env);
 }
 
-void get_struct_cmds(t_env *env, t_cmds *cmds, int i)
+void init_struct_cmds(t_env *env, t_cmds *cmds, int i)
 {
     cmds->env = env;
     cmds->num = 0;
-    // cmds->pipe_fd = malloc(sizeof(int *) * i + 1);
-    cmds->pipe_fd = malloc(sizeof(int *) * (i + 1));
-    // ft_bzero(cmds->pipe_fd, 2 * i * sizeof(int));
-    // printf("get-struct-cmds -> pipe -> %d\n", cmds->pipe_fd[0][0]);
-    // cmds->cmds_argv = get_argv(def);
-    // cmds->cmds_path = get_path(def, env->path, cmds->cmds_argv);
+    cmds->pipe_fd = ft_calloc(sizeof(int *), i);
+    cmds->fd_in = dup(STDIN_FILENO);
+    cmds->fd_out = dup(STDOUT_FILENO);
 }
 
-char *check_valid(char **path, char *cmd)
+char    *check_valid(char **path, char *cmd)
 {
     int i;
     char *cmd_str;
@@ -44,29 +41,29 @@ char *check_valid(char **path, char *cmd)
 
     i = 0;
     cmd_path = NULL;
-    while(path[i])
+    while (path[i])
     {
         aux = ft_strjoin(path[i], "/");
         cmd_str = ft_strjoin(aux, cmd);
-        if(access(cmd_str, F_OK) == 0)
+        if (access(cmd_str, F_OK) == 0)
             cmd_path = ft_strdup(aux);
         free(aux);
         free(cmd_str);
         i++;
     }
-    if(cmd_path == NULL)
+    if (cmd_path == NULL)
     {
         access(cmd_path, F_OK);
         // perror("este es el error de accesss -> ");
     }
-    return(cmd_path);
+    return (cmd_path);
 }
 
 char    *get_path(t_def *def, char **path, char *argvs)
 {
-    int i;
-    char *cmd_path;
-    char **split_argv;
+    int  i;
+    char    *cmd_path;
+    char    **split_argv;
 
     i = 0;
     split_argv = NULL;
@@ -82,12 +79,12 @@ char    *get_path(t_def *def, char **path, char *argvs)
         i++;
     }
     ft_free_double(split_argv);
-    return(cmd_path);
+    return (cmd_path);
 }
 
 char    *get_argv(t_def *def)
 {
-    int     i;
+    int  i;
     char   *cmd;
     char   *aux;
     char   *temp;
@@ -115,54 +112,54 @@ char    *get_argv(t_def *def)
     return (cmd);
 }
 
-char *get_relative_path(char *cmd)
+char    *get_relative_path(char *cmd)
 {
-    char *chr;
-    char *path;
-    int len;
+    char    *chr;
+    char    *path;
+    int  len;
 
     chr = ft_strrchr(cmd, '/') + 1;
     len = ft_strlen(cmd) - ft_strlen(chr);
     path = ft_substr(cmd, 0, len);
-    return(path);
+    return (path);
 }
 
-char *get_relative_argv(char *cmd)
+char    *get_relative_argv(char *cmd)
 {
-    char *chr;
+    char    *chr;
 
     chr = NULL;
-    if(ft_strrchr(cmd, '/') != NULL)
+    if (ft_strrchr(cmd, '/') != NULL)
     {
         chr = ft_strdup(ft_strrchr(cmd, '/') + 1);
         free(cmd);
     }
-    return(chr);
+    return (chr);
 }
 
-void wait_process(t_def *def)
+void    wait_process(t_def *def)
 {
     int i;
     int *s;
 
     s = NULL;
     i = mini_lstsize(def);
-    while(i)
+    while (i)
     {
         waitpid(-1, s, 0);
         i--;
     }
 }
 
-char *join_argv(char *cmd, char **split)
+char    *join_argv(char *cmd, char **split)
 {
-    char *aux;
-    char *temp;
-    int i;
+    char    *aux;
+    char    *temp;
+    int  i;
 
     i = 1;
     temp = cmd;
-    while(i < ft_double_len(split))
+    while (i < ft_double_len(split))
     {
         aux = ft_strjoin(temp, " ");
         free(temp);
@@ -171,13 +168,13 @@ char *join_argv(char *cmd, char **split)
         free(split[i]);
         i++;
     }
-    return(temp);
+    return (temp);
 }
 
-void get_argv_path(t_def *def, t_cmds *cmds)
+void    get_argv_path(t_def *def, t_cmds *cmds)
 {
-    char **split_argv;
-    char *rel_cmd;
+    char    **split_argv;
+    char    *rel_cmd;
 
     cmds->cmds_argv = get_argv(def);
     split_argv = ft_split(cmds->cmds_argv, ' ');

@@ -1,24 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_calloc.c                                        :+:      :+:    :+:   */
+/*   ft_free_double.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/15 14:07:39 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/06/09 18:25:41 by pdel-pin         ###   ########.fr       */
+/*   Created: 2021/10/14 11:06:28 by pdel-pin          #+#    #+#             */
+/*   Updated: 2022/06/09 13:30:22 by pdel-pin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_calloc(size_t count, size_t size)
+void ft_free_double(char **str)
 {
-	void	*ptr;
+	int i;
 
-	ptr = malloc(count * size);
-	if (ptr == NULL)
-		return (ptr);
-	ft_bzero(ptr, (count * size));
-	return (ptr);
+	i = 0;
+	if(!str)
+		return ;
+	while(str[i])
+	{
+		free(str[i]);
+		i++;
+	}
+	free(str);
 }

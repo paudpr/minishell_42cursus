@@ -23,7 +23,7 @@ LIBFT_DIR = libft
 SRCS_EXEC_DIR = exec
 SRCS_PARSE_DIR = parse
 
-SRCS_EXEC = otro.c \
+SRCS_EXEC = main_exec.c \
 			list_to_struct.c \
 			exec.c \
 			utils.c

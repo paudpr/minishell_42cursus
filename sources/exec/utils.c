@@ -12,7 +12,7 @@ void print_error(char *str)
 		i++;
 	}
 	write(1, "\n", 1);
-	exit(0);
+	exit(EXIT_FAILURE);
 }
 
 t_def	*mini_lstnew(void *content, int *array)
@@ -50,16 +50,19 @@ t_def	*mini_lstlast(t_def *lst)
 	return (lst);
 }
 
-int ft_double_len(char **str)
+int	mini_lstsize(t_def *def)
 {
-	int i;
+	int	i;
 
-	i = 0;
-	if(!str)
+	i = 1;
+	if (!def)
 		return (0);
-	while(str[i] != NULL)
+	while (def->next)
+	{
+		def = def->next;
 		i++;
-	return(i);
+	}
+	return (i);
 }
 
 void free_list(t_def **def)
@@ -79,21 +82,6 @@ void free_list(t_def **def)
 	}	
 }
 
-int	mini_lstsize(t_def *def)
-{
-	int	i;
-
-	i = 1;
-	if (!def)
-		return (0);
-	while (def->next)
-	{
-		def = def->next;
-		i++;
-	}
-	return (i);
-}
-
 void free_env(t_env *env)
 {
 	ft_free_double(env->path);
@@ -107,20 +95,15 @@ void free_struct(t_cmds *vals)
 	free(vals->cmds_path);
 }
 
-void ft_free_double(char **str)
-{
-	int i;
-
-	i = 0;
-	if(!str)
-		return ;
-	while(str[i])
-	{
-		free(str[i]);
-		i++;
-	}
-	free(str);
-}
+// void	printMat(t_cmds *cmds)
+// {
+// 	printf("entre\n");
+// 	for (int i = 0; i < cmds->num; i++)
+// 	{
+// 		printf("cmd[i]: %d\n", cmds->pipe_fd[i][0]);
+// 	}
+	
+// }
 
 void free_pipe(t_cmds *cmds)
 {
@@ -130,61 +113,5 @@ void free_pipe(t_cmds *cmds)
 		cmds->num--;
 	}
 	free(cmds->pipe_fd);
+	system("leaks -q minishell");
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// static void	free_env(t_env **env_lst)
-// {
-// 	lstclear_env(&(*env_lst)->env, free);
-// 	lstclear_env(&(*env_lst)->ex_env, free);
-// 	free(*env_lst);
-// }
-
-// int	main(void)
-// {
-// 	char	*argv;
-// 	t_lst	*nodes;
-// 	t_env	*env_lst;
-
-// 	g_output_code = 0;
-// 	env_lst = init_env();
-// 	while (1)
-// 	{
-// 		signal_main();
-// 		argv = readline(BLUE"Mini"YELLOW"Shell"RESET" ");
-// 		if (argv == NULL)
-// 		{
-// 			printf("exit\n");
-// 			exit(EXIT_SUCCESS);
-// 		}
-// 		add_history(argv);
-// 		nodes = create_nodes_rework(argv, env_lst->env);
-// 		if (nodes_check_error(nodes))
-// 			exec(nodes, &env_lst);
-// 		free_nodes(nodes, argv);
-// 	}
-// 	s_mirage(env_lst->ex_env);
-// 	free_env(&env_lst);
-// 	return (0);
-// }

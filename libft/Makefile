@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: pauladelpinoramirez <pauladelpinoramire    +#+  +:+       +#+         #
+#    By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/15 17:17:08 by pdel-pin          #+#    #+#              #
-#    Updated: 2022/02/12 12:32:46 by pauladelpin      ###   ########.fr        #
+#    Updated: 2022/06/09 13:33:40 by pdel-pin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,7 +55,9 @@ SRCS	=	ft_isalpha.c \
 		ft_lstclear_bonus.c \
 		ft_lstiter_bonus.c \
 		ft_lstmap_bonus.c \
-		get_next_line.c 
+		get_next_line.c \
+		ft_double_len.c \
+		ft_free_double.c 
 
 OBJS	=	$(SRCS:.c=.o)
 
