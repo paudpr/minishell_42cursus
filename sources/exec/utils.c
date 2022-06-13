@@ -55,9 +55,9 @@ int	mini_lstsize(t_def *def)
 	int	i;
 
 	i = 1;
-	if (!def)
+	if (def == NULL)
 		return (0);
-	while (def->next)
+	while (def->next != NULL)
 	{
 		def = def->next;
 		i++;
@@ -95,23 +95,18 @@ void free_struct(t_cmds *vals)
 	free(vals->cmds_path);
 }
 
-// void	printMat(t_cmds *cmds)
-// {
-// 	printf("entre\n");
-// 	for (int i = 0; i < cmds->num; i++)
-// 	{
-// 		printf("cmd[i]: %d\n", cmds->pipe_fd[i][0]);
-// 	}
-	
-// }
-
-void free_pipe(t_cmds *cmds)
+void free_pipe(t_cmds *cmds, int size)
 {
-	while(cmds->num)
+	int i;
+
+	i = 0;
+	printf("SIZE ----> %d\n\n", size);
+	while(i < size)
 	{
-		free(cmds->pipe_fd[cmds->num - 1]);
-		cmds->num--;
+		free(cmds->pipe_fd[i]);
+		i++;
 	}
+	// free(cmds->pipe_fd[0]);
 	free(cmds->pipe_fd);
-	system("leaks -q minishell");
+	// system("leaks -q minishell");
 }

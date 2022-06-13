@@ -27,7 +27,11 @@ void init_struct_cmds(t_env *env, t_cmds *cmds, int i)
 {
     cmds->env = env;
     cmds->num = 0;
-    cmds->pipe_fd = ft_calloc(sizeof(int *), i);
+    printf("reservando memoria para %d pipes\n", i);
+    //cmds->pipe_fd = ft_calloc(sizeof(int *), i);
+    if(i < 0)
+        i = 0;
+    cmds->pipe_fd = calloc(sizeof(int *), i);     //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     cmds->fd_in = dup(STDIN_FILENO);
     cmds->fd_out = dup(STDOUT_FILENO);
 }
@@ -54,7 +58,6 @@ char    *check_valid(char **path, char *cmd)
     if (cmd_path == NULL)
     {
         access(cmd_path, F_OK);
-        // perror("este es el error de accesss -> ");
     }
     return (cmd_path);
 }

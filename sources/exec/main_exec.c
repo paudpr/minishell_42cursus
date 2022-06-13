@@ -5,17 +5,19 @@ void    main_exec(t_def *def, t_env *env)
     t_cmds *cmds;
     int n_pipes;
 
-    n_pipes = mini_lstsize(def) - 1;
+    n_pipes = mini_lstsize(def);
     cmds = ft_calloc(sizeof(t_cmds), 1);
     if(cmds == NULL)
         print_error("memoria struct cmds");
     init_struct_cmds(env, cmds, n_pipes);
 
-    exec_cmds(def, cmds);
+     exec_cmds(def, cmds);
+     wait_process(def);
 
-    wait_process(def);
-    // free_env(env);           !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    free_pipe(cmds);
+    printf("antes de ffree_pipe\n");
+    free_pipe(cmds, n_pipes);
+    printf("despues de ffree_pipe\n");
+    free_env(cmds->env);           //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     free(cmds);
 }
 

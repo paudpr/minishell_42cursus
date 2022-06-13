@@ -80,13 +80,12 @@ void free_struct(t_cmds *vals);
 char    *get_path(t_def *def, char **path, char *argvs);
 char *check_valid(char **path, char *cmd);
 void exec(t_cmds *cmds);
-void free_pipe(t_cmds *cmds);
+void free_pipe(t_cmds *cmds, int size);
 char *get_relative_argv(char *cmd);
 char *get_relative_path(char *cmd);
 char *join_argv(char *cmd, char **split);
 void free_env(t_env *env);
 void ft_free_double(char **str);
-void free_pipe(t_cmds *cmds);
 void print_error(char *str);
 
 
