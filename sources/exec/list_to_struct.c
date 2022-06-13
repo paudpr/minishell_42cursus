@@ -27,11 +27,9 @@ void init_struct_cmds(t_env *env, t_cmds *cmds, int i)
 {
     cmds->env = env;
     cmds->num = 0;
-    printf("reservando memoria para %d pipes\n", i);
-    //cmds->pipe_fd = ft_calloc(sizeof(int *), i);
     if(i < 0)
         i = 0;
-    cmds->pipe_fd = calloc(sizeof(int *), i);     //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    cmds->pipe_fd = ft_calloc(sizeof(int *), i);
     cmds->fd_in = dup(STDIN_FILENO);
     cmds->fd_out = dup(STDOUT_FILENO);
 }

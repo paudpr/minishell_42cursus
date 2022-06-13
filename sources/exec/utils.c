@@ -100,13 +100,10 @@ void free_pipe(t_cmds *cmds, int size)
 	int i;
 
 	i = 0;
-	printf("SIZE ----> %d\n\n", size);
 	while(i < size)
 	{
 		free(cmds->pipe_fd[i]);
 		i++;
 	}
-	// free(cmds->pipe_fd[0]);
 	free(cmds->pipe_fd);
-	// system("leaks -q minishell");
 }

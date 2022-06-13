@@ -14,9 +14,9 @@ void    main_exec(t_def *def, t_env *env)
      exec_cmds(def, cmds);
      wait_process(def);
 
-    printf("antes de ffree_pipe\n");
+    // printf("antes de ffree_pipe\n");
     free_pipe(cmds, n_pipes);
-    printf("despues de ffree_pipe\n");
+    // printf("despues de ffree_pipe\n");
     free_env(cmds->env);           //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     free(cmds);
 }

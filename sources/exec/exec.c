@@ -16,7 +16,6 @@ void do_commands(t_cmds *cmds)
 {
     pid_t pid;
 
-    printf("valor num en comando intermedio -> %d\n", cmds->num);
     cmds->pipe_fd[cmds->num] = ft_calloc(sizeof(int), 2);
     if(pipe(cmds->pipe_fd[cmds->num]) < 0)
         perror("");
@@ -43,7 +42,7 @@ void do_last_command(t_cmds *cmds)
 {
     pid_t pid;
 
-    printf("valor num en last_comand -> %d\n", cmds->num);
+    // printf("valor num en last_comand -> %d\n", cmds->num);
     cmds->pipe_fd[cmds->num] = ft_calloc(sizeof(int), 2);
     if(pipe(cmds->pipe_fd[cmds->num]) < 0)
         perror("");
@@ -65,7 +64,7 @@ void do_one_command(t_cmds *cmds)
 {
     pid_t pid;
 
-    printf("valor num  en one_comdan -> %d\n", cmds->num);
+    // printf("valor num  en one_comdan -> %d\n", cmds->num);
     // cmds->pipe_fd[cmds->num] = ft_calloc(2, sizeof(int));
     // printf("%p %p \n",cmds->cmds_argv, cmds->cmds_path);
     // if(pipe(cmds->pipe_fd[cmds->num]) < 0)

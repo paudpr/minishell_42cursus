@@ -7,7 +7,7 @@ PRUEBAS COMANDOS:
 cat Makefile
 cat -e Makefile
 cat Makefile | grep -i make
-cat Makefile | grep -i make | wc    ----error de doble free
+cat Makefile | grep -i make | wc   
 sort Makefile -r
 sort Makefile -r | wc -l
 cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | ls -l -a
@@ -19,7 +19,7 @@ cat Makefile | sort | grep -i make | wc -w -l
 /bin/cat Makefile
 cat | /bin/cat | cat | cat | cat | /bin/cat | cat | cat | cat | /bin/cat | ls -l -a
 
-cat Makefile | noexiste | ls       -------- error de doble free
+cat Makefile | noexiste | ls      
 noexiste | ls                      
 noexiste
 /binn/ls                            
@@ -32,7 +32,6 @@ ls archivonoexiste -la
 
 
 ********* error al eliminar el path
-********* si solo hago un enter, me da segfault
 
 
 
