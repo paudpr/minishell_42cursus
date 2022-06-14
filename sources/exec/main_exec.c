@@ -30,17 +30,11 @@ void    exec_cmds(t_def *def, t_cmds *cmds)
     {
         get_argv_path(copy, cmds);
         if(copy->next == NULL && cmds->num == 0)
-        {
             do_one_command(cmds);
-            free_struct(cmds);
-            break ;
-        }
-        if (copy->next == NULL)
-        {
+        else if (copy->next == NULL)
             do_last_command(cmds);
-            break ;
-        }
-        do_commands(cmds);
+        else
+            do_commands(cmds);
         free_struct(cmds);
         cmds->num++;
         copy = copy->next;

@@ -23,7 +23,7 @@ cat Makefile | noexiste | ls
 noexiste | ls                      
 noexiste
 /binn/ls                            
-wc -l | noexiste                    ------- funcionamiento distinto
+wc -l | noexiste                    ------- funcionamiento distinto, potencialmente leaks
 ls archivonoexiste
 ls archivonoexiste -la
 
@@ -37,7 +37,7 @@ ls archivonoexiste -la
 
 
 
-
+PRUEBAS REDIRECCIONES:
 > salida0
 >> salida1
 ls | > salida2
