@@ -19,11 +19,10 @@ int main(void)
 		line = readline(RED"minishell > "RESET);
 		add_history(line);
         get_list(&def, line);       //main_parse()
+        
         main_exec(def, env);
 		free(line);
         free_list(&def);
-    // printf("%p    %p    %p    %p\n", env, env->env, env->path, env->env[0]);
-        //exit(0);
 	}
     free_env(env);
 	return(0);

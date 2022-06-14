@@ -2,14 +2,47 @@
 
 t_env   *get_struct_env(char **environ)
 {
-    int  i;
     t_env   *env;
-    char    *path;
-    char    *aux;
+
+    env =  malloc(sizeof(t_env));
+    if(environ == NULL)
+    {
+        printf("----> environ es nulo\n");
+        build_environ(environ, env);
+    }
+    else
+    {
+        printf("----------environ es normal\n");
+        copy_environ(environ, env);
+    }
+    return (env);
+}
+
+void build_environ(char **environ, t_env *env)
+{
+    
+
+
+
+
+
+
+
+
+}
+
+
+
+void copy_environ(char **environ, t_env *env)
+{
+    char *path;
+    char *aux;
+    int i;
 
     i = 0;
-    env =  malloc(sizeof(t_env));
     env->env = ft_calloc(sizeof(char *), ft_double_len(environ) + 1);
+    if(env == NULL || env->env == NULL)
+        return (NULL);
     while (environ[i])
     {
         env->env[i] = ft_strdup(environ[i]);
@@ -20,7 +53,6 @@ t_env   *get_struct_env(char **environ)
     path = ft_strchr(aux, '/');
     env->path = ft_split(path, ':');
     free(aux);
-    return (env);
 }
 
 void init_struct_cmds(t_env *env, t_cmds *cmds, int i)
