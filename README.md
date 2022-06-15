@@ -31,8 +31,8 @@ ls archivonoexiste -la
 
 
 
-********* error al eliminar el path
-
+********* error al eliminar el path -> proteger en el execve que si no hay path de un error no segfault
+********* comprobar si el guardado de path se aplica solo a tipo comando o es estandar para todo
 
 
 

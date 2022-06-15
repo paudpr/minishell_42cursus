@@ -9,9 +9,10 @@
 # define T_ARG	5
 # define T_BIN	6
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include <limits.h>
 
 #include <readline/readline.h>
 #include <readline/history.h>
@@ -29,8 +30,9 @@ typedef struct s_def
 
 typedef struct s_env
 {
-	char **env;
-	char **path;
+	char	**env;
+	char	**path;
+	int		shlvl;
 }	t_env;
 
 
@@ -54,6 +56,9 @@ int		mini_lstsize(t_def *def);
 
 
 t_env	*get_struct_env(char **environ);
+void	build_environ(t_env *env);
+void	copy_environ(char **environ, t_env *env, int shlvl);
+int		get_shlvl(char **environ);
 void	get_list(t_def **def, char *argv);	//quitar cuando esté parseo
 void	main_exec(t_def *def, t_env *env);
 void	free_list(t_def **def);

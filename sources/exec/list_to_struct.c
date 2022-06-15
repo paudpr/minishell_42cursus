@@ -3,46 +3,69 @@
 t_env   *get_struct_env(char **environ)
 {
     t_env   *env;
+    int     shlvl;
 
     env =  malloc(sizeof(t_env));
-    if(environ == NULL)
+    if(env == NULL)
+        return (NULL);
+    if(ft_double_len(environ) == 0)
     {
         printf("----> environ es nulo\n");
-        build_environ(environ, env);
+        env->shlvl = 1;
+        build_environ(env);
     }
     else
     {
-        printf("----------environ es normal\n");
-        copy_environ(environ, env);
+        shlvl = get_shlvl(environ);
+        copy_environ(environ, env, shlvl);
     }
     return (env);
 }
 
-void build_environ(char **environ, t_env *env)
+int get_shlvl(char **environ)
 {
-    
+    int i;
+    char *aux;
+    char *shlvl;
 
+    i = 0;
+    while(i < ft_double_len(environ))
+    {
+        if(ft_strncmp(environ[i], "SHLVL=", 6) == 0)
+            aux = ft_strdup(environ[i]);
+        i++;
+    }
+    shlvl = ft_strchr(aux, '=');
+    shlvl++;
+    return(ft_atoi(shlvl));
+}
 
+void build_environ(t_env *env)
+{
+    char *cwd;
 
-
-
-
-
+    env->env = ft_calloc(sizeof(char *), 3);
+    cwd = ft_calloc(sizeof(char), PATH_MAX + 1);
+    if(env->env == NULL || cwd == NULL)
+        return ; 
+    getcwd(cwd, sizeof(cwd));
+    env->env[0] = ft_strjoin("PWD=", cwd);
+    env->env[1] = ft_strjoin("SHLVL=", ft_itoa(env->shlvl));
+    env->env[2] = ft_strjoin("_=", cwd);
 
 }
 
-
-
-void copy_environ(char **environ, t_env *env)
+void copy_environ(char **environ, t_env *env, int shlvl)
 {
     char *path;
     char *aux;
     int i;
 
     i = 0;
+    (void)shlvl;
     env->env = ft_calloc(sizeof(char *), ft_double_len(environ) + 1);
-    if(env == NULL || env->env == NULL)
-        return (NULL);
+    if(env->env == NULL)
+        return ;
     while (environ[i])
     {
         env->env[i] = ft_strdup(environ[i]);
