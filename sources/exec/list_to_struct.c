@@ -10,7 +10,6 @@ t_env   *get_struct_env(char **environ)
         return (NULL);
     if(ft_double_len(environ) == 0)
     {
-        printf("----> environ es nulo\n");
         env->shlvl = 1;
         build_environ(env);
     }
@@ -27,6 +26,7 @@ int get_shlvl(char **environ)
     int i;
     char *aux;
     char *shlvl;
+	int lvl;
 
     i = 0;
     while(i < ft_double_len(environ))
@@ -37,22 +37,23 @@ int get_shlvl(char **environ)
     }
     shlvl = ft_strchr(aux, '=');
     shlvl++;
-    return(ft_atoi(shlvl));
+	lvl = ft_atoi(shlvl);
+	free(aux);
+    return(lvl);
 }
 
 void build_environ(t_env *env)
 {
-    char *cwd;
+    char cwd[PATH_MAX];
 
     env->env = ft_calloc(sizeof(char *), 3);
-    cwd = ft_calloc(sizeof(char), PATH_MAX + 1);
-    if(env->env == NULL || cwd == NULL)
+    if(env->env == NULL)
         return ; 
     getcwd(cwd, sizeof(cwd));
     env->env[0] = ft_strjoin("PWD=", cwd);
     env->env[1] = ft_strjoin("SHLVL=", ft_itoa(env->shlvl));
     env->env[2] = ft_strjoin("_=", cwd);
-
+	env->path = NULL;   //!!!!!!!!!!!!!!!!!!!!!!!!! esto será pa revisar después
 }
 
 void copy_environ(char **environ, t_env *env, int shlvl)
@@ -68,7 +69,10 @@ void copy_environ(char **environ, t_env *env, int shlvl)
         return ;
     while (environ[i])
     {
-        env->env[i] = ft_strdup(environ[i]);
+		if (ft_strncmp(environ[i], "SHLVL=", 6))
+        	env->env[i] = ft_strdup(environ[i]);
+		else
+			env->env[i] = ft_strjoin("SHLVL=", ft_itoa(shlvl));
         if (ft_strnstr(environ[i], "PATH=", 5))
 			aux = ft_strdup(environ[i]);
 		i++;
@@ -124,6 +128,8 @@ char    *get_path(t_def *def, char **path, char *argvs)
     i = 0;
     split_argv = NULL;
     cmd_path = NULL;
+	if (path == NULL)	//!!!!!!!!!!!!!!!!! comprobar que este sea el valor meter en execve. contrastar el error con bash
+		return (NULL);
     while(def->argv[i])
     {
         if(def->type[i] == 4)
@@ -211,7 +217,7 @@ char    *join_argv(char *cmd, char **split)
 {
     char    *aux;
     char    *temp;
-    int  i;
+    int 	i;
 
     i = 1;
     temp = cmd;

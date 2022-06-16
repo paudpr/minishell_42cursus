@@ -1,6 +1,5 @@
 #include "minishell.h"
 
-
 void exec(t_cmds *cmds)
 {
     char **split;

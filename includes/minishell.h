@@ -18,15 +18,12 @@
 #include <readline/history.h>
 #include "../libft/libft.h"
 
-
-
 typedef struct s_def
 {
-	char **argv;
-	int *type;
+	char	**argv;
+	int		*type;
 	struct s_def *next;
 }	t_def;
-
 
 typedef struct s_env
 {
@@ -35,6 +32,11 @@ typedef struct s_env
 	int		shlvl;
 }	t_env;
 
+typedef struct s_redir
+{
+	char *name;
+	char *line;
+}	t_redir;
 
 typedef struct s_cmds
 {
@@ -46,6 +48,7 @@ typedef struct s_cmds
 	int		fd_out;
 	int		num; // pos de comando
 }	t_cmds;
+
 
 
 t_def	*mini_lstnew(void *content, int *array);

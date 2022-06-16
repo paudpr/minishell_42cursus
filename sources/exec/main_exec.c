@@ -10,13 +10,11 @@ void    main_exec(t_def *def, t_env *env)
     if(cmds == NULL)
         print_error("memoria struct cmds");
     init_struct_cmds(env, cmds, n_pipes);
+	check_redir(def, env);
+    exec_cmds(def, cmds);
+    wait_process(def);
 
-     exec_cmds(def, cmds);
-     wait_process(def);
-
-    // printf("antes de ffree_pipe\n");
     free_pipe(cmds, n_pipes);
-    // printf("despues de ffree_pipe\n");
     free_env(cmds->env);           //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     free(cmds);
 }

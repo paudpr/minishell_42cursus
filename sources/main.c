@@ -19,7 +19,6 @@ int main(void)
 		line = readline(RED"minishell > "RESET);
 		add_history(line);
         get_list(&def, line);       //main_parse()
-        
         main_exec(def, env);
 		free(line);
         free_list(&def);
