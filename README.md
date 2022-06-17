@@ -1,5 +1,17 @@
 # pruebas-bash
 
+** probar con env -i ./minishell
+** probar leaks
+** probar fsanitize
+** probar ps -a
+
+procesos -> while true; do lsof -p {nº proceso} | grep CHR; sleep 0.5 ; clear; done
+
+leaks -> while true
+do
+clear; leaks -q minishell; sleep 0.4
+done
+
 
 brew info readline
 
@@ -26,14 +38,15 @@ noexiste
 wc -l | noexiste                    ------- funcionamiento distinto, potencialmente leaks
 ls archivonoexiste
 ls archivonoexiste -la
+cd -                                ------- es un builtin¿? -> da segfault
 
 
 
 
-
-********* error al eliminar el path -> proteger en el execve que si no hay path de un error no segfault
+********* al eliminar el path -> da error de execve de bad address -> comprobar si ese tiene que ser el resultado
 ********* comprobar si el guardado de path se aplica solo a tipo comando o es estandar para todo
-
+********* (cmd + D) + (flecha parriba) => segfault
+********* no funciona el borrado del env correctamente -> devuelve un size del nuevo environ que no es, y eso hace segfault. función -> get_struct_env
 
 
 
@@ -48,6 +61,7 @@ ls | > salida8 >> salida9 > salida10 > salida11
 
 < Makefile ls
 < Makefile ls | wc -l
+< Makefile cat
 < Makefile cat -e | sort -r
 cat | sort < Makefile -r | grep -i make
 cat | sort < Makefile -r

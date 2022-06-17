@@ -26,6 +26,7 @@ SRCS_PARSE_DIR = parse
 SRCS_EXEC = main_exec.c \
 			list_to_struct.c \
 			exec.c \
+			redir.c \
 			utils.c
 
 SRCS_PARSE = init_exec.c

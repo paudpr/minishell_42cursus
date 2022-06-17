@@ -15,7 +15,7 @@ void    main_exec(t_def *def, t_env *env)
     wait_process(def);
 
     free_pipe(cmds, n_pipes);
-    free_env(cmds->env);           //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    free_env(cmds->env);
     free(cmds);
 }
 
@@ -23,9 +23,12 @@ void    exec_cmds(t_def *def, t_cmds *cmds)
 {
     t_def *copy;
 
+    // print_node(&def, 3);
     copy = def;
     while (copy)
     {
+        printf("type -> %d\n", copy->type[0]);
+        printf("-------> %s\n", cmds->cmds_argv);
         get_argv_path(copy, cmds);
         if(copy->next == NULL && cmds->num == 0)
             do_one_command(cmds);
@@ -37,7 +40,7 @@ void    exec_cmds(t_def *def, t_cmds *cmds)
         cmds->num++;
         copy = copy->next;
     }
-    dup2(cmds->fd_in, STDIN_FILENO);
+    dup2(cmds->fd_in, STDIN_FILENO);        //devolvemos a los valores originales de STDIN y STDOUT
     dup2(cmds->fd_out, STDOUT_FILENO);
     close(cmds->fd_in);
     close(cmds->fd_out);

@@ -6,7 +6,7 @@
 /*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 16:36:22 by pdel-pin          #+#    #+#             */
-/*   Updated: 2021/10/28 12:14:42 by pdel-pin         ###   ########.fr       */
+/*   Updated: 2022/06/17 12:01:49 by pdel-pin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ char	*ft_strchr(const char *s, int c)
 {
 	int	i;
 
+	if(!s)
+		return (NULL);
 	if (c == '\0')
 	{
 		i = ft_strlen(s);

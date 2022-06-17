@@ -107,3 +107,17 @@ void free_pipe(t_cmds *cmds, int size)
 	}
 	free(cmds->pipe_fd);
 }
+
+void    wait_process(t_def *def)
+{
+    int i;
+    int *s;
+
+    s = NULL;
+    i = mini_lstsize(def);
+    while (i)
+    {
+        waitpid(-1, s, 0);
+        i--;
+    }
+}
