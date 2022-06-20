@@ -10,10 +10,11 @@ void    main_exec(t_def *def, t_env *env)
     if(cmds == NULL)
         print_error("memoria struct cmds");
     init_struct_cmds(env, cmds, n_pipes);
-	check_redir(def, env);
+	check_hd(def, env);
     exec_cmds(def, cmds);
     wait_process(def);
 
+	// clean_hd();
     free_pipe(cmds, n_pipes);
     free_env(cmds->env);
     free(cmds);
@@ -27,8 +28,8 @@ void    exec_cmds(t_def *def, t_cmds *cmds)
     copy = def;
     while (copy)
     {
-        printf("type -> %d\n", copy->type[0]);
-        printf("-------> %s\n", cmds->cmds_argv);
+        // printf("type -> %d\n", copy->type[0]);
+        // printf("-------> %s\n", cmds->cmds_argv);
         get_argv_path(copy, cmds);
         if(copy->next == NULL && cmds->num == 0)
             do_one_command(cmds);

@@ -42,16 +42,16 @@ int *get_array(char *pipes)
 	j = 0;
 	while(j < i)
 	{
-		if(ft_strncmp("<<", split[j], ft_strlen(split[j])) == 0)
-		{
-			array[j] = T_HD;
-			array[j + 1] = T_HD;
-			j += 2;
-		}
-		else if(ft_strncmp("<", split[j], ft_strlen(split[j])) == 0)
+		if(ft_strncmp("<", split[j], ft_strlen(split[j])) == 0)
 		{
 			array[j] = T_RIN;
 			array[j + 1] = T_RIN;
+			j += 2;
+		}
+		else if (ft_strncmp("<<", split[j], ft_strlen(split[j])) == 0)
+		{
+			array[j] = T_HD;
+			array[j + 1] = T_HD;
 			j += 2;
 		}
 		else if(ft_strncmp(">", split[j], ft_strlen(split[j])) == 0)
@@ -62,8 +62,8 @@ int *get_array(char *pipes)
 		}
 		else if(ft_strncmp(">>", split[j], ft_strlen(split[j])) == 0)
 		{
-			array[j] = T_ROUT;
-			array[j + 1] = T_ROUT;
+			array[j] = T_APP;
+			array[j + 1] = T_APP;
 			j += 2;
 		}
 		else

@@ -166,6 +166,7 @@ char    *get_argv(t_def *def)
     cmd = NULL;
     while (def->argv[i])
     {
+		printf("argv -> %s\ntype -> %d\n", def->argv[i], def->type[i]);
         if (def->type[i] == 4)
         {
             if (!cmd)

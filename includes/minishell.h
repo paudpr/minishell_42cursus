@@ -6,8 +6,7 @@
 # define T_ROUT	2
 # define T_APP	3
 # define T_CMD	4
-# define T_ARG	5
-# define T_BIN	6
+# define T_BIN	5
 
 # include <stdio.h>
 # include <stdlib.h>
@@ -72,7 +71,7 @@ void	get_argv_path(t_def *def, t_cmds *cmds);
 void	exec_cmds(t_def *def, t_cmds *cmds);
 
 
-void check_redir(t_def *def, t_env *env);
+void check_hd(t_def *def, t_env *env);
 
 
 

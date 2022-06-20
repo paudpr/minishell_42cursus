@@ -49,7 +49,10 @@ void do_last_command(t_cmds *cmds)
     if(pid < 0)
         perror("");
     if(pid == 0)
+	{
+		//check_redir();
         exec(cmds);
+	}
     else
     {
         close(cmds->pipe_fd[cmds->num][1]);
@@ -73,6 +76,7 @@ void do_one_command(t_cmds *cmds)
         perror("");
     if(pid == 0)
     {
+		//check_redir();
         exec(cmds);
         exit(0);
     }
