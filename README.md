@@ -82,3 +82,17 @@ cat | ls >> salida21
 cat < salida24 >> salida26 > salida27 | cat Makefile > salida26 | wc -l > salida26 >> salida27
 #para eliminar los archivos
 rm -rf salida*
+
+
+
+
+PRUEBAS HEREDOC:
+cat | cat | cat << eof | cat | ls
+<< eof
+ls | << eof cat -e
+cat Makefile << eof << eof | ls
+<< eof << eof << eof | << eof | cat << eof << eof
+cat << eof | grep -i hola | wc
+ls | wc | grep hola << eof
+sort << eof -r
+cat << ls -e

@@ -13,9 +13,9 @@
 # include <unistd.h>
 # include <limits.h>
 
-#include <readline/readline.h>
-#include <readline/history.h>
-#include "../libft/libft.h"
+# include <readline/readline.h>
+# include <readline/history.h>
+# include "../libft/libft.h"
 
 typedef struct s_def
 {
@@ -30,6 +30,12 @@ typedef struct s_env
 	char	**path;
 	int		shlvl;
 }	t_env;
+
+typedef struct s_hd
+{
+	int		num;
+	char	**eof;
+}	t_hd;
 
 typedef struct s_redir
 {
