@@ -108,6 +108,7 @@ void free_pipe(t_cmds *cmds, int size)
 	free(cmds->pipe_fd);
 }
 
+// este amigui es el que hace el cat | cat | cat | ls
 void    wait_process(t_def *def)
 {
     int i;

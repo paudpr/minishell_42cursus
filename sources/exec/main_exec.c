@@ -10,7 +10,7 @@ void    main_exec(t_def *def, t_env *env)
     if(cmds == NULL)
         print_error("memoria struct cmds");
     init_struct_cmds(env, cmds, n_pipes);
-	check_hd(def, env);
+	check_hd(def);
     exec_cmds(def, cmds);
     wait_process(def);
 

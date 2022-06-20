@@ -31,12 +31,6 @@ typedef struct s_env
 	int		shlvl;
 }	t_env;
 
-typedef struct s_hd
-{
-	int		num;
-	char	**eof;
-}	t_hd;
-
 typedef struct s_redir
 {
 	char	*name;
@@ -77,8 +71,8 @@ void	get_argv_path(t_def *def, t_cmds *cmds);
 void	exec_cmds(t_def *def, t_cmds *cmds);
 
 
-void check_hd(t_def *def, t_env *env);
-
+void	check_hd(t_def *def);
+void	create_hd(int n, char *eof);
 
 
 

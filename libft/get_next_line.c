@@ -6,7 +6,7 @@
 /*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/10 12:27:01 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/05/03 19:04:00 by pdel-pin         ###   ########.fr       */
+/*   Updated: 2022/06/20 20:23:43 by pdel-pin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,23 +102,4 @@ char	*get_next_line(int fd)
 		return (NULL);
 	line = ft_get_line(&(str[fd]));
 	return (line);
-}
-
-void	*ft_calloc(size_t count, size_t size)
-{
-	void	*ptr;
-	char	*p;
-	size_t	i;
-
-	ptr = malloc(count * size);
-	if (ptr == NULL)
-		return (ptr);
-	p = ptr;
-	i = 0;
-	while (i < (count * size))
-	{
-		p[i] = 0;
-		i++;
-	}
-	return (ptr);
 }

@@ -81,3 +81,23 @@ void do_one_command(t_cmds *cmds)
         exit(0);
     }
 }
+
+
+
+
+
+/*
+cuando haces un heredoc, tienes que poonerle un wait para el proceso concreto en el 
+que pusiste el heredoc (pid del fork), para asegurarte que para todas las ejecucoines
+mientras que el hheredoc está haciendose. esto es:
+<< eof | << eof2 | ls, al contrario que cat | cat | ls, no va a ejecuar todo a la vez
+y a devolver ls lo primero, si no que va a esperar a que los heredocs estén hechos
+para devolver ls
+igualmente << eof | ls | <<eof2 no devuelve ls en ningún momento.
+esto viene ppor la diferencia de gestión entre lo que tengo en la función wait_process()
+que es un: espera a este numero de procesos, entonces devuelve el ls en cuanto puede,
+y despues se queda esperando a los cats, y hasta que no se hayan hecho tantos cosos
+como cats tengo, no acaba la ejecución
+el heredoc, te da igual el numero de procesos que tengas, no puedes dejar que nada salga
+hasta que no este terminnado esaa lectura, por lo que ppones el wait esppecíficamente de
+ese pid*/
