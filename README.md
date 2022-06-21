@@ -40,6 +40,10 @@ ls archivonoexiste
 ls archivonoexiste -la
 cd -                                ------- es un builtin¿? -> da segfault
 
+sort << eof -r
+sort << eof > salida -r
+
+
 
 
 
@@ -96,3 +100,17 @@ cat << eof | grep -i hola | wc
 ls | wc | grep hola << eof
 sort << eof -r
 cat << ls -e
+
+
+
+
+
+
+
+
+
+
+
+ERRORES:
+
+<< eof << eof2 | cat Makefile | << eof3 wc

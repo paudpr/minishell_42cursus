@@ -236,7 +236,10 @@ void    get_argv_path(t_def *def, t_cmds *cmds)
     char    **split_argv;
     char    *rel_cmd;
 
+
     cmds->cmds_argv = get_argv(def);
+    if(cmds->cmds_argv == NULL)
+        return ;
     split_argv = ft_split(cmds->cmds_argv, ' ');
     if(ft_strrchr(split_argv[0], '/') != NULL)
     {

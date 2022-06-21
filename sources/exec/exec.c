@@ -6,6 +6,7 @@ void exec(t_cmds *cmds)
     char *cmd;
 
     split = ft_split(cmds->cmds_argv, ' ');
+    // printf("split -> %p\ncmds->argv -> %s\n", split, cmds->cmds_argv);
     cmd = ft_strjoin(cmds->cmds_path, split[0]);
     if(execve(cmd, split, cmds->env->env) < 0)
         perror("falla execve ->");
@@ -82,7 +83,29 @@ void do_one_command(t_cmds *cmds)
     }
 }
 
+void do_process(t_def *def, t_cmds *cmds)
+{
+    int i;
 
+    i = 0;
+    while(i < ft_double_len(def->argv))         //condicion así porque si no me paso en el array
+    {
+        if(def->type[i] == 4)
+        {   
+            while(def->type[i] == 4)            // esto para asegurarme que no me repite procesos por haber puesto los argumentos separados (más de uno)
+                i++;
+            if(def->next == NULL && cmds->num == 0)
+                do_one_command(cmds);
+            else if (def->next == NULL)
+                do_last_command(cmds);
+            else
+                do_commands(cmds);
+            // printf("%p - %s\n%p - %s\n", cmds->cmds_argv, cmds->cmds_path, cmds->cmds_argv, cmds->cmds_path);
+            // free_struct(cmds);
+        }
+        i++;
+    }
+}
 
 
 

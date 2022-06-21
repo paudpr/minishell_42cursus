@@ -10,7 +10,7 @@ void    main_exec(t_def *def, t_env *env)
     if(cmds == NULL)
         print_error("memoria struct cmds");
     init_struct_cmds(env, cmds, n_pipes);
-	check_hd(def);
+	// check_hd(def);                         //  !!!!!! metodo comentado en archivo heredoc. cambiando estructura de lectura y ejecución por nodo
     exec_cmds(def, cmds);
     wait_process(def);
 
@@ -22,30 +22,16 @@ void    main_exec(t_def *def, t_env *env)
 
 void    exec_cmds(t_def *def, t_cmds *cmds)
 {
-    t_def *copy;
-    int i;
-
-    copy = def;
-    while (copy)
+    while (def)
     {
-        i = 0;
-        while(copy->argv[i])
-        {
-            if(copy->type[i] == 4)
-            {
-                get_argv_path(copy, cmds);
-                if(copy->next == NULL && cmds->num == 0)
-                    do_one_command(cmds);
-                else if (copy->next == NULL)
-                    do_last_command(cmds);
-                else
-                    do_commands(cmds);
-                free_struct(cmds);
-                cmds->num++;
-            }
-            copy = copy->next;
-            i++;
-        }
+        get_argv_path(def, cmds);
+        check_hd(def);
+        // check_redir();
+        // printf("argumentos -> %s\n%s\n", cmds->cmds_argv, cmds->cmds_path);
+        do_process(def, cmds);
+        // clean_hd();
+        // cmds->num++;
+        def = def->next;
     }
     dup2(cmds->fd_in, STDIN_FILENO);        //devolvemos a los valores originales de STDIN y STDOUT
     dup2(cmds->fd_out, STDOUT_FILENO);

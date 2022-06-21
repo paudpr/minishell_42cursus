@@ -46,7 +46,8 @@ typedef struct s_cmds
 	int		**pipe_fd;
 	int		fd_in;
 	int		fd_out;
-	int		num; // pos de comando
+	int		num; 			// posición de comando
+
 }	t_cmds;
 
 
@@ -72,14 +73,34 @@ void	exec_cmds(t_def *def, t_cmds *cmds);
 
 
 void	check_hd(t_def *def);
-void	create_hd(int n, char *eof);
+void	create_file(char *infile, char *line);
+char	*get_hd(char *eof);
 
+void check_redir(t_def *def, t_cmds *cmds);
 
 
 
 void wait_process(t_def *def);
-
 void check_leaks();
+
+void do_process(t_def *def, t_cmds *cmds);
+void do_commands(t_cmds *cmds);
+void do_one_command(t_cmds *cmds);
+void do_last_command(t_cmds *cmds);
+void wait_process(t_def *def);
+
+
+
+
+
+#endif
+
+
+
+
+
+
+
 void free_env(t_env *env);
 int *get_array(char *pipes);
 void init_vals(t_cmds *vals, char **environ, t_def **def);
@@ -96,16 +117,3 @@ void free_env(t_env *env);
 void ft_free_double(char **str);
 void print_error(char *str);
 void print_node(t_def **node, int i);
-
-
-
-void do_commands(t_cmds *cmds);
-void do_one_command(t_cmds *cmds);
-void do_last_command(t_cmds *cmds);
-void wait_process(t_def *def);
-
-
-
-
-
-#endif

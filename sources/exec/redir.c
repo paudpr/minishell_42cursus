@@ -1,27 +1,27 @@
 #include "minishell.h"
 
-void check_redir(t_def *def, t_env *env)
+void check_redir(t_def *def, t_cmds *cmds)
 {
-    t_def *copy;
-    // int i = -1;
+    int i;
+    int fd;
 
-    copy = def;
-    (void)env;
-    while(copy)
+    i = 0;
+    while(def->argv[i] && (def->type[i] == 0 || def->type[i] == 1))
     {
-        // i = -1;
-        // while(copy->argv[++i])
-        // {
-        //     printf("argumento -> %s\n", copy->argv[i]);
-        //     printf("type -> %d\n", copy->type[i]);
-        // }
-        // printf("---------------\n");
+        if(def->type[i] == 0)
+        {
+            i++;
+            fd = open("/tmp/heredoc", O_RDONLY);
 
-    copy = copy->next;
+        }
+        else if(def->type[i] == 1)
+        {
+            i++;
+            fd = open(def->argv[i], O_RDONLY);
+        }
+        i++;
     }
-
-// aqui abro tantos heredocs como sea necesario por nodo
-// creo los archivos de entrada y salida que no estén 
-// y redefino in y out necesarios con dups
-
+    cmds->pipe_fd[cmds->num][0] = fd;
+    dup2(cmds->pipe_fd[cmds->num][0], STDIN_FILENO);
+    // cmds->pipe_fd[cmds->num][0] = fd;
 }

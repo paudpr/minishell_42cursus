@@ -5,3 +5,4 @@ no
 /libft/*.o
 libft.a
 minishell
+/pruebas
