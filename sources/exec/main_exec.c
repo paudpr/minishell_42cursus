@@ -26,7 +26,7 @@ void    exec_cmds(t_def *def, t_cmds *cmds)
     {
         get_argv_path(def, cmds);
         check_hd(def);
-        // check_redir();
+        check_redir(def, cmds);
         // printf("argumentos -> %s\n%s\n", cmds->cmds_argv, cmds->cmds_path);
         do_process(def, cmds);
         // clean_hd();
