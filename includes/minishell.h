@@ -31,13 +31,6 @@ typedef struct s_env
 	int		shlvl;
 }	t_env;
 
-typedef struct s_redir
-{
-	char	*name;
-	char	*line;
-	int		num;
-}	t_redir;
-
 typedef struct s_cmds
 {
 	t_env	*env;

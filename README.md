@@ -68,7 +68,7 @@ ls | > salida8 >> salida9 > salida10 > salida11
 < Makefile cat
 < Makefile cat -e | sort -r
 cat | sort < Makefile -r | grep -i make
-cat | sort < Makefile -r
+cat | sort < Makefile -rcd 
 
 < noexiste cat
 ls | < noexiste cat
