@@ -52,7 +52,7 @@ void	create_file(char *infile, char *line)		//infile nombre de archivo, file rel
 	close(fd);
 }
 
-void check_hd(t_def *def)
+void check_hd(t_def *def, t_cmds *cmds)
 {
 	int i;
 	char *file;
@@ -65,6 +65,8 @@ void check_hd(t_def *def)
 	{
 		if (def->type[i] == 0)
 		{
+			dup2(cmds->fd_in, STDIN_FILENO);			//limpia la entrada y salida de heredoc
+    		dup2(cmds->fd_out, STDOUT_FILENO);
 			i++;
 			infile = "/tmp/heredoc";
 			file = get_hd(def->argv[i]);

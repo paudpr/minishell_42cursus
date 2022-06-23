@@ -13,6 +13,8 @@
 # include <unistd.h>
 # include <limits.h>
 
+# include <sys/types.h>
+# include <sys/wait.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "../libft/libft.h"
@@ -65,7 +67,7 @@ void	get_argv_path(t_def *def, t_cmds *cmds);
 void	exec_cmds(t_def *def, t_cmds *cmds);
 
 
-void	check_hd(t_def *def);
+void	check_hd(t_def *def, t_cmds *cmds);
 void	create_file(char *infile, char *line);
 char	*get_hd(char *eof);
 

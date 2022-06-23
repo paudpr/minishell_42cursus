@@ -26,6 +26,8 @@ cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | ls -l -a
 cat | top | ls
 cat Makefile | sort | grep -i make | wc -w -l
 
+ls /dev/ -l -a | grep ttyS9 | sort -r | tail -3 | wc -l
+
 /bin/ls -l -a
 /bin/ls -la | wc
 /bin/cat Makefile
@@ -109,7 +111,7 @@ cat << ls -e
 
 
 
-
+ADD_DAN -> ponerlo en mayúsculas dentro del export sin valor asignado
 
 ERRORES:
 
