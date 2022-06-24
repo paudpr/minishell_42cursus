@@ -71,7 +71,7 @@ void	check_hd(t_def *def, t_cmds *cmds);
 void	create_file(char *infile, char *line);
 char	*get_hd(char *eof);
 
-void check_redir(t_def *def, t_cmds *cmds);
+void check_redir(t_def *def);
 
 
 

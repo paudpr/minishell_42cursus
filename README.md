@@ -42,7 +42,7 @@ ls archivonoexiste
 ls archivonoexiste -la
 cd -                                ------- es un builtin¿? -> da segfault
 
-sort << eof -r
+sort << eof -r                      !!!!!!!!!!!!!!!!!!!!!
 sort << eof > salida -r
 
 
@@ -64,6 +64,7 @@ cat Makefile | > salida3 | ls
 > salida4 > salida5 > salida6 > salida7
 ls | > salida8 >> salida9 > salida10 > salida11
 > salida12 > salida13 > salida14 >> salida15 | ls
+<< eof << eof2 | cat Makefile | << eof3 wc
 
 < Makefile ls
 < Makefile ls | wc -l
@@ -72,10 +73,10 @@ ls | > salida8 >> salida9 > salida10 > salida11
 cat | sort < Makefile -r | grep -i make
 cat | sort < Makefile -rcd 
 
-< noexiste cat
+
 ls | < noexiste cat
 cat Makefile | < noexiste cat | ls
-ls -l < Makefile -a > salida16 
+ls -l < Makefile -a > salida16                                          !!!!!!1 lo hace dos veceS??????
 ls -l < Makefile -a > salida17 | wc
 ls /dev > salida18 | grep urandom
 cat Makefile | < noexiste cat > salida19 | ls
@@ -93,7 +94,7 @@ rm -rf salida*
 
 
 PRUEBAS HEREDOC:
-cat | cat | cat << eof | cat | ls
+cat | cat | cat << eof | cat | ls               ---- mientras recoge heredoc ejecuta los cats, y luego ejecuta todo correctamente (incluido los cats que ya ha ejecutado supuestamete)
 << eof
 ls | << eof cat -e
 cat Makefile << eof << eof | ls
@@ -102,7 +103,7 @@ cat << eof | grep -i hola | wc
 ls | wc | grep hola << eof
 sort << eof -r
 cat << ls -e
-
+cat << eof > salida << eof > salida2
 
 
 
@@ -115,4 +116,6 @@ ADD_DAN -> ponerlo en mayúsculas dentro del export sin valor asignado
 
 ERRORES:
 
-<< eof << eof2 | cat Makefile | << eof3 wc
+cat | cat | <<  eof | ls
+cat | cat | cat << eof | ls
+< noexiste cat                                          !!!!!!!!!!se queda cat abierto

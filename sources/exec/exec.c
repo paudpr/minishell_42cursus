@@ -1,10 +1,18 @@
 #include "minishell.h"
 
+// void check_bin()
+// {
+
+
+//     exit();
+// }
+
 void exec(t_cmds *cmds)
 {
     char **split;
     char *cmd;
 
+    //check_bin();
     split = ft_split(cmds->cmds_argv, ' ');
     // printf("split -> %p\ncmds->argv -> %s\n", split, cmds->cmds_argv);
     cmd = ft_strjoin(cmds->cmds_path, split[0]);
@@ -28,7 +36,7 @@ void do_commands(t_cmds *cmds)
         dup2(cmds->pipe_fd[cmds->num][1], STDOUT_FILENO);
         close(cmds->pipe_fd[cmds->num][1]);
         exec(cmds);
-        exit(-1);
+        exit(EXIT_FAILURE);
     }
     else
     {
@@ -67,11 +75,6 @@ void do_one_command(t_cmds *cmds)
 {
     pid_t pid;
 
-    // printf("valor num  en one_comdan -> %d\n", cmds->num);
-    // cmds->pipe_fd[cmds->num] = ft_calloc(2, sizeof(int));
-    // printf("%p %p \n",cmds->cmds_argv, cmds->cmds_path);
-    // if(pipe(cmds->pipe_fd[cmds->num]) < 0)
-    //     perror("");
     pid = fork();
     if(pid < 0)
         perror("");
@@ -79,8 +82,10 @@ void do_one_command(t_cmds *cmds)
     {
 		//check_redir();
         exec(cmds);
-        exit(0);
+        (void)cmds;
+        exit(EXIT_FAILURE);
     }
+    //else si es def->type == 0 waitpid(pid, &s, 0)
 }
 
 void do_process(t_def *def, t_cmds *cmds)
@@ -94,6 +99,7 @@ void do_process(t_def *def, t_cmds *cmds)
         {   
             while(def->type[i] == 4)            // esto para asegurarme que no me repite procesos por haber puesto los argumentos separados (más de uno)
                 i++;
+            // printf("posición de comando -> %d\n", cmds->num);
             if(def->next == NULL && cmds->num == 0)
                 do_one_command(cmds);
             else if (def->next == NULL)
