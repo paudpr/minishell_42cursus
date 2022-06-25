@@ -15,9 +15,7 @@ char	*get_hd(char *eof)
 	{
 		write(1, "> ", 2);
 		read = get_next_line(0);
-		// printf("%p   -   %d    -   %s\n", read, (ft_strncmp(read, eof, len)), read);
-		// printf("%p   -   %d    -   %s\n", eof, (ft_strncmp(read, eof, len)), eof);
-		// printf("%p   -   %d   -   %s\n", );
+
 		if((ft_strncmp(read, eof, len) == 0) && ((ft_strlen(read) - 1) == len)
 			&& (read[len] == '\n'))
 			return(line);
