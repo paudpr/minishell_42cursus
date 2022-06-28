@@ -18,7 +18,10 @@ char	*get_hd(char *eof)
 
 		if((ft_strncmp(read, eof, len) == 0) && ((ft_strlen(read) - 1) == len)
 			&& (read[len] == '\n'))
+		{
+			free(read);
 			return(line);
+		}
 		if(i == 0)
 			line = ft_strdup(read);
 		else
@@ -74,14 +77,6 @@ void check_hd(t_def *def, t_cmds *cmds)
 		i++;
 	}
 }
-
-
-
-
-
-
-
-
 
 
 

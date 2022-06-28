@@ -11,10 +11,11 @@ void    main_exec(t_def *def, t_env *env)
         print_error("memoria struct cmds");
     init_struct_cmds(env, cmds, n_pipes);
 	// check_hd(def);                         //  !!!!!! metodo comentado en archivo heredoc. cambiando estructura de lectura y ejecución por nodo
+    //aqui mierda de señales con kill pid
     exec_cmds(def, cmds);
     wait_process(def);
 
-	// clean_hd();
+	// clean_hd();                 
     free_pipe(cmds, n_pipes);
     free_env(cmds->env);
     free(cmds);
@@ -27,11 +28,10 @@ void    exec_cmds(t_def *def, t_cmds *cmds)
         get_argv_path(def, cmds);
         check_hd(def, cmds);
         check_redir(def);
-        // printf("argumentos -> %s\n%s\n", cmds->cmds_argv, cmds->cmds_path);
         do_process(def, cmds);
-        // clean_hd();
         // cmds->num++;
         def = def->next;
+        free_struct(cmds);
     }
     dup2(cmds->fd_in, STDIN_FILENO);        //devolvemos a los valores originales de STDIN y STDOUT
     dup2(cmds->fd_out, STDOUT_FILENO);

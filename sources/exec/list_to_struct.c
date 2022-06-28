@@ -145,6 +145,7 @@ void    get_argv_path(t_def *def, t_cmds *cmds)
 
 
     cmds->cmds_argv = get_argv(def);
+    // printf("%p   -    %s\n", cmds->cmds_argv, cmds->cmds_argv);
     if(cmds->cmds_argv == NULL)
         return ;
     split_argv = ft_split(cmds->cmds_argv, ' ');

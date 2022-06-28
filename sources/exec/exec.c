@@ -35,6 +35,7 @@ void do_commands(t_cmds *cmds)
         close(cmds->pipe_fd[cmds->num][0]);
         dup2(cmds->pipe_fd[cmds->num][1], STDOUT_FILENO);
         close(cmds->pipe_fd[cmds->num][1]);
+        
         exec(cmds);
         exit(EXIT_FAILURE);
     }
