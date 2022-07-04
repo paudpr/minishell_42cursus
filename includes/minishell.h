@@ -86,8 +86,6 @@ void wait_process(t_def *def);
 
 
 
-
-
 #endif
 
 

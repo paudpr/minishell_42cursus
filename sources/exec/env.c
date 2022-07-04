@@ -147,15 +147,9 @@ t_env   *get_struct_env(char **environ)
     }
     else
     {
-        env->shlvl = get_shlvl(environ);
+        // env->shlvl = get_shlvl(environ);
         copy_environ(environ, env);
     }
-    // printf("ESTE ES MIM ENV\n");
-    // int i = -1;
-    // printf("%d\n", ft_double_len(env->env));
-    // while(++i < ft_double_len(env->env))
-    //     printf("%s\n", env->env[i]);
-    // printf("jyhgtfds\n");
     return (env);
 }
 
@@ -168,22 +162,18 @@ int get_shlvl(char **environ)
 
     i = 0;
     shlvl = NULL;
-
-    // int j = -1;
-    // while(environ[++j])
-    //     printf("ENVIRON -> %s\n", environ[j]);
     while(i < ft_double_len(environ))
     {
         if(ft_strncmp(environ[i], "SHLVL=", 6) == 0)
             aux = ft_strdup(environ[i]);
         i++;
     }
-    // printf("-----> %p\n%p\n", shlvl+1, aux);
     shlvl = ft_strchr(aux, '=');
-    // printf("-----> %p\n%p\n", shlvl, aux);
     shlvl++;
+    printf("puntero shlvl -> %p\n", shlvl);
 	lvl = ft_atoi(shlvl);
 	free(aux);
+    printf("level -> %d\n", lvl);
     return(lvl);
 }
 

@@ -37,6 +37,7 @@ int main(void)
         main_exec(def, env);
         free(line);
         free_list(&def);
+    // printf("%p\n%p\n%p\n", env, env->path, env->env);
     }
     free_env(env);
     return (0);

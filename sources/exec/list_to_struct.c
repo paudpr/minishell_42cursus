@@ -44,6 +44,7 @@ char    *get_path(t_def *def, char **path, char *argvs)
     char    **split_argv;
 
     i = 0;
+
     split_argv = NULL;
     cmd_path = NULL;
 	if (path == NULL)	//!!!!!!!!!!!!!!!!! comprobar que este sea el valor meter en execve. contrastar el error con bash
