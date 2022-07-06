@@ -84,7 +84,10 @@ void free_list(t_def **def)
 
 void free_env(t_env *env)
 {
-	ft_free_double(env->path);
+	printf("LIBERANDO ENV\n");
+	printf("%d\n", env->shlvl);
+	if(env->shlvl != 1)
+		ft_free_double(env->path);
 	ft_free_double(env->env);
 	free(env);
 }

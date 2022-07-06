@@ -38,3 +38,7 @@ void    exec_cmds(t_def *def, t_cmds *cmds)
     close(cmds->fd_in);
     close(cmds->fd_out);
 }
+
+// estoy liberando la memoria del env en el segundo comando
+// de forma que se hace un segfault. segundo comando siendo la segunda
+// ejecución del readline
