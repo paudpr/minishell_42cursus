@@ -11,10 +11,10 @@ void exec(t_cmds *cmds)
 {
     char **split;
     char *cmd;
+	extern char **environ;
 
     //check_bin();
     split = ft_split(cmds->cmds_argv, ' ');
-    // printf("split -> %p\ncmds->argv -> %s\n", split, cmds->cmds_argv);
     cmd = ft_strjoin(cmds->cmds_path, split[0]);
     if(execve(cmd, split, cmds->env->env) < 0)
         perror("falla execve ->");

@@ -87,7 +87,10 @@ void free_env(t_env *env)
 	printf("LIBERANDO ENV\n");
 	printf("%d\n", env->shlvl);
 	if(env->shlvl != 1)
+	{
+		printf("entro en liberar el path\n");
 		ft_free_double(env->path);
+	}
 	ft_free_double(env->env);
 	free(env);
 }

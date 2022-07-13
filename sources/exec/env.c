@@ -181,7 +181,7 @@ void    copy_environ(char **environ, t_env *env)
     int     i;
 
     i = 0;
-    env->env = ft_calloc(sizeof(char *), ft_double_len(environ));   //he borrado el +1, comprobar que no de problemas
+    env->env = ft_calloc(sizeof(char *), ft_double_len(environ) + 1);   //he borrado el +1, comprobar que no de problemas
     if(env->env == NULL)
         return ;
     while (environ[i])

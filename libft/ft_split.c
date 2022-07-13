@@ -6,7 +6,7 @@
 /*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 17:17:08 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/06/21 17:16:18 by pdel-pin         ###   ########.fr       */
+/*   Updated: 2022/07/13 11:41:53 by pdel-pin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ void	ft_free_tab(char **tab, size_t n)
 }
 
 
-# include <stdio.h>
 char	**ft_split(char const *s, char c)
 {
 	char	**split;

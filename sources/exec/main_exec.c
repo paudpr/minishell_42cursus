@@ -12,12 +12,13 @@ void    main_exec(t_def *def, t_env *env)
     init_struct_cmds(env, cmds, n_pipes);
 	// check_hd(def);                         //  !!!!!! metodo comentado en archivo heredoc. cambiando estructura de lectura y ejecución por nodo
     //aqui mierda de señales con kill pid
+
     exec_cmds(def, cmds);
     wait_process(def);
 
 	// clean_hd();                 
     free_pipe(cmds, n_pipes);
-    free_env(cmds->env);
+    // free_env(cmds->env);
     free(cmds);
 }
 
@@ -26,7 +27,14 @@ void    exec_cmds(t_def *def, t_cmds *cmds)
     while (def)
     {
         get_argv_path(def, cmds);
-        check_hd(def, cmds);
+		
+		// printf("%d\n", cmds->env->shlvl);
+		// printf("%s\n", cmds->env->env[0]);
+		// printf("%s\n", cmds->env->path[0]);
+		// printf("%s\n", cmds->cmds_argv);
+		// printf("%s\n", cmds->cmds_path);
+        
+		check_hd(def, cmds);
         check_redir(def);
         do_process(def, cmds);
         // cmds->num++;
