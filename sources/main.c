@@ -13,10 +13,9 @@ int main(void)
     t_env *env;
 
     def = NULL;
+    env = get_struct_env(environ);
     while (1)
     {
-    	env = get_struct_env(environ);
-
         // dprintf(2, "--->este es el proceso: %d\n", getpid());
         line = readline(RED "minishell > " RESET);
         if(line != NULL && *line != 0)
@@ -27,6 +26,6 @@ int main(void)
         free(line);
         free_list(&def);
     }
-    // free_env(env);
+    free_env(env);
     return (0);
 }

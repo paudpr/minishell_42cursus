@@ -137,7 +137,6 @@ t_env   *get_struct_env(char **environ)
 {
     t_env   *env;
 
-    printf("GET_STRUCT_ENV\n");
     env =  malloc(sizeof(t_env));
     if(env == NULL)
         return (NULL);
@@ -166,11 +165,6 @@ void build_environ(t_env *env)
     env->env[2] = ft_strjoin("_=", cwd);
 	// env->pth = ft_calloc(sizeof(char *), 0);   //!!!!!!!!!!!!!!!!!!!!!!!!! esto será pa revisar después
     env->path = NULL;
-
-    // printf("\n ------ \n");
-    // printf("%p\n", env->path);
-    // printf("%d\n", ft_double_len(env->path));
-    // printf("%p\n", env);
 }
 
 void    copy_environ(char **environ, t_env *env)
@@ -179,6 +173,7 @@ void    copy_environ(char **environ, t_env *env)
     char    *aux_path;
     char    *aux_shlvl;
     int     i;
+	char	*shlvl;
 
     i = 0;
     env->env = ft_calloc(sizeof(char *), ft_double_len(environ) + 1);   //he borrado el +1, comprobar que no de problemas
@@ -193,7 +188,10 @@ void    copy_environ(char **environ, t_env *env)
             aux_shlvl = ft_strdup(environ[i]);
             point = ft_strchr(aux_shlvl, '=') + 1;
             env->shlvl = ft_atoi(point) + 1;
-			env->env[i] = ft_strjoin("SHLVL=", ft_itoa(env->shlvl));
+			shlvl = ft_itoa(env->shlvl);
+			env->env[i] = ft_strjoin("SHLVL=", shlvl);
+			free(aux_shlvl);
+			free(shlvl);
         }
         if (ft_strnstr(environ[i], "PATH=", 5))
 			aux_path = ft_strdup(environ[i]);

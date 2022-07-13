@@ -42,7 +42,7 @@ typedef struct s_cmds
 	int		fd_in;
 	int		fd_out;
 	int		num; 			// posición de comando
-
+	int		hd;				// numero de heredocs
 }	t_cmds;
 
 

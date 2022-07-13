@@ -10,15 +10,13 @@ void    main_exec(t_def *def, t_env *env)
     if(cmds == NULL)
         print_error("memoria struct cmds");
     init_struct_cmds(env, cmds, n_pipes);
-	// check_hd(def);                         //  !!!!!! metodo comentado en archivo heredoc. cambiando estructura de lectura y ejecución por nodo
-    //aqui mierda de señales con kill pid
+	check_hd(def, cmds);                         //  !!!!!! metodo comentado en archivo heredoc. cambiando estructura de lectura y ejecución por nodo
 
     exec_cmds(def, cmds);
     wait_process(def);
 
 	// clean_hd();                 
     free_pipe(cmds, n_pipes);
-    // free_env(cmds->env);
     free(cmds);
 }
 
@@ -27,14 +25,8 @@ void    exec_cmds(t_def *def, t_cmds *cmds)
     while (def)
     {
         get_argv_path(def, cmds);
-		
-		// printf("%d\n", cmds->env->shlvl);
-		// printf("%s\n", cmds->env->env[0]);
-		// printf("%s\n", cmds->env->path[0]);
-		// printf("%s\n", cmds->cmds_argv);
-		// printf("%s\n", cmds->cmds_path);
         
-		check_hd(def, cmds);
+		// check_hd(def, cmds);
         check_redir(def);
         do_process(def, cmds);
         // cmds->num++;
@@ -46,7 +38,3 @@ void    exec_cmds(t_def *def, t_cmds *cmds)
     close(cmds->fd_in);
     close(cmds->fd_out);
 }
-
-// estoy liberando la memoria del env en el segundo comando
-// de forma que se hace un segfault. segundo comando siendo la segunda
-// ejecución del readline
