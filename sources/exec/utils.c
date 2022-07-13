@@ -97,8 +97,19 @@ void free_env(t_env *env)
 
 void free_struct(t_cmds *vals)
 {
-	free(vals->cmds_argv);
+	// printf("%s\n", vals->cmds_argv);
+	// printf("%s\n", vals->cmds_path);
+	if(vals->cmds_argv != NULL)
+	{
+		printf("libero el argv\n");
+		free(vals->cmds_argv);
+	}
+	if(vals->cmds_path != NULL)
+	{
+		printf("libero el path\n");
 	free(vals->cmds_path);
+	}
+	printf("termino ciclo\n\n");
 }
 
 void free_pipe(t_cmds *cmds, int size)

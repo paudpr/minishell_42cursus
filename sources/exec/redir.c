@@ -24,9 +24,11 @@ void redir_out(t_def *def, char *outfile)
     close(fd);
 }
 
-void check_redir(t_def *def)
+void check_redir(t_def *def, int *hd)
 {
     int i;
+	char *num;
+	char *heredoc;
 
     i = 0;
     while(def->argv[i])
@@ -34,7 +36,12 @@ void check_redir(t_def *def)
         if(def->type[i] == 0)
         {
             i++;
-            redir_in(def, "/tmp/heredoc");
+			num = ft_itoa(*hd);
+			heredoc = ft_strjoin("/tmp/heredoc", num);
+            redir_in(def, heredoc);
+			free(num);
+			free(heredoc);
+			*hd += 1;
         }
         if(def->type[i] == 1)
             redir_in(def, def->argv[++i]);

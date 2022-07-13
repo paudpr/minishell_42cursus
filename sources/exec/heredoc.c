@@ -156,7 +156,10 @@ char	*get_hd(char *eof)
 
 		if((ft_strncmp(read, eof, len) == 0) && ((ft_strlen(read) - 1) == len)
 			&& (read[len] == '\n'))
+		{
+			free(read);
 			return(line);
+		}
 		if(i == 0)
 			line = ft_strdup(read);
 		else
@@ -170,7 +173,6 @@ char	*get_hd(char *eof)
 		i++;
 	}
 }
-
 
 void	create_file(char *infile, char *line)		//infile nombre de archivo, file relleno
 {
@@ -196,7 +198,7 @@ void	create_hd(int n, char *eof)
 
 	num = ft_itoa(n);
 	infile = ft_strjoin("/tmp/heredoc", num);
-	printf("infile: %s\n", infile);
+	// printf("infile: %s\n", infile);
 	file = get_hd(eof);								//recojo info de hd
 	create_file(infile, file);						//creo archivo con info de hd
 	free(infile);
@@ -207,7 +209,9 @@ void	create_hd(int n, char *eof)
 void	check_hd(t_def *def, t_cmds *cmds)
 {
 	int i;
+	int  hd;
 	
+	hd = 0;
 	while(def)
 	{
 		i = 0;
@@ -215,9 +219,11 @@ void	check_hd(t_def *def, t_cmds *cmds)
 		{
 			if(def->type[i] == 0)
 			{
+				dup2(cmds->fd_in, STDIN_FILENO);
+				dup2(cmds->fd_out, STDOUT_FILENO);
 				i++;
-				create_hd(cmds->hd, def->argv[i]);
-				cmds->hd++;
+				create_hd(hd, def->argv[i]);
+				hd++;
 			}
 			i++;
 		}

@@ -42,7 +42,6 @@ typedef struct s_cmds
 	int		fd_in;
 	int		fd_out;
 	int		num; 			// posición de comando
-	int		hd;				// numero de heredocs
 }	t_cmds;
 
 
@@ -71,7 +70,7 @@ void	check_hd(t_def *def, t_cmds *cmds);
 void	create_file(char *infile, char *line);
 char	*get_hd(char *eof);
 
-void check_redir(t_def *def);
+void check_redir(t_def *def, int *hd);
 
 
 
