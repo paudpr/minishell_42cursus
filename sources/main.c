@@ -18,7 +18,12 @@ int main(void)
     {
         // dprintf(2, "--->este es el proceso: %d\n", getpid());
         line = readline(RED "minishell > " RESET);
-        if(line != NULL && *line != 0)
+		if (line == NULL)
+		{
+			printf("exit\n");
+			exit(0);
+		}
+	    if(line != NULL && *line != 0)
             add_history(line);
         get_list(&def, line);            // main_parse();
 

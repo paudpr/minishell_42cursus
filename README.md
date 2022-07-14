@@ -19,14 +19,14 @@ PRUEBAS COMANDOS:
 cat Makefile
 cat -e Makefile
 cat Makefile | grep -i make
-cat Makefile | grep -i make | wc   
+cat Makefile | grep -i make | wc   									!!!!!!!leak
 sort Makefile -r
 sort Makefile -r | wc -l
 cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | ls -l -a
 cat | top | ls
 cat Makefile | sort | grep -i make | wc -w -l
 
-ls /dev/ -l -a | grep ttyS9 | sort -r | tail -3 | wc -l
+ls /dev/ -l -a | grep ttyS9 | sort -r | tail -3 | wc -l				!!!!!!!!!!leaks
 
 /bin/ls -l -a
 /bin/ls -la | wc
@@ -34,7 +34,7 @@ ls /dev/ -l -a | grep ttyS9 | sort -r | tail -3 | wc -l
 cat | /bin/cat | cat | cat | cat | /bin/cat | cat | cat | cat | /bin/cat | ls -l -a
 
 cat Makefile | noexiste | ls      
-noexiste | ls                      
+noexiste | ls                     
 noexiste
 /binn/ls                            
 wc -l | noexiste
