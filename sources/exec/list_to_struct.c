@@ -60,6 +60,8 @@ char    *get_path(t_def *def, char **path, char *argvs)
         i++;
     }
     ft_free_double(split_argv);
+	if(cmd_path == NULL)
+		return(NULL);
     return (cmd_path);
 }
 
@@ -145,9 +147,11 @@ void    get_argv_path(t_def *def, t_cmds *cmds)
     char    *rel_cmd;
 
     cmds->cmds_argv = get_argv(def);
-    // printf("%p   -    %s\n", cmds->cmds_argv, cmds->cmds_argv);
     if(cmds->cmds_argv == NULL)
+	{
+		cmds->cmds_path = NULL;
         return ;
+	}
     split_argv = ft_split(cmds->cmds_argv, ' ');
     if(ft_strrchr(split_argv[0], '/') != NULL)
     {

@@ -37,13 +37,13 @@ cat Makefile | noexiste | ls
 noexiste | ls                      
 noexiste
 /binn/ls                            
-wc -l | noexiste                    ------- funcionamiento distinto, potencialmente leaks
+wc -l | noexiste
 ls archivonoexiste
 ls archivonoexiste -la
 cd -                                ------- es un builtin¿? -> da segfault
 
-sort << eof -r                      !!!!!!!!!!!!!!!!!!!!!
-sort << eof > salida -r
+sort << eof -r
+sort << eof > salida -r							!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! se queda esperando un enter como 																				con los cats, afecta a todos los 																					procesos a partir de este, no 																						se está quedando nada abierto 
 
 
 
@@ -60,7 +60,7 @@ PRUEBAS REDIRECCIONES:
 > salida0
 >> salida1
 ls | > salida2
-cat Makefile | > salida3 | ls
+cat Makefile | > salida3 | ls											
 > salida4 > salida5 > salida6 > salida7
 ls | > salida8 >> salida9 > salida10 > salida11
 > salida12 > salida13 > salida14 >> salida15 | ls
@@ -74,15 +74,15 @@ cat | sort < Makefile -r | grep -i make
 cat | sort < Makefile -rcd 
 
 
-ls | < noexiste cat
+ls | < noexiste cat									!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! igualmente ejecuta y devuelve el ls
 cat Makefile | < noexiste cat | ls
-ls -l < Makefile -a > salida16                                          !!!!!!1 lo hace dos veceS??????
+ls -l < Makefile -a > salida16						!!!!!!!!!! mismo problema que con el sort
 ls -l < Makefile -a > salida17 | wc
 ls /dev > salida18 | grep urandom
-cat Makefile | < noexiste cat > salida19 | ls
+cat Makefile | < noexiste cat > salida19 | ls		!!!!!!!!!!!!!!!!!!!!!!!!!!! no devuelve el ls final 
 cat Makefile | sort -r | grep -i name > salida20 > salida21
 cat | ls >> salida21
-< Makefile top > salida22 >> salida23 | ls
+< Makefile top > salida22 >> salida23 | ls			!!!!!!!!!!!!!!!!!!!!!!!!!!!! no estoy segura
 < /dev/urandom > salida24 | cat salida21 | wc -l > salida25
 
 #saber explicar este comando con redirecciones
@@ -94,7 +94,7 @@ rm -rf salida*
 
 
 PRUEBAS HEREDOC:
-cat | cat | cat << eof | cat | ls               ---- mientras recoge heredoc ejecuta los cats, y luego ejecuta todo correctamente (incluido los cats que ya ha ejecutado supuestamete)
+cat | cat | cat << eof | cat | ls
 << eof
 ls | << eof cat -e
 cat Makefile << eof << eof | ls

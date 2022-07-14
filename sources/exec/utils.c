@@ -84,32 +84,20 @@ void free_list(t_def **def)
 
 void free_env(t_env *env)
 {
-	printf("LIBERANDO ENV\n");
 	printf("%d\n", env->shlvl);
 	if(env->shlvl != 1)
-	{
-		printf("entro en liberar el path\n");
 		ft_free_double(env->path);
-	}
 	ft_free_double(env->env);
 	free(env);
 }
 
 void free_struct(t_cmds *vals)
 {
-	// printf("%s\n", vals->cmds_argv);
-	// printf("%s\n", vals->cmds_path);
+
 	if(vals->cmds_argv != NULL)
-	{
-		printf("libero el argv\n");
 		free(vals->cmds_argv);
-	}
-	if(vals->cmds_path != NULL)
-	{
-		printf("libero el path\n");
-	free(vals->cmds_path);
-	}
-	printf("termino ciclo\n\n");
+	if(vals->cmds_path != 0)
+		free(vals->cmds_path);
 }
 
 void free_pipe(t_cmds *cmds, int size)
