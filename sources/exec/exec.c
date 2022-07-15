@@ -51,7 +51,6 @@ void do_last_command(t_cmds *cmds)
 {
     pid_t pid;
 
-    // printf("valor num en last_comand -> %d\n", cmds->num);
     cmds->pipe_fd[cmds->num] = ft_calloc(sizeof(int), 2);
     if(pipe(cmds->pipe_fd[cmds->num]) < 0)
         perror("");
@@ -59,10 +58,7 @@ void do_last_command(t_cmds *cmds)
     if(pid < 0)
         perror("");
     if(pid == 0)
-	{
-		//check_redir();
         exec(cmds);
-	}
     else
     {
         close(cmds->pipe_fd[cmds->num][1]);
@@ -81,12 +77,11 @@ void do_one_command(t_cmds *cmds)
         perror("");
     if(pid == 0)
     {
-		//check_redir();
         exec(cmds);
-        (void)cmds;
         exit(EXIT_FAILURE);
     }
-    //else si es def->type == 0 waitpid(pid, &s, 0)
+	else
+		wait(&pid);
 }
 
 void do_process(t_def *def, t_cmds *cmds)
@@ -95,20 +90,17 @@ void do_process(t_def *def, t_cmds *cmds)
 
     i = 0;
     while(i < ft_double_len(def->argv))         //condicion así porque si no me paso en el array
-    {
+    {	
         if(def->type[i] == 4)
         {   
             while(def->type[i] == 4)            // esto para asegurarme que no me repite procesos por haber puesto los argumentos separados (más de uno)
                 i++;
-            // printf("posición de comando -> %d\n", cmds->num);
             if(def->next == NULL && cmds->num == 0)
                 do_one_command(cmds);
             else if (def->next == NULL)
                 do_last_command(cmds);
             else
                 do_commands(cmds);
-            // printf("%p - %s\n%p - %s\n", cmds->cmds_argv, cmds->cmds_path, cmds->cmds_argv, cmds->cmds_path);
-            // free_struct(cmds);
         }
         i++;
     }

@@ -66,9 +66,10 @@ void	get_argv_path(t_def *def, t_cmds *cmds);
 void	exec_cmds(t_def *def, t_cmds *cmds);
 
 
-void	check_hd(t_def *def, t_cmds *cmds);
+int	check_hd(t_def *def, t_cmds *cmds);
 void	create_file(char *infile, char *line);
 char	*get_hd(char *eof);
+void	clean_hd(int hd);
 
 void check_redir(t_def *def, int *hd);
 
@@ -109,3 +110,5 @@ void free_env(t_env *env);
 void ft_free_double(char **str);
 void print_error(char *str);
 void print_node(t_def **node, int i);
+
+
