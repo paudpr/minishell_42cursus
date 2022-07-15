@@ -42,6 +42,7 @@ typedef struct s_cmds
 	int		fd_in;
 	int		fd_out;
 	int		num; 			// posición de comando
+	int		hd;
 }	t_cmds;
 
 
@@ -71,7 +72,7 @@ void	create_file(char *infile, char *line);
 char	*get_hd(char *eof);
 void	clean_hd(int hd);
 
-void check_redir(t_def *def, int *hd);
+void check_redir(t_def *def, t_cmds *cmds);
 
 
 
@@ -79,9 +80,9 @@ void wait_process(t_def *def);
 void check_leaks();
 
 void do_process(t_def *def, t_cmds *cmds);
-void do_commands(t_cmds *cmds);
-void do_one_command(t_cmds *cmds);
-void do_last_command(t_cmds *cmds);
+void do_commands(t_def *def, t_cmds *cmds);
+void do_one_command(t_def *def, t_cmds *cmds);
+void do_last_command(t_def *def, t_cmds *cmds);
 void wait_process(t_def *def);
 
 

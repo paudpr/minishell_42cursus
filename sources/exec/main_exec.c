@@ -21,17 +21,13 @@ void    main_exec(t_def *def, t_env *env)
 
 void    exec_cmds(t_def *def, t_cmds *cmds)
 {
-	int hd;
-
-	hd = 0;
     while (def)
     {
         get_argv_path(def, cmds);        
-        check_redir(def, &hd);
         do_process(def, cmds);
-        // cmds->num++;
-        def = def->next;
+        cmds->num++;
         free_struct(cmds);
+        def = def->next;
     }
     dup2(cmds->fd_in, STDIN_FILENO);        //devolvemos a los valores originales de STDIN y STDOUT
     dup2(cmds->fd_out, STDOUT_FILENO);

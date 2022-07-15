@@ -33,28 +33,29 @@ void redir_app(char *outfile)
     close(fd);
 }
 
-void check_redir(t_def *def, int *hd)
+void check_redir(t_def *def, t_cmds *cmds)
 {
     int i;
 	char *num;
 	char *heredoc;
 
     i = 0;
+	// printf("hago redir \n");
     while(def->argv[i])
     {
         if(def->type[i] == 0)
         {
             i++;
-			num = ft_itoa(*hd);
+			num = ft_itoa(cmds->hd);
 			heredoc = ft_strjoin("/tmp/heredoc", num);
             redir_in(heredoc);
 			free(num);
 			free(heredoc);
-			*hd += 1;
+			cmds->hd++;
         }
         if(def->type[i] == 1)
-            redir_in(def->argv[++i]);
-        if(def->type[i] == 2)
+			redir_in(def->argv[++i]);
+	    if(def->type[i] == 2)
             redir_out(def->argv[++i]);
         if(def->type[i] == 3)
             redir_app(def->argv[++i]);

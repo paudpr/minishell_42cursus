@@ -20,10 +20,12 @@ void exec(t_cmds *cmds)
         perror("falla execve ->");
 }
 
-void do_commands(t_cmds *cmds)
+void do_commands(t_def *def, t_cmds *cmds)
 {
     pid_t pid;
 
+	(void)def;
+	// printf("DO COMMANDS -> %s\n", cmds->cmds_argv);
     cmds->pipe_fd[cmds->num] = ft_calloc(sizeof(int), 2);
     if(pipe(cmds->pipe_fd[cmds->num]) < 0)
         perror("");
@@ -35,7 +37,7 @@ void do_commands(t_cmds *cmds)
         close(cmds->pipe_fd[cmds->num][0]);
         dup2(cmds->pipe_fd[cmds->num][1], STDOUT_FILENO);
         close(cmds->pipe_fd[cmds->num][1]);
-        
+        check_redir(def, cmds);
         exec(cmds);
         exit(EXIT_FAILURE);
     }
@@ -47,10 +49,12 @@ void do_commands(t_cmds *cmds)
     }
 }
 
-void do_last_command(t_cmds *cmds)
+void do_last_command(t_def *def, t_cmds *cmds)
 {
     pid_t pid;
 
+	(void)def;
+	// printf("DO LAST COMMAND -> %s\n", cmds->cmds_argv);
     cmds->pipe_fd[cmds->num] = ft_calloc(sizeof(int), 2);
     if(pipe(cmds->pipe_fd[cmds->num]) < 0)
         perror("");
@@ -58,7 +62,10 @@ void do_last_command(t_cmds *cmds)
     if(pid < 0)
         perror("");
     if(pid == 0)
+	{
+		check_redir(def, cmds);
         exec(cmds);
+	}
     else
     {
         close(cmds->pipe_fd[cmds->num][1]);
@@ -68,15 +75,18 @@ void do_last_command(t_cmds *cmds)
     }
 }
 
-void do_one_command(t_cmds *cmds)
+void do_one_command(t_def *def, t_cmds *cmds)
 {
     pid_t pid;
 
+	(void)def;
+	// printf("DO ONE COMMAND -> %s\n", cmds->cmds_argv);
     pid = fork();
     if(pid < 0)
         perror("");
     if(pid == 0)
     {
+		check_redir(def, cmds);
         exec(cmds);
         exit(EXIT_FAILURE);
     }
@@ -87,24 +97,38 @@ void do_one_command(t_cmds *cmds)
 void do_process(t_def *def, t_cmds *cmds)
 {
     int i;
+	int booleanos;
+
+	booleanos = 0;
 
     i = 0;
     while(i < ft_double_len(def->argv))         //condicion así porque si no me paso en el array
-    {	
-        if(def->type[i] == 4)
-        {   
-            while(def->type[i] == 4)            // esto para asegurarme que no me repite procesos por haber puesto los argumentos separados (más de uno)
-                i++;
-            if(def->next == NULL && cmds->num == 0)
-                do_one_command(cmds);
-            else if (def->next == NULL)
-                do_last_command(cmds);
-            else
-                do_commands(cmds);
-        }
+    {
+            if(def->next == NULL && cmds->num == 0 && booleanos == 0)
+			{
+                do_one_command(def, cmds);
+				booleanos++;
+			}
+            else if (def->next == NULL && booleanos == 0)
+			{
+				booleanos++;
+                do_last_command(def, cmds);
+			}
+            else if (booleanos == 0)
+			{
+                do_commands(def, cmds);
+				booleanos++;
+			}
+
         i++;
     }
 }
+
+
+
+
+
+
 
 
 
