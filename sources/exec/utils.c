@@ -1,12 +1,11 @@
-
 #include "minishell.h"
 
-void print_error(char *str)
+void	print_error(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while(str[i])
+	while (str[i])
 	{
 		write(1, &str[i], 1);
 		i++;
@@ -65,13 +64,13 @@ int	mini_lstsize(t_def *def)
 	return (i);
 }
 
-void free_list(t_def **def)
+void	free_list(t_def **def)
 {
-	int i;
-	t_def *copy;
-	
+	int		i;
+	t_def	*copy;
+
 	i = mini_lstsize(*def);
-	while(i)
+	while (i)
 	{
 		ft_free_double((*def)->argv);
 		free((*def)->type);
@@ -82,30 +81,28 @@ void free_list(t_def **def)
 	}	
 }
 
-void free_env(t_env *env)
+void	free_env(t_env *env)
 {
-	printf("%d\n", env->shlvl);
-	if(env->shlvl != 1)
+	if (env->shlvl != 1)
 		ft_free_double(env->path);
 	ft_free_double(env->env);
 	free(env);
 }
 
-void free_struct(t_cmds *vals)
+void	free_struct(t_cmds *vals)
 {
-
-	if(vals->cmds_argv != NULL)
+	if (vals->cmds_argv != NULL)
 		free(vals->cmds_argv);
-	if(vals->cmds_path != 0)
+	if (vals->cmds_path != 0)
 		free(vals->cmds_path);
 }
 
-void free_pipe(t_cmds *cmds, int size)
+void	free_pipe(t_cmds *cmds, int size)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while(i < size)
+	while (i < size)
 	{
 		free(cmds->pipe_fd[i]);
 		i++;
@@ -113,17 +110,16 @@ void free_pipe(t_cmds *cmds, int size)
 	free(cmds->pipe_fd);
 }
 
-// este amigui es el que hace el cat | cat | cat | ls
-void    wait_process(t_def *def)
+void	wait_process(t_def *def)
 {
-    int i;
-    int *s;
+	int	i;
+	int	*s;
 
-    s = NULL;
-    i = mini_lstsize(def);
-    while (i)
-    {
-        waitpid(-1, s, 0);
-        i--;
-    }
+	s = NULL;
+	i = mini_lstsize(def);
+	while (i)
+	{
+		waitpid(-1, s, 0);
+		i--;
+	}
 }
