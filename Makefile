@@ -29,7 +29,8 @@ SRCS_EXEC = main_exec.c \
 			redir.c \
 			heredoc.c \
 			env.c \
-			utils.c
+			utils.c \
+			builtin.c 
 
 SRCS_PARSE = init_exec.c
 

@@ -24,6 +24,7 @@ void	exec_cmds(t_def *def, t_cmds *cmds)
 	while (def)
 	{
 		get_argv_path(def, cmds);
+		// printf("comando ya procesado -> %s\n", cmds->cmds_argv[2]);
 		do_process(def, cmds);
 		cmds->num++;
 		free_struct(cmds);

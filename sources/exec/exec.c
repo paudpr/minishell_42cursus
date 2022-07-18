@@ -1,28 +1,25 @@
 #include "minishell.h"
 
-// void check_bin()
-// {
-//	 exit();
-// }
-
 void	exec(t_cmds *cmds)
 {
-	char		**split;
 	char		*cmd;
 	extern char	**environ;
 
-	//check_bin();
-	split = ft_split(cmds->cmds_argv, ' ');
-	cmd = ft_strjoin(cmds->cmds_path, split[0]);
-	if (execve(cmd, split, cmds->env->env) < 0)
-		perror("falla execve ->");
+	check_bin(cmds);
+	// check_bin2(cmds);
+	cmd = ft_strjoin(cmds->cmds_path, cmds->cmds_argv[0]);
+	if(cmds->bin == 0)
+	{
+		if (execve(cmd, cmds->cmds_argv, cmds->env->env) < 0)
+			perror("falla execve ->");
+	}
+	free(cmd);
 }
 
 void	do_commands(t_def *def, t_cmds *cmds)
 {
 	pid_t	pid;
 
-	(void)def;
 	cmds->pipe_fd[cmds->num] = ft_calloc(sizeof(int), 2);
 	if (pipe(cmds->pipe_fd[cmds->num]) < 0)
 		perror("");
@@ -50,7 +47,6 @@ void	do_last_command(t_def *def, t_cmds *cmds)
 {
 	pid_t	pid;
 
-	(void)def;
 	cmds->pipe_fd[cmds->num] = ft_calloc(sizeof(int), 2);
 	if (pipe(cmds->pipe_fd[cmds->num]) < 0)
 		perror("");
@@ -75,7 +71,6 @@ void	do_one_command(t_def *def, t_cmds *cmds)
 {
 	pid_t	pid;
 
-	(void)def;
 	pid = fork();
 	if (pid < 0)
 		perror("");
@@ -89,7 +84,7 @@ void	do_one_command(t_def *def, t_cmds *cmds)
 		wait(&pid);
 }
 
-void	do_process(t_def *def, t_cmds *cmds)
+void	do_process(t_def *def, t_cmds *cmds)			//arreglar esta chapuzaaaaaaaa
 {
 	int	i;
 	int	booleanos;

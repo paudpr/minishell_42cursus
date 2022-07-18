@@ -25,7 +25,7 @@ char	*get_hd(char *eof)
 			line = ft_strdup(read);
 		else
 		{
-			aux = ft_strdup(line);
+			aux = ft_strdup(line);					//aqui quitar lineas
 			free(line);
 			line = ft_strjoin(aux, read);
 			free(aux);

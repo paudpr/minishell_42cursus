@@ -92,7 +92,7 @@ void	free_env(t_env *env)
 void	free_struct(t_cmds *vals)
 {
 	if (vals->cmds_argv != NULL)
-		free(vals->cmds_argv);
+		ft_free_double(vals->cmds_argv);
 	if (vals->cmds_path != 0)
 		free(vals->cmds_path);
 }

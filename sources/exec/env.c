@@ -50,7 +50,7 @@ void	copy_environ(char **environ, t_env *env)
 			env->env[i] = ft_strdup(environ[i]);
 		else
 		{
-			aux_shlvl = ft_strdup(environ[i]);
+			aux_shlvl = ft_strdup(environ[i]);					// aqui hacer funcion para reducir lineas
 			point = ft_strchr(aux_shlvl, '=') + 1;
 			env->shlvl = ft_atoi(point) + 1;
 			shlvl = ft_itoa(env->shlvl);

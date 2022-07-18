@@ -4,11 +4,14 @@ void	init_struct_cmds(t_env *env, t_cmds *cmds, int i)
 {
 	cmds->env = env;
 	cmds->num = 0;
+	cmds->bin = 0;
+	cmds->hd = 0;
 	if (i < 0)
 		i = 0;
 	cmds->pipe_fd = ft_calloc(sizeof(int *), i);
 	cmds->fd_in = dup(STDIN_FILENO);
 	cmds->fd_out = dup(STDOUT_FILENO);
+	
 }
 
 char	*check_valid(char **path, char *cmd)
@@ -37,61 +40,62 @@ char	*check_valid(char **path, char *cmd)
 	return (cmd_path);
 }
 
-char	*get_path(t_def *def, char **path, char *argvs)
+char	*get_path(char **path, char *argvs)
 {
 	int		i;
 	char	*cmd_path;
-	char	**split_argv;
 
 	i = 0;
-	split_argv = NULL;
 	cmd_path = NULL;
 	if (path == NULL)
 		return (NULL);
-	while (def->argv[i])
-	{
-		if (def->type[i] == 4)
-		{
-			split_argv = ft_split(argvs, ' ');
-			cmd_path = check_valid(path, split_argv[0]);
-			break ;
-		}
-		i++;
-	}
-	ft_free_double(split_argv);
+	cmd_path = check_valid(path, argvs);
 	if (cmd_path == NULL)
 		return (NULL);
 	return (cmd_path);
 }
 
-char	*get_argv(t_def *def)
+int	size_cmds(t_def *def)
 {
-	int		i;
-	char	*cmd;
-	char	*aux;
-	char	*temp;
+	int	i;
+	int	size;
 
 	i = 0;
-	cmd = NULL;
+	size = 0;
+	while (def->argv[i])
+	{
+		if (def->type[i] == 4)
+			size++;
+		i++;
+	}
+	return (size);
+}
+
+char	**get_argv(t_def *def)
+{
+	int		i;
+	int		j;
+	int		size;
+	char	**cmds;
+
+	i = 0;
+	j = 0;
+	size = size_cmds(def);
+	if (size == 0)
+		return (NULL);
+	cmds = ft_calloc(sizeof(char *), size + 1);
+	if (cmds == NULL)
+		return (cmds);
 	while (def->argv[i])
 	{
 		if (def->type[i] == 4)
 		{
-			if (!cmd)
-				cmd = ft_strdup(def->argv[i]);
-			else
-			{
-				aux = ft_strjoin(cmd, " ");
-				temp = ft_strdup(def->argv[i]);
-				free(cmd);
-				cmd = ft_strjoin(aux, temp);
-				free(aux);
-				free(temp);
-			}
+			cmds[j] = ft_strdup(def->argv[i]);
+			j++;
 		}
 		i++;
 	}
-	return (cmd);
+	return (cmds);
 }
 
 char	*get_relative_path(char *cmd)
@@ -119,49 +123,53 @@ char	*get_relative_argv(char *cmd)
 	return (chr);
 }
 
-char	*join_argv(char *cmd, char **split)
-{
-	char	*aux;
-	char	*temp;
-	int		i;
+// char	*join_argv(char *cmd, char **split)
+// {
+// 	char	*aux;
+// 	char	*temp;
+// 	int		i;
 
-	i = 1;
-	temp = cmd;
-	while (i < ft_double_len(split))
-	{
-		aux = ft_strjoin(temp, " ");
-		free(temp);
-		temp = ft_strjoin(aux, split[i]);
-		free(aux);
-		free(split[i]);
-		i++;
-	}
-	return (temp);
-}
+// 	i = 1;
+// 	temp = cmd;
+// 	while (i < ft_double_len(split))
+// 	{
+// 		aux = ft_strjoin(temp, " ");
+// 		free(temp);
+// 		temp = ft_strjoin(aux, split[i]);
+// 		free(aux);
+// 		free(split[i]);
+// 		i++;
+// 	}
+// 	return (temp);
+// }
 
 void	get_argv_path(t_def *def, t_cmds *cmds)
 {
-	char	**split_argv;
+	// char	**split_argv;
 	char	*rel_cmd;
 
-	cmds->cmds_argv = get_argv(def);
+	cmds->cmds_argv = get_argv(def);			//aqui revisar
+	// printf("denttro de get_argv_path -> %s\n", cmds->cmds_argv);
 	if (cmds->cmds_argv == NULL)
 	{
 		cmds->cmds_path = NULL;
 		return ;
 	}
-	split_argv = ft_split(cmds->cmds_argv, ' ');
-	if (ft_strrchr(split_argv[0], '/') != NULL)
+	// split_argv = ft_split(cmds->cmds_argv, ' ');
+	if (ft_strrchr(cmds->cmds_argv[0], '/') != NULL)
 	{
-		cmds->cmds_path = get_relative_path(split_argv[0]);
-		rel_cmd = get_relative_argv(split_argv[0]);
-		free(cmds->cmds_argv);
-		cmds->cmds_argv = join_argv(rel_cmd, split_argv);
-		free(split_argv);
+		cmds->cmds_path = get_relative_path(cmds->cmds_argv[0]);
+		rel_cmd = get_relative_argv(cmds->cmds_argv[0]);
+		// printf("comando relativo en get_argv_path -> %s\n", rel_cmd);
+		free(cmds->cmds_argv[0]);														// si hay doble malloc comentar esto
+		cmds->cmds_argv[0] = ft_strdup(rel_cmd);
+		free(rel_cmd);
+		// cmds->cmds_argv[0] = join_argv(rel_cmd, cmds->cmds_argv);					//aqui revisar
+		// free(split_argv);
 	}
 	else
 	{
-		cmds->cmds_path = get_path(def, cmds->env->path, cmds->cmds_argv);
-		ft_free_double(split_argv);
+		cmds->cmds_path = get_path(cmds->env->path, cmds->cmds_argv[0]);
+		// ft_free_double(split_argv);
 	}
 }
