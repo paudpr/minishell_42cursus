@@ -79,8 +79,9 @@ int	check_hd(t_def *def, t_cmds *cmds)
 		{
 			if (def->type[i] == 0)
 			{
-				dup2(cmds->fd_in, STDIN_FILENO);
-				dup2(cmds->fd_out, STDOUT_FILENO);
+				(void)cmds;
+				// dup2(cmds->fd_in, STDIN_FILENO);
+				// dup2(cmds->fd_out, STDOUT_FILENO);
 				i++;
 				create_hd(hd, def->argv[i]);
 				hd++;

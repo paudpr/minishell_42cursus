@@ -90,7 +90,7 @@ void wait_process(t_def *def);
 void check_bin(t_cmds *cmds);
 void check_bin2(t_cmds *cmds);
 void	do_echo(t_cmds *cmds);
-
+void do_pwd(t_cmds *cmds);
 
 #endif
 

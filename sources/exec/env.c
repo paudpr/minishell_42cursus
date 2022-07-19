@@ -11,6 +11,7 @@ t_env	*get_struct_env(char **environ)
 	{
 		env->shlvl = 1;
 		build_environ(env);
+		// env->env = NULL;
 	}
 	else
 		copy_environ(environ, env);
@@ -20,14 +21,17 @@ t_env	*get_struct_env(char **environ)
 void	build_environ(t_env *env)
 {
 	char	cwd[PATH_MAX];
+	char	*shlvl;
 
 	env->env = ft_calloc(sizeof(char *), 3);
 	if (env->env == NULL)
 		return ;
 	getcwd(cwd, sizeof(cwd));
 	env->shlvl = 1;
+	shlvl = ft_itoa(env->shlvl);
 	env->env[0] = ft_strjoin("PWD=", cwd);
-	env->env[1] = ft_strjoin("SHLVL=", ft_itoa(env->shlvl));
+	env->env[1] = ft_strjoin("SHLVL=", shlvl);
+	free(shlvl);
 	env->env[2] = ft_strjoin("_=", cwd);
 	env->path = NULL;
 }

@@ -118,7 +118,7 @@ char	*get_relative_argv(char *cmd)
 	if (ft_strrchr(cmd, '/') != NULL)
 	{
 		chr = ft_strdup(ft_strrchr(cmd, '/') + 1);
-		free(cmd);
+		// free(cmd);
 	}
 	return (chr);
 }

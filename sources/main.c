@@ -15,7 +15,7 @@ int	main(void)
 	while (1)
 	{
 		line = readline(RED "minishell > " RESET);
-		if (line == NULL)
+		if (line == NULL) //eof -> ctrl-D
 		{
 			printf("exit\n");
 			exit(0);

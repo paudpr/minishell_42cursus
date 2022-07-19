@@ -8,6 +8,7 @@ void	exec(t_cmds *cmds)
 	check_bin(cmds);
 	// check_bin2(cmds);
 	cmd = ft_strjoin(cmds->cmds_path, cmds->cmds_argv[0]);
+	printf("---> %s   %s    %s\n", cmd, cmds->cmds_argv[0],cmds->env->env[13]);
 	if(cmds->bin == 0)
 	{
 		if (execve(cmd, cmds->cmds_argv, cmds->env->env) < 0)
@@ -57,6 +58,7 @@ void	do_last_command(t_def *def, t_cmds *cmds)
 	{
 		check_redir(def, cmds);
 		exec(cmds);
+		exit(0);
 	}
 	else
 	{
