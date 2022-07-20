@@ -38,12 +38,12 @@ void check_bin2(t_cmds *cmds)
 	// 	cmds->bin = 1;
 	// 	do_unset(cmds);
 	// }
-	// if (ft_strncmp(cmds->cmds_argv[0], "env", ft_strlen("env")) == 0
-	// 	&& ft_strlen("env") == ft_strlen(cmds->cmds_argv[0]))
-	// {
-	// 	cmds->bin = 1;
-	// 	do_env(cmds);
-	// }
+	if (ft_strncmp(cmds->cmds_argv[0], "env", ft_strlen("env")) == 0
+		&& ft_strlen("env") == ft_strlen(cmds->cmds_argv[0]))
+	{
+		cmds->bin = 1;
+		do_env(cmds);
+	}
 	// if (ft_strncmp(cmds->cmds_argv[0], "exit", ft_strlen("exit")) == 0
 	// 	&& ft_strlen("exit") == ft_strlen(cmds->cmds_argv[0]))
 	// {
@@ -52,7 +52,108 @@ void check_bin2(t_cmds *cmds)
 	// }
 }
 
-int	check_flag(t_cmds *cmds)
+// int	check_flag_env(t_cmds *cmds)
+// {
+// 	int i;
+
+// 	i = 0;
+// 	if(cmds->cmds_argv[1][i])
+// 	{
+// 		printf("dentro del bucle\n");
+// 		if(i == 0 && cmds->cmds_argv[1][i] == '-')
+// 			i++;
+// 		if(cmds->cmds_argv[1][i] == 'i')
+// 			i++;
+// 		else
+// 			return(0);
+// 	}
+// 	return (1);
+// }
+
+// void	do_env(t_cmds *cmds)
+// {
+// 	int		flag;
+// 	t_env	*copy;
+
+// 	flag = 0;
+// 	copy = ft_calloc(sizeof(t_env), 1);
+// 	if (copy == NULL)
+// 		print_error("memoria");
+// 	flag = check_flag_env(cmds);
+// 	printf("flag -> %d\n", flag);
+// 	if (ft_double_len(cmds->env->env) == 0)
+// 		build_environ(copy);
+// 	else
+// 		copy_environ(cmds->env->env, copy);
+// 	dprintf(2, "flaag -> %d\n", flag);
+// 	dprintf(2, "%s\n", copy->env[0]);
+// 	if(flag == 1)
+// 	{
+// 		free_env(copy);
+// 		free(copy);
+// 		return ;
+// 	}
+// 	else
+// 		print_double(copy->env);
+// 	free_env(copy);
+// 	free(copy);
+// }
+
+void build_environ(void)
+{
+	char cwd[PATH_MAX];
+	char *shlvl;
+	t_env *copy;
+
+	printf("ENTRO EN CONSTRUIR ENV\n");
+	copy = ft_calloc(sizeof(t_env), 1);
+	if(copy == NULL)
+		return ;
+	copy->env = ft_calloc(sizeof(char *), 3);
+	if(copy->env == NULL)
+		return ;
+	getcwd(cwd, sizeof(cwd));
+	copy->shlvl = 1;
+	shlvl = ft_itoa(copy->shlvl);
+	copy->env[0] = ft_strjoin("PWD=", cwd);
+	copy->env[1] = ft_strjoin("SHLVL=", shlvl);
+	free(shlvl);
+	copy->env[2] = ft_strjoin("_=", cwd);
+	copy->path = NULL;
+	print_double(copy->env);
+	ft_free_double(copy->env);
+	free(copy);
+}
+
+void do_env(t_cmds *cmds)
+{
+	t_env *copy;
+
+	copy = ft_calloc(sizeof(t_env), 1);
+	if(copy == NULL)
+		print_error("memoria");
+	printf("VALOR DE env -> %s\n", cmds->env->env[0]);
+	if(ft_double_len(cmds->cmds_argv) == 1)
+	{
+		if(cmds->env->env == NULL)
+			build_environ();
+		else
+			print_double(cmds->env->env);
+	}
+	else
+	{
+		if(ft_double_len(cmds->cmds_argv) > 1)
+		{
+			return ;
+			//si es flag
+			//si es ejecutable
+			//si son las dos cosas
+		}
+	}
+}
+
+
+int	check_flag_echo(t_cmds *cmds)
 {
 	int i;
 
@@ -80,7 +181,7 @@ void	do_echo(t_cmds *cmds)
 	if (ft_double_len(cmds->cmds_argv) > 1)
 	{
 		i = 1;
-		flag = check_flag(cmds);
+		flag = check_flag_echo(cmds);
 		if (flag > 0)
 			i++;
 		while(i < ft_double_len(cmds->cmds_argv))
@@ -99,7 +200,11 @@ void do_pwd(t_cmds *cmds)
 {
 	char *pwd;
 
+	//no funciona si no tengo entorno por algun motivo devuelve null, usar getcwd instead
 	(void)cmds;
+	// printf("estoy probando pwd -> %s\n", getcwd("PWD"));
 	pwd = getenv("PWD");
 	printf("%s\n", pwd);
+	//hacer comparación con variable de entorno pr asegurar, pero gestionar 
+	//la actualiación de esa variable en cd
 }

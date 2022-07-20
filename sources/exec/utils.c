@@ -123,3 +123,17 @@ void	wait_process(t_def *def)
 		i--;
 	}
 }
+
+void	print_double(char **str)
+{
+	int i;
+
+	if (str == NULL)
+		return ;
+	i = 0;
+	while(str[i])
+	{
+		printf("%s\n", str[i]);
+		i++;
+	}
+}

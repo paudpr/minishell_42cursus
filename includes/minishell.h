@@ -56,7 +56,7 @@ int		mini_lstsize(t_def *def);
 
 
 t_env	*get_struct_env(char **environ);
-void	build_environ(t_env *env);
+void	build_environ(void);
 void	copy_environ(char **environ, t_env *env);
 int		get_shlvl(char **environ);
 void	get_list(t_def **def, char *argv);	//quitar cuando esté parseo
@@ -68,7 +68,7 @@ void	get_argv_path(t_def *def, t_cmds *cmds);
 void	exec_cmds(t_def *def, t_cmds *cmds);
 
 
-int	check_hd(t_def *def, t_cmds *cmds);
+int	check_hd(t_def *def);
 void	create_file(char *infile, char *line);
 char	*get_hd(char *eof);
 void	clean_hd(int hd);
@@ -81,9 +81,9 @@ void wait_process(t_def *def);
 void check_leaks();
 
 void do_process(t_def *def, t_cmds *cmds);
-void do_commands(t_def *def, t_cmds *cmds);
-void do_one_command(t_def *def, t_cmds *cmds);
-void do_last_command(t_def *def, t_cmds *cmds);
+void do_commands(t_def *def, t_cmds *cmds, int *check);
+void do_one_command(t_def *def, t_cmds *cmds, int *check);
+void do_last_command(t_def *def, t_cmds *cmds, int *check);
 void wait_process(t_def *def);
 
 
@@ -91,6 +91,7 @@ void check_bin(t_cmds *cmds);
 void check_bin2(t_cmds *cmds);
 void	do_echo(t_cmds *cmds);
 void do_pwd(t_cmds *cmds);
+void do_env(t_cmds *cmds);
 
 #endif
 
@@ -116,4 +117,4 @@ void free_env(t_env *env);
 void ft_free_double(char **str);
 void print_error(char *str);
 void print_node(t_def **node, int i);
-
+void	print_double(char **str);

@@ -6,10 +6,10 @@ void	exec(t_cmds *cmds)
 	extern char	**environ;
 
 	check_bin(cmds);
-	// check_bin2(cmds);
+	check_bin2(cmds);
 	cmd = ft_strjoin(cmds->cmds_path, cmds->cmds_argv[0]);
-	printf("---> %s   %s    %s\n", cmd, cmds->cmds_argv[0],cmds->env->env[13]);
-	if(cmds->bin == 0)
+	// printf("---> %s   %s    %s\n", cmd, cmds->cmds_argv[0],cmds->env->env[0]);
+	if (cmds->bin == 0)
 	{
 		if (execve(cmd, cmds->cmds_argv, cmds->env->env) < 0)
 			perror("falla execve ->");
@@ -17,7 +17,7 @@ void	exec(t_cmds *cmds)
 	free(cmd);
 }
 
-void	do_commands(t_def *def, t_cmds *cmds)
+void	do_commands(t_def *def, t_cmds *cmds, int *check)
 {
 	pid_t	pid;
 
@@ -42,9 +42,10 @@ void	do_commands(t_def *def, t_cmds *cmds)
 		dup2(cmds->pipe_fd[cmds->num][0], STDIN_FILENO);
 		close(cmds->pipe_fd[cmds->num][0]);
 	}
+	*check = 1;
 }
 
-void	do_last_command(t_def *def, t_cmds *cmds)
+void	do_last_command(t_def *def, t_cmds *cmds, int *check)
 {
 	pid_t	pid;
 
@@ -67,9 +68,10 @@ void	do_last_command(t_def *def, t_cmds *cmds)
 		close(cmds->pipe_fd[cmds->num][0]);
 		wait(&pid);
 	}
+	*check = 1;
 }
 
-void	do_one_command(t_def *def, t_cmds *cmds)
+void	do_one_command(t_def *def, t_cmds *cmds, int *check)
 {
 	pid_t	pid;
 
@@ -84,31 +86,28 @@ void	do_one_command(t_def *def, t_cmds *cmds)
 	}
 	else
 		wait(&pid);
+	*check = 1;
 }
 
-void	do_process(t_def *def, t_cmds *cmds)			//arreglar esta chapuzaaaaaaaa
+void	do_process(t_def *def, t_cmds *cmds)
 {
 	int	i;
-	int	booleanos;
+	int	check;
 
-	booleanos = 0;
+	check = 0;
 	i = 0;
 	while (i < ft_double_len(def->argv))
 	{
-		if (def->next == NULL && cmds->num == 0 && booleanos == 0)
+		if (def->next == NULL && cmds->num == 0 && check == 0)
+			do_one_command(def, cmds, &check);
+		else if (def->next == NULL && check == 0)
+			do_last_command(def, cmds, &check);
+		else if (check == 0)
+			do_commands(def, cmds, &check);
+		if(def->type[i] == 0)
 		{
-			do_one_command(def, cmds);
-			booleanos++;
-		}
-		else if (def->next == NULL && booleanos == 0)
-		{
-			booleanos++;
-			do_last_command(def, cmds);
-		}
-		else if (booleanos == 0)
-		{
-			do_commands(def, cmds);
-			booleanos++;
+			i++;
+			cmds->hd++;
 		}
 	i++;
 	}

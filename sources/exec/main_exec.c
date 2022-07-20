@@ -11,7 +11,7 @@ void	main_exec(t_def *def, t_env *env)
 	if (cmds == NULL)
 		print_error("memoria struct cmds");
 	init_struct_cmds(env, cmds, n_pipes);
-	hds = check_hd(def, cmds);
+	hds = check_hd(def);
 	exec_cmds(def, cmds);
 	wait_process(def);
 	clean_hd(hds);
@@ -24,7 +24,6 @@ void	exec_cmds(t_def *def, t_cmds *cmds)
 	while (def)
 	{
 		get_argv_path(def, cmds);
-		// printf("comando ya procesado -> %s\n", cmds->cmds_argv[2]);
 		do_process(def, cmds);
 		cmds->num++;
 		free_struct(cmds);
