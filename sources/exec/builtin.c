@@ -8,12 +8,12 @@ void check_bin(t_cmds *cmds)
 		cmds->bin = 1;
 		do_echo(cmds);
 	}
-	// if (ft_strncmp(cmds->cmds_argv[0], "cd", ft_strlen("cd")) == 0
-	// 	&& ft_strlen("cd") == ft_strlen(cmds->cmds_argv[0]))
-	// {
-	// 	cmds->bin = 1;
-	// 	do_cd(cmds);
-	// }
+	if (ft_strncmp(cmds->cmds_argv[0], "cd", ft_strlen("cd")) == 0
+		&& ft_strlen("cd") == ft_strlen(cmds->cmds_argv[0]))
+	{
+		cmds->bin = 1;
+		do_cd(cmds);
+	}
 	if (ft_strncmp(cmds->cmds_argv[0], "pwd", ft_strlen("pwd")) == 0
 		&& ft_strlen("pwd") == ft_strlen(cmds->cmds_argv[0]))
 	{
@@ -105,7 +105,6 @@ void build_environ(void)
 	char *shlvl;
 	t_env *copy;
 
-	printf("ENTRO EN CONSTRUIR ENV\n");
 	copy = ft_calloc(sizeof(t_env), 1);
 	if(copy == NULL)
 		return ;
@@ -132,10 +131,9 @@ void do_env(t_cmds *cmds)
 	copy = ft_calloc(sizeof(t_env), 1);
 	if(copy == NULL)
 		print_error("memoria");
-	printf("VALOR DE env -> %s\n", cmds->env->env[0]);
 	if(ft_double_len(cmds->cmds_argv) == 1)
 	{
-		if(cmds->env->env == NULL)
+		if(ft_double_len(cmds->env->env) == 0)
 			build_environ();
 		else
 			print_double(cmds->env->env);
@@ -198,13 +196,63 @@ void	do_echo(t_cmds *cmds)
 
 void do_pwd(t_cmds *cmds)
 {
-	char *pwd;
+	char pwd[PATH_MAX];
 
-	//no funciona si no tengo entorno por algun motivo devuelve null, usar getcwd instead
 	(void)cmds;
-	// printf("estoy probando pwd -> %s\n", getcwd("PWD"));
-	pwd = getenv("PWD");
+	getcwd(pwd, sizeof(pwd));
 	printf("%s\n", pwd);
 	//hacer comparación con variable de entorno pr asegurar, pero gestionar 
 	//la actualiación de esa variable en cd
 }
+
+void back_home_dir(t_cmds *cmds)
+{
+
+(void)cmds;
+
+}
+
+void change_dir_env(t_cmds *cmds)
+{
+	
+
+
+
+}
+
+void back_one_dir(t_cmds *cmds)
+{
+	char dir[PATH_MAX];
+	char *last;
+	char *new_dir;
+
+	(void)cmds;
+	getcwd(dir, sizeof(dir));
+	last = ft_strrchr(dir, '/');
+	new_dir = ft_substr(dir, 0, ft_strlen(dir) - ft_strlen(last));
+	printf("%s\n", new_dir);
+	chdir(new_dir);
+
+	free(new_dir);
+}
+
+void do_cd(t_cmds *cmds)
+{
+	if(ft_double_len(cmds->cmds_argv) == 1)
+		back_home_dir(cmds);
+	else if (ft_double_len(cmds->cmds_argv) > 1)
+	{
+		if(ft_strncmp(cmds->cmds_argv[1], "..", ft_strlen(cmds->cmds_argv[1])) == 0 
+			&& ft_strlen(cmds->cmds_argv[1]) == ft_strlen(".."))
+			back_one_dir(cmds);
+		
+	}
+
+
+}
+
+
+
+
+// if (ft_strncmp(cmds->cmds_argv[0], "export", ft_strlen("export")) == 0
+// 	// 	&& ft_strlen("export") == ft_strlen(cmds->cmds_argv[0]))

@@ -92,6 +92,7 @@ void check_bin2(t_cmds *cmds);
 void	do_echo(t_cmds *cmds);
 void do_pwd(t_cmds *cmds);
 void do_env(t_cmds *cmds);
+void do_cd(t_cmds *cmds);
 
 #endif
 
