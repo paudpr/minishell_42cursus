@@ -205,54 +205,83 @@ void do_pwd(t_cmds *cmds)
 	//la actualiación de esa variable en cd
 }
 
-void back_home_dir(t_cmds *cmds)
-{
 
-(void)cmds;
+
+void change_var(t_cmds *cmds, char *var, char *new)
+{
+	int		i;
+	char *copy;
+
+	i = 0;
+	while(i < ft_double_len(cmds->env->env))
+	{
+		if(ft_strncmp(cmds->env->env[i], var, ft_strlen(var)) == 0)
+		{
+			copy = ft_strjoin(var, new);
+			free(cmds->env->env[i]);
+			cmds->env->env[i] = ft_strdup(copy);
+			free(copy);
+			return ;
+		}
+		i++;
+	}
+}
+
+
+void cd_home_dir(t_cmds *cmds)		// tener en cuenta que pasa si no existe $HOME
+{
+	int i;
+	char *home;
+	char dir[PATH_MAX];
+	// char *old;
+
+	getcwd(dir, sizeof(dir));
+	i = 0;
+	home = NULL;
+	while(i < ft_double_len(cmds->env->env))
+	{
+		if(ft_strncmp(cmds->env->env[i], "HOME=", ft_strlen("HOME=")) == 0)
+			home = ft_strchr(cmds->env->env[i], '/');
+		i++;
+	}
+	change_var(cmds, "OLDPWD=", dir);
+	change_var(cmds, "PWD=", home);
 
 }
 
-void change_dir_env(t_cmds *cmds)
-{
-	
-
-
-
-}
-
-void back_one_dir(t_cmds *cmds)
+void cd_back_dir(t_cmds *cmds)
 {
 	char dir[PATH_MAX];
 	char *last;
 	char *new_dir;
 
-	(void)cmds;
 	getcwd(dir, sizeof(dir));
 	last = ft_strrchr(dir, '/');
 	new_dir = ft_substr(dir, 0, ft_strlen(dir) - ft_strlen(last));
-	printf("%s\n", new_dir);
+	// printf("%s\n", new_dir);
+	change_var(cmds, "OLDPWD=", dir);
+	change_var(cmds, "PWD=", new_dir);
 	chdir(new_dir);
-
+	printf("new_dir -> %s\n", new_dir);
 	free(new_dir);
 }
 
 void do_cd(t_cmds *cmds)
 {
 	if(ft_double_len(cmds->cmds_argv) == 1)
-		back_home_dir(cmds);
+		cd_home_dir(cmds);
 	else if (ft_double_len(cmds->cmds_argv) > 1)
 	{
 		if(ft_strncmp(cmds->cmds_argv[1], "..", ft_strlen(cmds->cmds_argv[1])) == 0 
 			&& ft_strlen(cmds->cmds_argv[1]) == ft_strlen(".."))
-			back_one_dir(cmds);
-		
+			cd_back_dir(cmds);
+		// if(ft_strncmp(cmds->cmds_argv[1], "-", ft_strlen(cmds->cmds_argv[1])) == 0 
+		// 	&& ft_strlen(cmds->cmds_argv[1]) == ft_strlen("-"))
+		// 	cd_old_dir(cmds);
+
+		else
+			return ;
 	}
 
 
 }
-
-
-
-
-// if (ft_strncmp(cmds->cmds_argv[0], "export", ft_strlen("export")) == 0
-// 	// 	&& ft_strlen("export") == ft_strlen(cmds->cmds_argv[0]))
