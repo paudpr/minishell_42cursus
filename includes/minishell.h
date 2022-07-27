@@ -6,7 +6,6 @@
 # define T_ROUT	2
 # define T_APP	3
 # define T_CMD	4
-# define T_BIN	5
 
 # include <stdio.h>
 # include <stdlib.h>
@@ -86,7 +85,7 @@ void do_one_command(t_def *def, t_cmds *cmds, int *check);
 void do_last_command(t_def *def, t_cmds *cmds, int *check);
 void wait_process(t_def *def);
 
-
+void do_builtin(t_cmds *cmds, int *check);
 void check_bin(t_cmds *cmds);
 void check_bin2(t_cmds *cmds);
 void	do_echo(t_cmds *cmds);

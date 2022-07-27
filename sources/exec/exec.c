@@ -5,8 +5,6 @@ void	exec(t_cmds *cmds)
 	char		*cmd;
 	extern char	**environ;
 
-	check_bin(cmds);
-	check_bin2(cmds);
 	cmd = ft_strjoin(cmds->cmds_path, cmds->cmds_argv[0]);
 	// printf("---> %s   %s    %s\n", cmd, cmds->cmds_argv[0],cmds->env->env[0]);
 	if (cmds->bin == 0)
@@ -33,6 +31,7 @@ void	do_commands(t_def *def, t_cmds *cmds, int *check)
 		dup2(cmds->pipe_fd[cmds->num][1], STDOUT_FILENO);
 		close(cmds->pipe_fd[cmds->num][1]);
 		check_redir(def, cmds);
+		do_builtin(cmds, check);
 		exec(cmds);
 		exit(EXIT_FAILURE);
 	}
@@ -58,6 +57,7 @@ void	do_last_command(t_def *def, t_cmds *cmds, int *check)
 	if (pid == 0)
 	{
 		check_redir(def, cmds);
+		do_builtin(cmds, check);
 		exec(cmds);
 		exit(0);
 	}
@@ -99,7 +99,11 @@ void	do_process(t_def *def, t_cmds *cmds)
 	while (i < ft_double_len(def->argv))
 	{
 		if (def->next == NULL && cmds->num == 0 && check == 0)
-			do_one_command(def, cmds, &check);
+		{
+			do_builtin(cmds, &check);
+			if(cmds->bin == 0)
+				do_one_command(def, cmds, &check);
+		}
 		else if (def->next == NULL && check == 0)
 			do_last_command(def, cmds, &check);
 		else if (check == 0)
