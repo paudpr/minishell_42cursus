@@ -207,19 +207,19 @@ void do_pwd(t_cmds *cmds)
 
 
 
-void change_var(t_cmds *cmds, char *var, char *new)
+void change_var(t_env *env, char *var, char *new)
 {
 	int		i;
 	char *copy;
 
 	i = 0;
-	while(i < ft_double_len(cmds->env->env))
+	while(i < ft_double_len(env->env))
 	{
-		if(ft_strncmp(cmds->env->env[i], var, ft_strlen(var)) == 0)
+		if(ft_strncmp(env->env[i], var, ft_strlen(var)) == 0)
 		{
 			copy = ft_strjoin(var, new);
-			free(cmds->env->env[i]);
-			cmds->env->env[i] = ft_strdup(copy);
+			free(env->env[i]);
+			env->env[i] = ft_strdup(copy);
 			free(copy);
 			return ;
 		}
@@ -227,13 +227,11 @@ void change_var(t_cmds *cmds, char *var, char *new)
 	}
 }
 
-
 void cd_home_dir(t_cmds *cmds)		// tener en cuenta que pasa si no existe $HOME
 {
 	int i;
 	char *home;
 	char dir[PATH_MAX];
-	// char *old;
 
 	getcwd(dir, sizeof(dir));
 	i = 0;
@@ -244,9 +242,15 @@ void cd_home_dir(t_cmds *cmds)		// tener en cuenta que pasa si no existe $HOME
 			home = ft_strchr(cmds->env->env[i], '/');
 		i++;
 	}
-	change_var(cmds, "OLDPWD=", dir);
-	change_var(cmds, "PWD=", home);
-
+	if(home != NULL)
+	{
+		change_var(cmds->env, "OLDPWD=", dir);
+		chdir(home);
+		getcwd(dir, sizeof(dir));
+		change_var(cmds->env, "PWD=", dir);
+	}
+	else
+		printf("minishell: cd: HOME not set\n");
 }
 
 void cd_back_dir(t_cmds *cmds)
@@ -256,14 +260,50 @@ void cd_back_dir(t_cmds *cmds)
 	char *new_dir;
 
 	getcwd(dir, sizeof(dir));
-	last = ft_strrchr(dir, '/');
+	last = ft_strrchr(dir, '/') + 1;
 	new_dir = ft_substr(dir, 0, ft_strlen(dir) - ft_strlen(last));
 	// printf("%s\n", new_dir);
-	change_var(cmds, "OLDPWD=", dir);
-	change_var(cmds, "PWD=", new_dir);
-	chdir(new_dir);
+	change_var(cmds->env, "OLDPWD=", dir);
+	change_var(cmds->env, "PWD=", new_dir);
+	printf("valor de chdir -> %d\n", chdir(new_dir));
 	printf("new_dir -> %s\n", new_dir);
 	free(new_dir);
+}
+
+void cd_return_dir(t_cmds *cmds)
+{
+	int i;
+	char *old;
+	char *dir;
+
+	i = 0;
+	old = NULL;
+	dir = NULL;
+	while(i < ft_double_len(cmds->env->env))
+	{
+		if(ft_strncmp(cmds->env->env[i], "PWD=", ft_strlen("PWD=")) == 0)
+			dir = ft_strdup(cmds->env->env[i]);
+		if(ft_strncmp(cmds->env->env[i], "OLDPWD=", ft_strlen("OLDPWD=")) == 0)
+			old = ft_strdup(cmds->env->env[i]);
+		i++;
+	}
+	if(old == NULL || dir == NULL)
+		printf("minishell: cd: OLDPWD not set\n");
+	else
+	{
+		change_var(cmds->env, "OLDPWD=", dir);
+		change_var(cmds->env, "PWD=", old);
+		chdir(old);
+		free(dir);
+		free(old);
+	}
+}
+
+void cd_move_dir(t_cmds *cmds)
+{
+	(void)cmds;
+
+
 }
 
 void do_cd(t_cmds *cmds)
@@ -275,13 +315,16 @@ void do_cd(t_cmds *cmds)
 		if(ft_strncmp(cmds->cmds_argv[1], "..", ft_strlen(cmds->cmds_argv[1])) == 0 
 			&& ft_strlen(cmds->cmds_argv[1]) == ft_strlen(".."))
 			cd_back_dir(cmds);
-		// if(ft_strncmp(cmds->cmds_argv[1], "-", ft_strlen(cmds->cmds_argv[1])) == 0 
-		// 	&& ft_strlen(cmds->cmds_argv[1]) == ft_strlen("-"))
-		// 	cd_old_dir(cmds);
-
+		else if(ft_strncmp(cmds->cmds_argv[1], ".", ft_strlen(cmds->cmds_argv[1])) == 0 
+			&& ft_strlen(cmds->cmds_argv[1]) == ft_strlen("."))
+			return;
+		else if(ft_strncmp(cmds->cmds_argv[1], "-", ft_strlen(cmds->cmds_argv[1])) == 0 
+			&& ft_strlen(cmds->cmds_argv[1]) == ft_strlen("-"))
+			cd_return_dir(cmds);
 		else
-			return ;
+			cd_move_dir(cmds);
 	}
+
 
 
 }
