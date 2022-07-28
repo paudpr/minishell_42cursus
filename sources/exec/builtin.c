@@ -29,12 +29,12 @@ void check_bin(t_cmds *cmds)
 		cmds->bin = 1;
 		do_pwd(cmds);
 	}
-	// if (ft_strncmp(cmds->cmds_argv[0], "export", ft_strlen("export")) == 0
-	// 	&& ft_strlen("export") == ft_strlen(cmds->cmds_argv[0]))
-	// {
-	// 	cmds->bin = 1;
-	// 	do_export(cmds);
-	// }
+	if (ft_strncmp(cmds->cmds_argv[0], "export", ft_strlen("export")) == 0
+		&& ft_strlen("export") == ft_strlen(cmds->cmds_argv[0]))
+	{
+		cmds->bin = 1;
+		do_export(cmds);
+	}
 }
 
 void check_bin2(t_cmds *cmds)
@@ -53,12 +53,12 @@ void check_bin2(t_cmds *cmds)
 		cmds->bin = 1;
 		do_env(cmds);
 	}
-	// if (ft_strncmp(cmds->cmds_argv[0], "exit", ft_strlen("exit")) == 0
-	// 	&& ft_strlen("exit") == ft_strlen(cmds->cmds_argv[0]))
-	// {
-	// 	cmds->bin = 1;
-	// 	do_exit(cmds);
-	// }
+	if (ft_strncmp(cmds->cmds_argv[0], "exit", ft_strlen("exit")) == 0
+		&& ft_strlen("exit") == ft_strlen(cmds->cmds_argv[0]))
+	{
+		cmds->bin = 1;
+		do_exit(cmds);
+	}
 }
 
 // int	check_flag_env(t_cmds *cmds)
@@ -108,7 +108,7 @@ void check_bin2(t_cmds *cmds)
 // 	free(copy);
 // }
 
-void build_environ(void)
+void build_env(void)
 {
 	char cwd[PATH_MAX];
 	char *shlvl;
@@ -143,7 +143,7 @@ void do_env(t_cmds *cmds)
 	if(ft_double_len(cmds->cmds_argv) == 1)
 	{
 		if(ft_double_len(cmds->env->env) == 0)
-			build_environ();
+			build_env();
 		else
 			print_double(cmds->env->env);
 	}
@@ -307,36 +307,55 @@ void	cd_return_dir(t_cmds *cmds)
 		free(new);
 		getcwd(dir, sizeof(dir));
 		change_var(cmds->env, "PWD=", dir);
+		printf("%s\n", dir);
 	}
 }
 
-//va al directorio indicado. cd path
+char *cd_rel_dir(t_cmds *cmds)
+{
+	char *start;
+	char	*new;
+
+	start = ft_strdup("/Users/pdel-pin");
+	new = ft_strjoin(start, ft_strchr(cmds->cmds_argv[1], '/'));
+	free(start);
+	return(new);
+}
+
+//va al directorio indicado. cd (path)
 void cd_move_dir(t_cmds *cmds)
 {
 	char *new;
 	char dir[PATH_MAX];
 
-	if(cmds->cmds_argv[0][0] == '~')
+	new = NULL;
+	if(cmds->cmds_argv[1][0] == '~')
 		new = cd_rel_dir(cmds);
 	else
-		new = cmds->cmds_argv[1];
+		new = ft_strdup(cmds->cmds_argv[1]);
+	getcwd(dir, sizeof(dir));
 	if(chdir(new) != 0)
-		perror("");
-	
-
-
+		perror("minishell: cd");
+	else
+	{
+		change_var(cmds->env, "OLDPWD=", dir);
+		chdir(new);
+		getcwd(dir, sizeof(dir));
+		change_var(cmds->env, "PWD=", dir);
+	}
+	free(new);
 }
 
-void do_cd(t_cmds *cmds)
+void do_cd(t_cmds *cmds)			//revisar. no funciona igual cuando eliminas directorio anterior al directorio en el que estás
 {
-	if(ft_double_len(cmds->cmds_argv) == 1)						//hecho
+	if(ft_double_len(cmds->cmds_argv) == 1)
 		cd_home_dir(cmds);
 	else if (ft_double_len(cmds->cmds_argv) > 1)
 	{
 		if(ft_strncmp(cmds->cmds_argv[1], "..", ft_strlen(cmds->cmds_argv[1])) == 0 
 			&& ft_strlen(cmds->cmds_argv[1]) == ft_strlen(".."))
 			cd_back_dir(cmds);
-		else if(ft_strncmp(cmds->cmds_argv[1], ".", ft_strlen(cmds->cmds_argv[1])) == 0 		//hecho
+		else if(ft_strncmp(cmds->cmds_argv[1], ".", ft_strlen(cmds->cmds_argv[1])) == 0
 			&& ft_strlen(cmds->cmds_argv[1]) == ft_strlen("."))
 			return;
 		else if(ft_strncmp(cmds->cmds_argv[1], "-", ft_strlen(cmds->cmds_argv[1])) == 0 
@@ -345,6 +364,41 @@ void do_cd(t_cmds *cmds)
 		else
 			cd_move_dir(cmds);
 	}
+}
+
+void do_exit(t_cmds *cmds)
+{
+	int len;
+	int code;
+
+	len = ft_double_len(cmds->cmds_argv);
+	printf("exit\n");
+	if(len > 2)
+		printf("minishell: exit: too many arguments\n");
+	else if(len == 2)
+	{
+		code = ft_atoi(cmds->cmds_argv[1]);
+		exit(code);
+	}
+	else if(len == 1)
+		exit(0);
+}
+
+
+
+
+
+
+
+
+
+void do_export(t_cmds *cmds)
+{	
+	char **copy;
+	
+	copy = sort_double();
+	print_double();
+
 
 
 

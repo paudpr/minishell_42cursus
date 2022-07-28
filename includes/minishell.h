@@ -55,7 +55,7 @@ int		mini_lstsize(t_def *def);
 
 
 t_env	*get_struct_env(char **environ);
-void	build_environ(void);
+void	build_env(void);
 void	copy_environ(char **environ, t_env *env);
 int		get_shlvl(char **environ);
 void	get_list(t_def **def, char *argv);	//quitar cuando esté parseo
@@ -92,6 +92,8 @@ void	do_echo(t_cmds *cmds);
 void do_pwd(t_cmds *cmds);
 void do_env(t_cmds *cmds);
 void do_cd(t_cmds *cmds);
+void do_exit(t_cmds *cmds);
+void do_export(t_cmds *cmds);
 
 #endif
 

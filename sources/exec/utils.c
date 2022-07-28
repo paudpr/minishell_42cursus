@@ -137,3 +137,22 @@ void	print_double(char **str)
 		i++;
 	}
 }
+
+void sort_double(char **str)
+{
+	int i;
+	int len;
+	char **sorted;
+
+	len = ft_double_len(str);
+	sorted = ft_calloc(sizeof(char *), len);
+	i = 0;
+	while(i < len)
+	{
+		
+	}
+
+
+
+
+}
