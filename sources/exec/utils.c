@@ -138,21 +138,29 @@ void	print_double(char **str)
 	}
 }
 
-void sort_double(char **str)
+char **sort_double(char **str)
 {
 	int i;
+	int j;
 	int len;
+	int index;
 	char **sorted;
 
 	len = ft_double_len(str);
-	sorted = ft_calloc(sizeof(char *), len);
+	sorted = ft_calloc(sizeof(char *), len + 1);
 	i = 0;
 	while(i < len)
 	{
-		
+		j = 0;
+		index = 0;
+		while(j < len)
+		{
+			if(ft_strncmp(str[i], str[j], ft_strlen(str[i])) > 0)
+				index++;
+			j++;
+		}
+		sorted[index] = ft_strdup(str[i]);
+		i++;
 	}
-
-
-
-
+	return(sorted);
 }

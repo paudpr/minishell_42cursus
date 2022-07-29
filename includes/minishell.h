@@ -120,3 +120,5 @@ void ft_free_double(char **str);
 void print_error(char *str);
 void print_node(t_def **node, int i);
 void	print_double(char **str);
+void	print_double_export(char **str);
+char **sort_double(char **str);

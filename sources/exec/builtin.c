@@ -387,19 +387,60 @@ void do_exit(t_cmds *cmds)
 
 
 
+void	print_double_export(char **str)
+{
+	int i;
+	int j;
+
+	if (str == NULL)
+		return ;
+	i = 0;
+	while(str[i])
+	{
+		j = -1;
+		printf("declare -x ");
+		while(str[i][++j] != '=')
+			printf("%c", str[i][j]);
+		if(ft_strchr(str[i], '=') != NULL)
+		{
+			printf("=\"");
+			printf("%s", ft_strchr(str[i], '=') + 1);
+			printf("\"\n");
+		}
+		i++;
+	}
+}
+
+void add_var(t_cmds *cmds, int i)
+{
+	if(ft_strchr(cmds->cmds_argv[i], "") != NULL)
 
 
 
 
+}
 
 void do_export(t_cmds *cmds)
 {	
+	int i;
+	int len;
 	char **copy;
 	
-	copy = sort_double();
-	print_double();
-
-
-
-
+	i = 1;
+	copy = NULL;
+	len = ft_double_len(cmds->cmds_argv);
+	if(len == 1)
+	{
+		copy = sort_double(cmds->env->env);
+		print_double_export(copy);
+		ft_free_double(copy);
+	}
+	else
+	{
+		while(i < len)
+		{
+			add_var(cmds, i);
+			i++;
+		}
+	}
 }
