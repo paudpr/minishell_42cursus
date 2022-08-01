@@ -411,10 +411,45 @@ void	print_double_export(char **str)
 	}
 }
 
+int check_valid_var(t_cmds *cmds, int i)
+{
+	int j;
+
+	if(ft_isalpha(cmds->cmds_argv[i][0]) != 1)
+	{
+		perror("minishell: export: not a valid identifier");
+		return (0);
+	}
+	j = 1;
+	while(j < ft_strlen(cmds->cmds_argv[i]) && cmds->cmds_argv[i][j] != '=')
+	{
+		if(ft_isalnum(cmds->cmds_argv[i][j]) != 1)
+		{
+			perror("minishell: export: not a valid identifier");
+			return (0);
+		}
+		j++;
+	}
+}
+
 void add_var(t_cmds *cmds, int i)
 {
-	if(ft_strchr(cmds->cmds_argv[i], "") != NULL)
+	int j;
+	int len;
+	char *var;
+	char **new;
 
+	new = NULL;
+	len = ft_double_len(cmds->env->env);
+	if(check_valid_var(cmds, i) != 0)
+	{
+		j = -1;
+		new = ft_calloc(len + 1, sizeof(char *));
+		while(++j < len)
+			new[j] = ft_strdup(cmds->env->env[j]);
+		//poner var bonita y luego meterla 
+		var = ft_strdup(cmds->cmds_argv[i]);
+	}
 
 
 
