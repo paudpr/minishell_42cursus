@@ -127,11 +127,13 @@ void	wait_process(t_def *def)
 void	print_double(char **str)
 {
 	int i;
+	int len;
 
 	if (str == NULL)
 		return ;
 	i = 0;
-	while(str[i])
+	len = ft_double_len(str);
+	while (i < len)
 	{
 		printf("%s\n", str[i]);
 		i++;
@@ -149,11 +151,11 @@ char **sort_double(char **str)
 	len = ft_double_len(str);
 	sorted = ft_calloc(sizeof(char *), len + 1);
 	i = 0;
-	while(i < len)
+	while (i < len)
 	{
 		j = 0;
 		index = 0;
-		while(j < len)
+		while (j < len)
 		{
 			if(ft_strncmp(str[i], str[j], ft_strlen(str[i])) > 0)
 				index++;

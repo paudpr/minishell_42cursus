@@ -94,6 +94,7 @@ void do_env(t_cmds *cmds);
 void do_cd(t_cmds *cmds);
 void do_exit(t_cmds *cmds);
 void do_export(t_cmds *cmds);
+void do_unset(t_cmds *cmds);
 
 #endif
 

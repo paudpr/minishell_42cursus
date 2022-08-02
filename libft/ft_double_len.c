@@ -6,20 +6,20 @@
 /*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/14 11:06:28 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/06/09 11:19:35 by pdel-pin         ###   ########.fr       */
+/*   Updated: 2022/08/01 20:39:38 by pdel-pin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int ft_double_len(char **str)
+int	ft_double_len(char **str)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	if(!str)
+	if (!str)
 		return (0);
-	while(str[i] != NULL)
+	while (str[i] != NULL)
 		i++;
-	return(i);
+	return (i);
 }
