@@ -594,18 +594,19 @@ void do_unset(t_cmds *cmds)
 	copy = ft_calloc(ft_double_len(cmds->env->env), sizeof(char *));
 	while(cmds->cmds_argv[i])
 	{
-		while(j < ft_double_len(cmds->env->env))
+		j = 0;
+		while(j < ft_double_len(cmds->env->env))  ///REVISAR (unset a b c)
 		{
 			var = get_var_name(cmds->env->env[j]);
 			if(ft_strncmp(cmds->cmds_argv[i], var, ft_strlen(cmds->cmds_argv[i])) == 0 
 				&& ft_strlen(cmds->cmds_argv[i]) == ft_strlen(var))
 			{
-				printf("\nvariable que me salto -> %s\n\n", var);
+				// printf("\nvariable que me salto -> %s\n\n", var);
 				j++;
 			}
 			free(var);
-			copy[k] = ft_strdup(cmds->env->env[j]);
-			printf("%s\n", copy[k]);
+			if(cmds->env->env[j])
+				copy[k] = ft_strdup(cmds->env->env[j]);
 			k++;
 			j++;
 
