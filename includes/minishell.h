@@ -28,7 +28,6 @@ typedef struct s_def
 typedef struct s_env
 {
 	char	**env;
-	char	**path;
 	int		shlvl;
 }	t_env;
 
@@ -85,16 +84,33 @@ void do_one_command(t_def *def, t_cmds *cmds, int *check);
 void do_last_command(t_def *def, t_cmds *cmds, int *check);
 void wait_process(t_def *def);
 
-void do_builtin(t_cmds *cmds, int *check);
-void check_bin(t_cmds *cmds);
-void check_bin2(t_cmds *cmds);
+
+void	do_builtin(t_cmds *cmds, int *check);
+void 	check_bin(t_cmds *cmds);
+void	check_bin2(t_cmds *cmds);
 void	do_echo(t_cmds *cmds);
-void do_pwd(t_cmds *cmds);
-void do_env(t_cmds *cmds);
-void do_cd(t_cmds *cmds);
-void do_exit(t_cmds *cmds);
-void do_export(t_cmds *cmds);
-void do_unset(t_cmds *cmds);
+int		check_flag_echo(t_cmds *cmds);
+void	do_pwd(t_cmds *cmds);
+void	do_exit(t_cmds *cmds);
+void	do_env(t_cmds *cmds);
+void	build_env(void);
+void	do_cd(t_cmds *cmds);
+void	cd_move_dir(t_cmds *cmds);
+void	cd_return_dir(t_cmds *cmds);
+void	do_cd_return_dir(t_cmds *cmds, char *new);
+void	cd_back_dir(t_cmds *cmds);
+void	cd_home_dir(t_cmds *cmds);
+void	change_var(t_env *env, char *var, char *new);
+void	do_export(t_cmds *cmds);
+void	add_var(t_cmds *cmds, int i);
+void	transform_var(t_cmds *cmds, int i, int len);
+void	add_new_var(t_cmds *cmds, int i, int len);
+char	*clean_var(char *new);
+int		check_valid_var(t_cmds *cmds, int i);
+void	print_double_export(char **str);
+void	do_unset(t_cmds *cmds);
+void	del_var(t_cmds *cmds, int i, int len);
+int		var_exists(t_cmds *cmds, int i, int len);
 
 #endif
 

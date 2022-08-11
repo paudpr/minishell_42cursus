@@ -11,7 +11,6 @@ void	init_struct_cmds(t_env *env, t_cmds *cmds, int i)
 	cmds->pipe_fd = ft_calloc(sizeof(int *), i);
 	cmds->fd_in = dup(STDIN_FILENO);
 	cmds->fd_out = dup(STDOUT_FILENO);
-	
 }
 
 char	*check_valid(char **path, char *cmd)
@@ -116,60 +115,56 @@ char	*get_relative_argv(char *cmd)
 
 	chr = NULL;
 	if (ft_strrchr(cmd, '/') != NULL)
-	{
 		chr = ft_strdup(ft_strrchr(cmd, '/') + 1);
-		// free(cmd);
-	}
 	return (chr);
 }
 
-// char	*join_argv(char *cmd, char **split)
-// {
-// 	char	*aux;
-// 	char	*temp;
-// 	int		i;
+char	*get_var_path(t_cmds *cmds)
+{
+	int		i;
+	char	*path;
+	char	*path_clean;
 
-// 	i = 1;
-// 	temp = cmd;
-// 	while (i < ft_double_len(split))
-// 	{
-// 		aux = ft_strjoin(temp, " ");
-// 		free(temp);
-// 		temp = ft_strjoin(aux, split[i]);
-// 		free(aux);
-// 		free(split[i]);
-// 		i++;
-// 	}
-// 	return (temp);
-// }
+	i = 0;
+	path = NULL;
+	while (i < ft_double_len(cmds->env->env))
+	{
+		if (ft_strncmp("PATH=", cmds->env->env[i], 5) == 0)
+			path = ft_strdup(cmds->env->env[i]);
+		i++;
+	}
+	if (path == NULL)
+		return (NULL);
+	path_clean = ft_strchr(path, '=');
+
+	return (path_clean);
+}
 
 void	get_argv_path(t_def *def, t_cmds *cmds)
 {
-	// char	**split_argv;
+	char	*path;
+	char	**path_div;
 	char	*rel_cmd;
 
-	cmds->cmds_argv = get_argv(def);			//aqui revisar
-	// printf("denttro de get_argv_path -> %s\n", cmds->cmds_argv);
+	path = get_var_path(cmds);
+	path_div = ft_split(path, ':');
+	cmds->cmds_argv = get_argv(def);
 	if (cmds->cmds_argv == NULL)
 	{
 		cmds->cmds_path = NULL;
 		return ;
 	}
-	// split_argv = ft_split(cmds->cmds_argv, ' ');
 	if (ft_strrchr(cmds->cmds_argv[0], '/') != NULL)
 	{
 		cmds->cmds_path = get_relative_path(cmds->cmds_argv[0]);
 		rel_cmd = get_relative_argv(cmds->cmds_argv[0]);
-		// printf("comando relativo en get_argv_path -> %s\n", rel_cmd);
-		free(cmds->cmds_argv[0]);														// si hay doble malloc comentar esto
+		free(cmds->cmds_argv[0]);						// si hay doble malloc comentar esto
 		cmds->cmds_argv[0] = ft_strdup(rel_cmd);
 		free(rel_cmd);
-		// cmds->cmds_argv[0] = join_argv(rel_cmd, cmds->cmds_argv);					//aqui revisar
-		// free(split_argv);
 	}
 	else
 	{
-		cmds->cmds_path = get_path(cmds->env->path, cmds->cmds_argv[0]);
-		// ft_free_double(split_argv);
+		cmds->cmds_path = get_path(path_div, cmds->cmds_argv[0]);
+		ft_free_double(path_div);
 	}
 }

@@ -6,7 +6,6 @@ void	exec(t_cmds *cmds)
 	extern char	**environ;
 
 	cmd = ft_strjoin(cmds->cmds_path, cmds->cmds_argv[0]);
-	// printf("---> %s   %s    %s\n", cmd, cmds->cmds_argv[0],cmds->env->env[0]);
 	if (cmds->bin == 0)
 	{
 		if (execve(cmd, cmds->cmds_argv, cmds->env->env) < 0)
@@ -101,14 +100,14 @@ void	do_process(t_def *def, t_cmds *cmds)
 		if (def->next == NULL && cmds->num == 0 && check == 0)
 		{
 			do_builtin(cmds, &check);
-			if(cmds->bin == 0)
+			if (cmds->bin == 0)
 				do_one_command(def, cmds, &check);
 		}
 		else if (def->next == NULL && check == 0)
 			do_last_command(def, cmds, &check);
 		else if (check == 0)
 			do_commands(def, cmds, &check);
-		if(def->type[i] == 0)
+		if (def->type[i] == 0)
 		{
 			i++;
 			cmds->hd++;

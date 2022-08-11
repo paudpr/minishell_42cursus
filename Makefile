@@ -30,7 +30,13 @@ SRCS_EXEC = main_exec.c \
 			heredoc.c \
 			env.c \
 			utils.c \
-			builtin.c 
+			builtin.c \
+			bin_cd.c \
+			bin_echo_pwd_exit.c \
+			bin_env.c \
+			bin_export.c \
+			bin_unset.c \
+			bin_utils.c \
 
 SRCS_PARSE = init_exec.c
 
