@@ -5,13 +5,17 @@ void	exec(t_cmds *cmds)
 	char		*cmd;
 	extern char	**environ;
 
-	cmd = ft_strjoin(cmds->cmds_path, cmds->cmds_argv[0]);
-	if (cmds->bin == 0)
+	cmd = NULL;
+	if(cmds->cmds_argv != NULL)
 	{
-		if (execve(cmd, cmds->cmds_argv, cmds->env->env) < 0)
-			perror("falla execve ->");
-	}
+		cmd = ft_strjoin(cmds->cmds_path, cmds->cmds_argv[0]);
+		if (cmds->bin == 0)
+		{
+			if (execve(cmd, cmds->cmds_argv, cmds->env->env) < 0)
+				perror("falla execve ->");
+		}
 	free(cmd);
+	}
 }
 
 void	do_commands(t_def *def, t_cmds *cmds, int *check)

@@ -33,13 +33,11 @@ char	*check_valid(char **path, char *cmd)
 		i++;
 	}
 	if (cmd_path == NULL)
-	{
 		access(cmd_path, F_OK);
-	}
 	return (cmd_path);
 }
 
-char	*get_path(char **path, char *argvs)
+char	*get_path(char **path, char *argv)
 {
 	int		i;
 	char	*cmd_path;
@@ -48,7 +46,7 @@ char	*get_path(char **path, char *argvs)
 	cmd_path = NULL;
 	if (path == NULL)
 		return (NULL);
-	cmd_path = check_valid(path, argvs);
+	cmd_path = check_valid(path, argv);
 	if (cmd_path == NULL)
 		return (NULL);
 	return (cmd_path);
@@ -135,8 +133,8 @@ char	*get_var_path(t_cmds *cmds)
 	}
 	if (path == NULL)
 		return (NULL);
-	path_clean = ft_strchr(path, '=');
-
+	path_clean = ft_strdup(ft_strchr(path, '=') + 1);
+	free(path);
 	return (path_clean);
 }
 
@@ -148,23 +146,23 @@ void	get_argv_path(t_def *def, t_cmds *cmds)
 
 	path = get_var_path(cmds);
 	path_div = ft_split(path, ':');
+	free(path);
 	cmds->cmds_argv = get_argv(def);
 	if (cmds->cmds_argv == NULL)
 	{
 		cmds->cmds_path = NULL;
+		ft_free_double(path_div);
 		return ;
 	}
 	if (ft_strrchr(cmds->cmds_argv[0], '/') != NULL)
 	{
 		cmds->cmds_path = get_relative_path(cmds->cmds_argv[0]);
 		rel_cmd = get_relative_argv(cmds->cmds_argv[0]);
-		free(cmds->cmds_argv[0]);						// si hay doble malloc comentar esto
+		free(cmds->cmds_argv[0]);
 		cmds->cmds_argv[0] = ft_strdup(rel_cmd);
 		free(rel_cmd);
 	}
 	else
-	{
 		cmds->cmds_path = get_path(path_div, cmds->cmds_argv[0]);
-		ft_free_double(path_div);
-	}
+	ft_free_double(path_div);
 }

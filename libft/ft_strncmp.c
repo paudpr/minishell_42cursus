@@ -6,7 +6,7 @@
 /*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/15 17:13:04 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/06/22 10:56:26 by pdel-pin         ###   ########.fr       */
+/*   Updated: 2022/08/12 12:53:00 by pdel-pin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	size_t	i;
 
 	if (n == 0)
+		return (0);
+	if (s1 == NULL || s2 == NULL)
 		return (0);
 	i = 0;
 	while (i < n)

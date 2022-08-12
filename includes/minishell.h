@@ -94,6 +94,7 @@ void	do_pwd(t_cmds *cmds);
 void	do_exit(t_cmds *cmds);
 void	do_env(t_cmds *cmds);
 void	build_env(void);
+void	print_double_env(char **str);
 void	do_cd(t_cmds *cmds);
 void	cd_move_dir(t_cmds *cmds);
 void	cd_return_dir(t_cmds *cmds);
@@ -117,7 +118,7 @@ int		var_exists(t_cmds *cmds, int i, int len);
 
 
 
-
+void	build_environ(t_env *env);
 
 
 void free_env(t_env *env);
@@ -125,7 +126,7 @@ int *get_array(char *pipes);
 void init_vals(t_cmds *vals, char **environ, t_def **def);
 char **get_argv(t_def *def);
 void free_struct(t_cmds *vals);
-char    *get_path(char **path, char *argvs);
+char    *get_path(char **path, char *argv);
 char *check_valid(char **path, char *cmd);
 void exec(t_cmds *cmds);
 void free_pipe(t_cmds *cmds, int size);

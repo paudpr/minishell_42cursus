@@ -91,7 +91,7 @@ void	free_struct(t_cmds *vals)
 {
 	if (vals->cmds_argv != NULL)
 		ft_free_double(vals->cmds_argv);
-	if (vals->cmds_path != 0)
+	if (vals->cmds_path != NULL)
 		free(vals->cmds_path);
 }
 
@@ -124,8 +124,8 @@ void	wait_process(t_def *def)
 
 void	print_double(char **str)
 {
-	int i;
-	int len;
+	int	i;
+	int	len;
 
 	if (str == NULL)
 		return ;
@@ -138,13 +138,13 @@ void	print_double(char **str)
 	}
 }
 
-char **sort_double(char **str)
+char	**sort_double(char **str)
 {
-	int i;
-	int j;
-	int len;
-	int index;
-	char **sorted;
+	int		i;
+	int		j;
+	int		len;
+	int		index;
+	char	**sorted;
 
 	len = ft_double_len(str);
 	sorted = ft_calloc(sizeof(char *), len + 1);
@@ -155,12 +155,12 @@ char **sort_double(char **str)
 		index = 0;
 		while (j < len)
 		{
-			if(ft_strncmp(str[i], str[j], ft_strlen(str[i])) > 0)
+			if (ft_strncmp(str[i], str[j], ft_strlen(str[i])) > 0)
 				index++;
 			j++;
 		}
 		sorted[index] = ft_strdup(str[i]);
 		i++;
 	}
-	return(sorted);
+	return (sorted);
 }

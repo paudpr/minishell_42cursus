@@ -1,5 +1,22 @@
 #include "minishell.h"
 
+void	print_double_env(char **str)
+{
+	int	i;
+	int	len;
+
+	if (str == NULL)
+		return ;
+	i = 0;
+	len = ft_double_len(str);
+	while (i < len)
+	{
+		if(ft_strchr(str[i], '=') != 0)
+			printf("%s\n", str[i]);
+		i++;
+	}
+}
+
 void	build_env(void)
 {
 	char	cwd[PATH_MAX];
@@ -36,7 +53,7 @@ void	do_env(t_cmds *cmds)
 		if (ft_double_len(cmds->env->env) == 0)
 			build_env();
 		else
-			print_double(cmds->env->env);
+			print_double_env(cmds->env->env);
 	}
 	else
 	{
@@ -49,50 +66,3 @@ void	do_env(t_cmds *cmds)
 		}
 	}
 }
-
-// int	check_flag_env(t_cmds *cmds)
-// {
-// 	int i;
-
-// 	i = 0;
-// 	if (cmds->cmds_argv[1][i])
-// 	{
-// 		printf("dentro del bucle\n");
-// 		if (i == 0 && cmds->cmds_argv[1][i] == '-')
-// 			i++;
-// 		if (cmds->cmds_argv[1][i] == 'i')
-// 			i++;
-// 		else
-// 			return (0);
-// 	}
-// 	return (1);
-// }
-
-// void	do_env(t_cmds *cmds)
-// {
-// 	int		flag;
-// 	t_env	*copy;
-
-// 	flag = 0;
-// 	copy = ft_calloc(sizeof(t_env), 1);
-// 	if (copy == NULL)
-// 		print_error("memoria");
-// 	flag = check_flag_env(cmds);
-// 	printf("flag -> %d\n", flag);
-// 	if (ft_double_len(cmds->env->env) == 0)
-// 		build_environ(copy);
-// 	else
-// 		copy_environ(cmds->env->env, copy);
-// 	dprintf(2, "flaag -> %d\n", flag);
-// 	dprintf(2, "%s\n", copy->env[0]);
-// 	if (flag == 1)
-// 	{
-// 		free_env(copy);
-// 		free(copy);
-// 		return ;
-// 	}
-// 	else
-// 		print_double(copy->env);
-// 	free_env(copy);
-// 	free(copy);
-// }

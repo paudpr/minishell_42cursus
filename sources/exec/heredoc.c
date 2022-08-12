@@ -1,10 +1,19 @@
 #include "minishell.h"
 
+void	get_hd_norm(char *line, char *read)
+{
+	char	*aux;
+
+	aux = ft_strdup(line);
+	free(line);
+	line = ft_strjoin(aux, read);
+	free(aux);
+}
+
 char	*get_hd(char *eof)
 {
 	char			*read;
 	char			*line;
-	char			*aux;
 	unsigned int	len;
 	int				i;
 
@@ -24,12 +33,7 @@ char	*get_hd(char *eof)
 		if (i == 0)
 			line = ft_strdup(read);
 		else
-		{
-			aux = ft_strdup(line);					//aqui quitar lineas
-			free(line);
-			line = ft_strjoin(aux, read);
-			free(aux);
-		}
+			get_hd_norm(line, read);
 		free(read);
 		i++;
 	}

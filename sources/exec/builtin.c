@@ -2,9 +2,12 @@
 
 void	do_builtin(t_cmds *cmds, int *check)
 {
-	check_bin(cmds);
-	check_bin2(cmds);
-	*check = 1;
+	if(cmds->cmds_argv != NULL)
+	{
+		check_bin(cmds);
+		check_bin2(cmds);
+		*check = 1;
+	}
 }
 
 void	check_bin(t_cmds *cmds)

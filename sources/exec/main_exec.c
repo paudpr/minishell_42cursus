@@ -6,6 +6,7 @@ void	main_exec(t_def *def, t_env *env)
 	int		n_pipes;
 	int		hds;
 
+	// system("leaks -q minishell");
 	n_pipes = mini_lstsize(def);
 	cmds = ft_calloc(sizeof(t_cmds), 1);
 	if (cmds == NULL)

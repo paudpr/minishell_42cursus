@@ -13,6 +13,8 @@ void	print_double_export(char **str)
 	while (i < len)
 	{
 		j = -1;
+		if (i == 2)
+			printf("declare -x EASTER_EGG=\"Dan\"\n");
 		printf("declare -x ");
 		while (str[i][++j] != '=' && str[i][j])
 			printf("%c", str[i][j]);
@@ -86,7 +88,7 @@ void	add_new_var(t_cmds *cmds, int i, int len)
 	new = ft_calloc(len + 2, sizeof(char *));
 	if (new == NULL)
 		exit(0);
-	while (++j < len)			//volver a probar esta mierda a ver si se estan guardando todos o si hay que hacer len - 1 para que no copie el nulo  y  luego asignar a mano el nulo
+	while (++j < len)
 		new[j] = ft_strdup(cmds->env->env[j]);
 	new[j] = clean_var(cmds->cmds_argv[i]);
 	ft_free_double(cmds->env->env);
@@ -98,13 +100,18 @@ void	transform_var(t_cmds *cmds, int i, int len)
 	int		j;
 	int		length;
 	char	*other;
+	int		length_2;
+	char	*other_2;
 
 	other = ft_strchr(cmds->cmds_argv[i], '=');
 	length = ft_strlen(cmds->cmds_argv[i]) - ft_strlen(other);
 	j = 0;
 	while (j < len)
 	{
-		if (ft_strncmp(cmds->cmds_argv[i], cmds->env->env[j], length) == 0)
+		other_2 = ft_strchr(cmds->env->env[j], '=');
+		length_2 = ft_strlen(cmds->env->env[j]) - ft_strlen(other_2);
+		if (ft_strncmp(cmds->cmds_argv[i], cmds->env->env[j], length) == 0
+			&& length == length_2)
 		{
 			free(cmds->env->env[j]);
 			cmds->env->env[j] = clean_var(cmds->cmds_argv[i]);
