@@ -43,11 +43,6 @@ void	build_env(void)
 
 void	do_env(t_cmds *cmds)
 {
-	t_env	*copy;
-
-	copy = ft_calloc(sizeof(t_env), 1);
-	if (copy == NULL)
-		print_error("memoria");
 	if (ft_double_len(cmds->cmds_argv) == 1)
 	{
 		if (ft_double_len(cmds->env->env) == 0)

@@ -128,7 +128,10 @@ void	add_var(t_cmds *cmds, int i)
 	if (check_valid_var(cmds, i) != 0)
 	{
 		if (var_exists(cmds, i, len) == 1)
-			transform_var(cmds, i, len);
+			if(ft_strchr(cmds->cmds_argv[i], '=') != 0)
+				transform_var(cmds, i, len);
+			else
+				return ;
 		else
 			add_new_var(cmds, i, len);
 	}
