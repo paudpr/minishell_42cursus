@@ -119,3 +119,7 @@ ERRORES:
 cat | cat | <<  eof | ls
 cat | cat | cat << eof | ls
 < noexiste cat                                          !!!!!!!!!!se queda cat abierto
+
+
+
+< test.sh cat > salida >> salida2 > salida3
