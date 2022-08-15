@@ -4,8 +4,6 @@ void	redir_in(char *infile, int *flag)
 {
 	int	fd;
 
-	dprintf(2, "flag en redir in -> %d\n", *flag);
-	dprintf(2, "access in -> %d\n", access(infile, F_OK | R_OK));
 	if(access(infile, F_OK | R_OK) == 0)
 	{
 		fd = open(infile, O_RDONLY);
@@ -15,16 +13,16 @@ void	redir_in(char *infile, int *flag)
 		close(fd);
 	}
 	else
+	{
+		perror("");
 		*flag = 1;
-	dprintf(2, "flag en redir in -> %d\n", *flag);
+	}
 }
 
 void	redir_out(char *outfile, int *flag)
 {
 	int	fd;
 
-	dprintf(2, "flag en redir out -> %d\n", *flag);
-	dprintf(2, "access out -> %d\n", access(outfile, F_OK | W_OK));
 	if(access(outfile, F_OK | W_OK) == 0 || access(outfile, F_OK) != 0)
 	{
 		fd = open(outfile, O_RDWR | O_CREAT | O_TRUNC, 0644);
@@ -34,8 +32,10 @@ void	redir_out(char *outfile, int *flag)
 		close(fd);
 	}
 	else
+	{
+		perror("");
 		*flag = 1;
-	dprintf(2, "flag en redir out -> %d\n", *flag);
+	}
 }
 
 void	redir_app(char *outfile, int *flag)
@@ -51,7 +51,10 @@ void	redir_app(char *outfile, int *flag)
 		close(fd);
 	}
 	else
+	{
+		perror("");
 		*flag = 1;
+	}
 }
 
 void	check_redir(t_def *def, t_cmds *cmds)
