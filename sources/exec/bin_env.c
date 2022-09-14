@@ -11,7 +11,7 @@ void	print_double_env(char **str)
 	len = ft_double_len(str);
 	while (i < len)
 	{
-		if(ft_strchr(str[i], '=') != 0)
+		if (ft_strchr(str[i], '=') != 0)
 			printf("%s\n", str[i]);
 		i++;
 	}

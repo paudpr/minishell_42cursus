@@ -6,15 +6,15 @@ void	exec(t_cmds *cmds)
 	extern char	**environ;
 
 	cmd = NULL;
-	if(cmds->cmds_argv != NULL)
+	if (cmds->cmds_argv != NULL)
 	{
 		cmd = ft_strjoin(cmds->cmds_path, cmds->cmds_argv[0]);
 		if (cmds->bin == 0)
 		{
 			if (execve(cmd, cmds->cmds_argv, cmds->env->env) < 0)
-				perror("falla execve ->");
+				perror("");
 		}
-	free(cmd);
+		free(cmd);
 	}
 }
 

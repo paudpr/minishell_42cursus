@@ -4,7 +4,7 @@ void	redir_in(char *infile, int *flag)
 {
 	int	fd;
 
-	if(access(infile, F_OK | R_OK) == 0)
+	if (access(infile, F_OK | R_OK) == 0)
 	{
 		fd = open(infile, O_RDONLY);
 		if (fd < 0)
@@ -16,6 +16,7 @@ void	redir_in(char *infile, int *flag)
 	{
 		perror("");
 		*flag = 1;
+		exit(0);
 	}
 }
 
@@ -23,7 +24,7 @@ void	redir_out(char *outfile, int *flag)
 {
 	int	fd;
 
-	if(access(outfile, F_OK | W_OK) == 0 || access(outfile, F_OK) != 0)
+	if (access(outfile, F_OK | W_OK) == 0 || access(outfile, F_OK) != 0)
 	{
 		fd = open(outfile, O_RDWR | O_CREAT | O_TRUNC, 0644);
 		if (fd < 0)
@@ -35,6 +36,7 @@ void	redir_out(char *outfile, int *flag)
 	{
 		perror("");
 		*flag = 1;
+		exit(0);
 	}
 }
 
@@ -42,7 +44,7 @@ void	redir_app(char *outfile, int *flag)
 {
 	int	fd;
 
-	if(access(outfile, W_OK) == 0 || access(outfile, F_OK) != 0)
+	if (access(outfile, W_OK) == 0 || access(outfile, F_OK) != 0)
 	{
 		fd = open(outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
 		if (fd < 0)
@@ -54,27 +56,35 @@ void	redir_app(char *outfile, int *flag)
 	{
 		perror("");
 		*flag = 1;
+		exit(0);
 	}
+}
+
+static char	*hd_filename(t_cmds *cmds)
+{
+	char	*num;
+	char	*heredoc;
+
+	num = ft_itoa(cmds->hd);
+	heredoc = ft_strjoin("/tmp/heredoc", num);
+	return (heredoc);
 }
 
 void	check_redir(t_def *def, t_cmds *cmds)
 {
 	int		i;
 	int		flag;
-	char	*num;
 	char	*heredoc;
 
-	i = 0;
+	i = -1;
 	flag = 0;
-	while (def->argv[i])
+	while (def->argv[++i])
 	{
 		if (def->type[i] == 0 && flag == 0)
 		{
 			i++;
-			num = ft_itoa(cmds->hd);
-			heredoc = ft_strjoin("/tmp/heredoc", num);
+			heredoc = hd_filename(cmds);
 			redir_in(heredoc, &flag);
-			free(num);
 			free(heredoc);
 			cmds->hd++;
 		}
@@ -84,6 +94,5 @@ void	check_redir(t_def *def, t_cmds *cmds)
 			redir_out(def->argv[++i], &flag);
 		if (def->type[i] == 3 && flag == 0)
 			redir_app(def->argv[++i], &flag);
-		i++;
 	}
 }

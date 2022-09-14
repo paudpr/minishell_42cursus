@@ -2,7 +2,7 @@
 
 void	do_builtin(t_cmds *cmds, int *check)
 {
-	if(cmds->cmds_argv != NULL)
+	if (cmds->cmds_argv != NULL)
 	{
 		check_bin(cmds);
 		check_bin2(cmds);

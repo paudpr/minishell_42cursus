@@ -39,7 +39,8 @@ int	check_valid_var(t_cmds *cmds, int i)
 		return (0);
 	}
 	j = 1;
-	while (j < (int)ft_strlen(cmds->cmds_argv[i]) && cmds->cmds_argv[i][j] != '=')
+	while (j < (int)ft_strlen(cmds->cmds_argv[i])
+		&& cmds->cmds_argv[i][j] != '=')
 	{
 		if (ft_isalnum(cmds->cmds_argv[i][j]) != 1)
 		{
@@ -61,7 +62,7 @@ char	*clean_var(char *new)
 	var = NULL;
 	length = ft_strlen(new);
 	if (ft_strchr(new, '=') == 0)
-		return (ft_strdup(new));				 //REVISAR
+		return (ft_strdup(new));
 	else
 	{
 		aux = *(ft_strchr(new, '=') + 1);
@@ -128,10 +129,12 @@ void	add_var(t_cmds *cmds, int i)
 	if (check_valid_var(cmds, i) != 0)
 	{
 		if (var_exists(cmds, i, len) == 1)
-			if(ft_strchr(cmds->cmds_argv[i], '=') != 0)
+		{
+			if (ft_strchr(cmds->cmds_argv[i], '=') != 0)
 				transform_var(cmds, i, len);
 			else
 				return ;
+		}
 		else
 			add_new_var(cmds, i, len);
 	}

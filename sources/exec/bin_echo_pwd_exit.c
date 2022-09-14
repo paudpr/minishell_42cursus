@@ -2,7 +2,7 @@
 
 int	check_flag_echo(t_cmds *cmds)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (cmds->cmds_argv[1][i])
@@ -45,13 +45,11 @@ void	do_echo(t_cmds *cmds)
 
 void	do_pwd(t_cmds *cmds)
 {
-	char pwd[PATH_MAX];
+	char	pwd[PATH_MAX];
 
 	(void)cmds;
 	getcwd(pwd, sizeof(pwd));
 	printf("%s\n", pwd);
-	//hacer comparación con variable de entorno pr asegurar, pero gestionar 
-	//la actualiación de esa variable en cd
 }
 
 void	do_exit(t_cmds *cmds)
