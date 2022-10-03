@@ -25,20 +25,27 @@ SRCS_PARSE_DIR = parse
 
 SRCS_EXEC = main_exec.c \
 			list_to_struct.c \
+			init_struct.c \
 			exec.c \
 			redir.c \
 			heredoc.c \
+			heredoc_2.c \
 			env.c \
 			utils.c \
+			utils_free.c \
+			utils_list.c \
 			builtin.c \
 			bin_cd.c \
+			bin_cd_2.c \
 			bin_echo_pwd_exit.c \
 			bin_env.c \
 			bin_export.c \
+			bin_export_2.c \
 			bin_unset.c \
 			bin_utils.c \
 
-SRCS_PARSE = init_exec.c
+SRCS_PARSE = init_exec.c \
+			main_parse.c \
 
 SRCS = main.c
 

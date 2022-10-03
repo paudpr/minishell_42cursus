@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heredoc.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/10/03 15:52:47 by pdel-pin          #+#    #+#             */
+/*   Updated: 2022/10/03 15:52:48 by pdel-pin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-void	get_hd_norm(char **read, char **line, int i)
+static void	get_hd_norm(char **read, char **line, int i)
 {
 	char	*aux;
 
@@ -15,7 +27,7 @@ void	get_hd_norm(char **read, char **line, int i)
 	}
 }
 
-char	*get_hd(char *eof)
+static char	*get_hd(char *eof)
 {
 	char			*read;
 	char			*line;
@@ -41,7 +53,7 @@ char	*get_hd(char *eof)
 	}
 }
 
-void	create_file(char *infile, char *line)
+static void	create_file(char *infile, char *line)
 {
 	int	fd;
 	int	i;
@@ -57,7 +69,7 @@ void	create_file(char *infile, char *line)
 	}
 }
 
-void	create_hd(int n, char *eof)
+static void	create_hd(int n, char *eof)
 {
 	char	*num;
 	char	*infile;
@@ -94,22 +106,4 @@ int	check_hd(t_def *def)
 		def = def->next;
 	}
 	return (hd);
-}
-
-void	clean_hd(int hd)
-{
-	int		i;
-	char	*num;
-	char	*name;
-
-	i = 0;
-	while (i < hd)
-	{
-		num = ft_itoa(i);
-		name = ft_strjoin("/tmp/heredoc", num);
-		unlink(name);
-		free(name);
-		free(num);
-		i++;
-	}
 }

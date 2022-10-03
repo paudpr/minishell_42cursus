@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   bin_env.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/10/03 15:52:25 by pdel-pin          #+#    #+#             */
+/*   Updated: 2022/10/03 15:52:26 by pdel-pin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	print_double_env(char **str)
@@ -53,11 +65,6 @@ void	do_env(t_cmds *cmds)
 	else
 	{
 		if (ft_double_len(cmds->cmds_argv) > 1)
-		{
 			return ;
-			//si es flag
-			//si es ejecutable
-			//si son las dos cosas
-		}
 	}
 }

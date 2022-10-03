@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/10/03 15:53:04 by pdel-pin          #+#    #+#             */
+/*   Updated: 2022/10/03 15:53:05 by pdel-pin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	print_error(char *str)
@@ -12,100 +24,6 @@ void	print_error(char *str)
 	}
 	write(1, "\n", 1);
 	exit(EXIT_FAILURE);
-}
-
-t_def	*mini_lstnew(void *content, int *array)
-{
-	t_def	*a;
-
-	a = malloc(sizeof(t_def));
-	if (a == 0)
-		return (0);
-	a->argv = ft_split(content, ' ');
-	a->type = array;
-	a->next = NULL;
-	return (a);
-}
-
-void	mini_lstadd_back(t_def **lst, t_def *new)
-{
-	t_def	*p;
-
-	if (!*lst)
-		*lst = new;
-	else
-	{
-		p = mini_lstlast(*lst);
-		p -> next = new;
-	}
-}
-
-t_def	*mini_lstlast(t_def *lst)
-{
-	if (!lst)
-		return (0);
-	while (lst -> next)
-		lst = lst -> next;
-	return (lst);
-}
-
-int	mini_lstsize(t_def *def)
-{
-	int	i;
-
-	i = 1;
-	if (def == NULL)
-		return (0);
-	while (def->next != NULL)
-	{
-		def = def->next;
-		i++;
-	}
-	return (i);
-}
-
-void	free_list(t_def **def)
-{
-	int		i;
-	t_def	*copy;
-
-	i = mini_lstsize(*def);
-	while (i)
-	{
-		ft_free_double((*def)->argv);
-		free((*def)->type);
-		copy = *def;
-		*def = (*def)->next;
-		free(copy);
-		i--;
-	}	
-}
-
-void	free_env(t_env *env)
-{
-	ft_free_double(env->env);
-	free(env);
-}
-
-void	free_struct(t_cmds *vals)
-{
-	if (vals->cmds_argv != NULL)
-		ft_free_double(vals->cmds_argv);
-	if (vals->cmds_path != NULL)
-		free(vals->cmds_path);
-}
-
-void	free_pipe(t_cmds *cmds, int size)
-{
-	int	i;
-
-	i = 0;
-	while (i < size)
-	{
-		free(cmds->pipe_fd[i]);
-		i++;
-	}
-	free(cmds->pipe_fd);
 }
 
 void	wait_process(t_def *def)

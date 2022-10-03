@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/10/03 15:52:43 by pdel-pin          #+#    #+#             */
+/*   Updated: 2022/10/03 15:52:44 by pdel-pin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-void	exec(t_cmds *cmds)
+static void	exec(t_cmds *cmds)
 {
 	char		*cmd;
 	extern char	**environ;
@@ -18,7 +30,7 @@ void	exec(t_cmds *cmds)
 	}
 }
 
-void	do_commands(t_def *def, t_cmds *cmds, int *check)
+static void	do_commands(t_def *def, t_cmds *cmds, int *check)
 {
 	pid_t	pid;
 
@@ -47,7 +59,7 @@ void	do_commands(t_def *def, t_cmds *cmds, int *check)
 	*check = 1;
 }
 
-void	do_last_command(t_def *def, t_cmds *cmds, int *check)
+static void	do_last_command(t_def *def, t_cmds *cmds, int *check)
 {
 	pid_t	pid;
 
@@ -74,7 +86,7 @@ void	do_last_command(t_def *def, t_cmds *cmds, int *check)
 	*check = 1;
 }
 
-void	do_one_command(t_def *def, t_cmds *cmds, int *check)
+static void	do_one_command(t_def *def, t_cmds *cmds, int *check)
 {
 	pid_t	pid;
 

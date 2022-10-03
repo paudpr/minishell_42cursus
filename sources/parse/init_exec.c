@@ -1,9 +1,5 @@
 #include "minishell.h"
 
-/*
-"cat Makefile > salida | ls | cat << eof >> salida2"
-*/
-
 void	print_node(t_def **node, int i)
 {
 	int		j;

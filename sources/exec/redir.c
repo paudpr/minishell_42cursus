@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redir.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/10/03 15:52:57 by pdel-pin          #+#    #+#             */
+/*   Updated: 2022/10/03 15:52:58 by pdel-pin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-void	redir_in(char *infile, int *flag)
+static void	redir_in(char *infile, int *flag)
 {
 	int	fd;
 
@@ -20,7 +32,7 @@ void	redir_in(char *infile, int *flag)
 	}
 }
 
-void	redir_out(char *outfile, int *flag)
+static void	redir_out(char *outfile, int *flag)
 {
 	int	fd;
 
@@ -40,7 +52,7 @@ void	redir_out(char *outfile, int *flag)
 	}
 }
 
-void	redir_app(char *outfile, int *flag)
+static void	redir_app(char *outfile, int *flag)
 {
 	int	fd;
 

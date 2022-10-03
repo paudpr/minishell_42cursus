@@ -1,16 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/10/03 15:52:37 by pdel-pin          #+#    #+#             */
+/*   Updated: 2022/10/03 15:52:38 by pdel-pin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-void	do_builtin(t_cmds *cmds, int *check)
-{
-	if (cmds->cmds_argv != NULL)
-	{
-		check_bin(cmds);
-		check_bin2(cmds);
-		*check = 1;
-	}
-}
-
-void	check_bin(t_cmds *cmds)
+static void	check_bin(t_cmds *cmds)
 {
 	if (ft_strncmp(cmds->cmds_argv[0], "echo", ft_strlen("echo")) == 0
 		&& ft_strlen("echo") == ft_strlen(cmds->cmds_argv[0]))
@@ -38,7 +40,7 @@ void	check_bin(t_cmds *cmds)
 	}
 }
 
-void	check_bin2(t_cmds *cmds)
+static void	check_bin2(t_cmds *cmds)
 {
 	if (ft_strncmp(cmds->cmds_argv[0], "unset", ft_strlen("unset")) == 0
 		&& ft_strlen("unset") == ft_strlen(cmds->cmds_argv[0]))
@@ -57,5 +59,15 @@ void	check_bin2(t_cmds *cmds)
 	{
 		cmds->bin = 1;
 		do_exit(cmds);
+	}
+}
+
+void	do_builtin(t_cmds *cmds, int *check)
+{
+	if (cmds->cmds_argv != NULL)
+	{
+		check_bin(cmds);
+		check_bin2(cmds);
+		*check = 1;
 	}
 }

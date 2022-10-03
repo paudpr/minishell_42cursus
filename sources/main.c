@@ -22,8 +22,8 @@ int	main(void)
 		}
 		if (line != NULL && *line != 0)
 			add_history(line);
+		main_parse(&def, line);
 		get_list(&def, line);			// main_parse();
-		// print_node(&def, 1);
 		main_exec(def, env);
 		free(line);
 		free_list(&def);
