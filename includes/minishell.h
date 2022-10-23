@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pauladelpinoramirez <pauladelpinoramire    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 15:52:10 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/10/03 15:52:11 by pdel-pin         ###   ########.fr       */
+/*   Updated: 2022/10/22 13:12:03 by pauladelpin      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ typedef struct s_cmds
 
 // env.c
 t_env	*get_struct_env(char **environ);
-void	build_env(void);
+void	build_environ(t_env *env);
 void	copy_environ(char **environ, t_env *env);
 
 // main_exec.c
