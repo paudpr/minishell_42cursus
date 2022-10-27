@@ -165,26 +165,54 @@ int	parse_pipe_tokens(t_list *lst)
 // 	return (0);
 // }
 
+int error_redir_tokens(t_list **lst, int flag, char type)
+{
+	int i;
+
+	if(flag == 1)	//si hay demasiadas redirecciones del mismo tipo juntas <<<<<<<<<<<<<
+
+
+	if(flag == 2)		// si hay un <<> >>< <<| >>|
+
+	if(flag == 3)		// si  hay <> >< <| >|
+
+
+}
 
 int parse_redir_tokens(t_list *lst)
 {
 	char	flag;
+	int i;
 	
-	while(lst)
+	i = 0;
+	while (lst)
 	{
-		if (!ft_stncmp(lst->content, "<", 1)
+		if (!ft_stncmp(lst->content, "<", 1)	//si es una redirección
 			|| !ft_stncmp(lst->content, ">", 1))
 		{
 			flag = lst->content;
 			lst = lst->next;
+			if (lst && !ft_strncmp(lst->content, flag, 1)) //si es un heredoc o un append
+			{
+				lst = lst->next;
+				if (lst && !ft_strncmp(lst->content, flag, 1))		//si es un fallo porque muchas redirecciones 
+					return(error_redir_tokens(&lst, 1, flag));
+				else if (lst && ft_strncmp(lst->content, flag, 1)
+					&& (lst->content == "|" || lst->content == "<"
+						|| lst->content == ">"))					//si es un fallo porque mezcla de redirecciones
+					return(error_redir_tokens(&lst, 2, flag));
+				else
+					lst = lst->next;
+			}
+			else if(lst && ft_strncmp(lst->content, flag, 1)	//si mezcla redirecciones simples
+				&& (lst->content == "|" || lst->content == "<"
+					|| lst->content == ">"))
+				error_redir_tokens(&lst, 3, flag);
 		}
-
-
-
-
+		else
+			lst = lst->next;
 	}
-
-
+	return(0);
 }
 
 
