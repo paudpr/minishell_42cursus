@@ -165,49 +165,80 @@ int	parse_pipe_tokens(t_list *lst)
 // 	return (0);
 // }
 
-int error_redir_tokens(t_list **lst, int flag, char type)
+void	print_redir_err_tokens(int i, char type)
+{
+	int count;
+
+	count = 0;
+	printf("minishell: syntax error near unexpected token '%c", type);
+	while (count < i && count < 2)
+	{
+		printf("%c", type);
+		count++;
+	}
+	printf("'\n");
+}
+
+int	error_redir_tokens(t_list **lst, char flag)
 {
 	int i;
+	t_list	*aux;
 
-	if(flag == 1)	//si hay demasiadas redirecciones del mismo tipo juntas <<<<<<<<<<<<<
-
-
-	if(flag == 2)		// si hay un <<> >>< <<| >>|
-
-	if(flag == 3)		// si  hay <> >< <| >|
-
-
+	aux = *lst;
+	aux = aux->next;
+	i = 0;
+	while(aux && !ft_strncmp(aux->content, &flag, 1))
+	{
+		i++;
+		aux = aux->next;
+	}
+	print_redir_err_tokens(i, flag);
+	while(aux && (!ft_strncmp(aux->content, "|", 1)
+		|| !ft_strncmp(aux->content, "<", 1) || !ft_strncmp(aux->content, ">", 1)))
+		aux = aux->next;
+	return(1);
 }
 
 int parse_redir_tokens(t_list *lst)
 {
 	char	flag;
+	char *aux;
 	int i;
 	
 	i = 0;
 	while (lst)
 	{
-		if (!ft_stncmp(lst->content, "<", 1)	//si es una redirección
-			|| !ft_stncmp(lst->content, ">", 1))
+		if (!ft_strncmp(lst->content, "<", 1)									//si es una redirección
+			|| !ft_strncmp(lst->content, ">", 1))
 		{
-			flag = lst->content;
+			aux = ft_strdup(lst->content);
+			flag = aux[0];
 			lst = lst->next;
-			if (lst && !ft_strncmp(lst->content, flag, 1)) //si es un heredoc o un append
+			if (lst && !ft_strncmp(lst->content, &flag, 1)) 					//si es un heredoc o un append
 			{
 				lst = lst->next;
-				if (lst && !ft_strncmp(lst->content, flag, 1))		//si es un fallo porque muchas redirecciones 
-					return(error_redir_tokens(&lst, 1, flag));
-				else if (lst && ft_strncmp(lst->content, flag, 1)
-					&& (lst->content == "|" || lst->content == "<"
-						|| lst->content == ">"))					//si es un fallo porque mezcla de redirecciones
-					return(error_redir_tokens(&lst, 2, flag));
+				free(aux);
+				aux = ft_strdup(lst->content);
+				if (lst && !ft_strncmp(lst->content, &flag, 1))					//si es un fallo porque muchas redirecciones 
+					return(error_redir_tokens(&lst, aux[0]));
+				else if (lst && ft_strncmp(lst->content, &flag, 1)
+					&& (!ft_strncmp(lst->content, "|", 1)
+						|| !ft_strncmp(lst->content, "<", 1)
+						|| !ft_strncmp(lst->content, ">", 1)))					//si es un fallo porque mezcla de redirecciones
+					return(error_redir_tokens(&lst, aux[0]));
 				else
 					lst = lst->next;
 			}
-			else if(lst && ft_strncmp(lst->content, flag, 1)	//si mezcla redirecciones simples
-				&& (lst->content == "|" || lst->content == "<"
-					|| lst->content == ">"))
-				error_redir_tokens(&lst, 3, flag);
+			else if(lst && ft_strncmp(lst->content, &flag, 1)					//si mezcla redirecciones simples
+				&& (!ft_strncmp(lst->next->content, "|", 1)	
+					|| !ft_strncmp(lst->next->content, "<", 1)
+					|| ft_strncmp(lst->next->content, ">", 1)))
+			{
+				free(aux);
+				aux = ft_strdup(lst->content);
+				return(error_redir_tokens(&lst, aux[0]));
+			}
+			free(aux);
 		}
 		else
 			lst = lst->next;
@@ -215,18 +246,69 @@ int parse_redir_tokens(t_list *lst)
 	return(0);
 }
 
+void parse_var(t_list *lst)
+{
+	// char aux;
+	while(lst)
+	{
+		// aux = ft_strdup(lst->content);
+		// if()
+		lst = lst->next;
+	}
+}
 
+// t_def	*parse_nodes(t_def *def, t_list *lst)
+// {
+// 	t_def *nodes;
+
+// 	(void)def;
+// 	nodes = NULL;
+// 	parse_var(lst);
+// 	(void)lst;
+
+
+
+
+// 	return (nodes);
+// }
 
 int	parse_tokens(t_list *lst)
 {
 	if (parse_pipe_tokens(lst))
 		return (1);
-	// if(parse_redir_tokens(lst))
-	// 	return(1);
+	if(parse_redir_tokens(lst))
+		return(1);
 	return (0);
 }
 
-void	main_parse(t_def **def, char *line)
+int parse_com(t_list *lst)
+{
+	char *aux;
+	char flag;
+
+	while(lst)
+	{
+		aux = ft_strdup(lst->content);
+		if(aux[0] == '\'' || aux[0] == '"')
+		{
+			flag = aux[0];
+			if(aux[ft_strlen(aux) - 1] != flag)
+			{
+				printf("minishell: syntax error near unexpected token %c\n", flag);
+				// realmente lee normal si no hay comillas. si existen comillas, lee desde la primera comilla
+				// no olvidar que si hay un \comilla, ese caracter lo lee normal 
+				//poner readline hasta que me metan el mismo caracter
+				free(aux);
+				return(1);
+			}
+		}
+		free(aux);
+		lst = lst->next;
+	}
+	return(0);
+}
+
+void	main_parse(t_def *def, char *line)
 {
 	t_list	*lst;
 	t_list	*aux;
@@ -239,9 +321,9 @@ void	main_parse(t_def **def, char *line)
 	aux->next = NULL;
 	free(aux->content);
 	free(aux);
-	if(!parse_tokens(lst))			//errores de tokens | < > << >> 
-		printf("lalalala\n");
-		// parse_nodes(lst);		//crear nodos con argumentos correspondientes
+	if(!parse_tokens(lst) && !parse_com(lst))	//errores de tokens -> todo lo que no es | < > << >> 
+		printf("todo está bien \n");
+		// def = parse_nodes(def, lst);		//crear nodos con argumentos correspondientes
 	print_list(lst);
 	free_lst(lst);
 
