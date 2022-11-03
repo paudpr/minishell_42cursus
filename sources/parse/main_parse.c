@@ -213,16 +213,6 @@ int parse_redir_tokens(t_list *lst)
 	return(0);
 }
 
-void parse_var(t_list *lst)
-{
-	// char aux;
-	while(lst)
-	{
-		// aux = ft_strdup(lst->content);
-		// if()
-		lst = lst->next;
-	}
-}
 
 // t_def	*parse_nodes(t_def *def, t_list *lst)
 // {
@@ -248,25 +238,6 @@ int	parse_tokens(t_list *lst)
 	return (0);
 }
 
-char *check_expansion(char *var, t_env *env)
-{
-	int len;
-	int aux;
-	char *name_var;
-
-	len = ft_double_len(env->env);
-	while(--len >= 0)
-	{
-		name_var = ft_substr(env->env[len], 0, ft_strlen(var));
-		aux = ft_strlen(ft_strchr(env->env[len], '=')) - ft_strlen(env->env[len]);
-		if(aux < 0)
-			aux *= -1;
-		if(!ft_strncmp(name_var, var, ft_strlen(var)) && aux == (int)ft_strlen(var))
-			return(ft_strdup(ft_strchr(env->env[len], '=') + 1));
-	}
-	return(ft_strdup(var));
-}
-
 int size_quoted(char *str)
 {
 	int i;
@@ -288,25 +259,80 @@ int size_quoted(char *str)
 int size_var(char *str)
 {
 	int i;
-	int count;
 
 	i = 1;
-	count = 0;
 	if(ft_isdigit(str[i]) || str[i] == '?')
 		return(1);
-	if(str[i] == 0)
+	if(str[i] == 0 || (str[i] != '_' && !ft_isalnum(str[i])))
 		return(0);
-	while(str[i] && str[i] != '_' && ft_isalnum(str[i]))
+	while(str[i])					// revisar esto esta maaaaaaaaaaaal
 	{
-		count++;
 		i++;
+		if(!ft_isalnum(str[i] || str[i] != '_'))
+		{
+			i--;
+			break ;
+		}
 	}
+	if(str[i] == 0)
+		i--;
+	return(i);
+}
+
+char *check_expansion(char *var, t_env *env)
+{
+	int len;
+	int aux;
+	char *name_var;
+
+	if(!var)
+		return(ft_strdup(""));
+	len = ft_double_len(env->env);
+	while(--len >= 0)
+	{
+		name_var = ft_substr(env->env[len], 0, ft_strlen(var));
+		aux = ft_strlen(ft_strchr(env->env[len], '=')) - ft_strlen(env->env[len]);
+		if(aux < 0)
+			aux *= -1;
+		if(!ft_strncmp(name_var, var, ft_strlen(var)) && aux == (int)ft_strlen(var))
+			return(ft_strdup(ft_strchr(env->env[len], '=') + 1));
+	}
+	return(ft_strdup(var));
+}
+
+char *get_var(char *str, t_env *env)
+{
+	int i;
+	char *var;
+	char *aux;
+
+	i = 1;
+	if(ft_isdigit(str[i]))
+		return (ft_strdup(""));
+	// if(str[i] = '?')			// cosa de señales
+	// 	return (señales);
+	if(!ft_isalnum(str[i]) || str[i] != '_')
+		return (ft_strdup(""));
+	while(str[i])
+	{
+		i++;
+		if(!ft_isalnum(str[i] || str[i] != '_'))
+		{
+			i--;
+			break ;
+		}
+	}
+	aux = ft_substr(str, 1, i);
+	var = check_expansion(aux, env);
+	free(aux);
+	return(var);
 }
 
 char *get_quoted(char *str, t_env *env)
 {
 	int i;
 	char flag;
+	char c;
 	char *aux;
 
 	i = 1;
@@ -314,18 +340,19 @@ char *get_quoted(char *str, t_env *env)
 	aux = ft_strdup("");
 	while(str[i])
 	{
+		c = str[i];
 		if(str[i] == flag)
 			break ;
 		else if(str[i] == '$' && flag == '"')
 		{
 			if(str[i + 1] == flag)
-				aux = build_str(aux, &str[i], 1);
+				aux = build_str(aux, ft_strdup(&c), 1);		//comprobar strdup que no pete
 			else
-				aux = build_str(aux, sdgfhfdgfd, 1);
+				aux = build_str(aux, get_var(&str[i], env), 1);
 			i += size_var(str);
 		}
 		else
-			aux = build_str(aux, &str[i], 1);
+			aux = build_str(aux, ft_strdup(&c), 1);			//comprobar strdup que no pete
 		i++;
 	}
 	return(aux);
@@ -350,30 +377,31 @@ int parse_com(t_list *lst, t_env *env)
 	char *aux;
 	char *var;
 
-	var = ft_strdup("");
 	while(lst)
 	{
+		var = ft_strdup("");
 		i = 0;
 		aux = ft_strdup(lst->content);
+		(void)env;
 		while(aux[i])
 		{
 			if(aux[i] == '\'' || aux[i] == '\"')
 			{
-				var = build_str(var, &aux[i], env);			//&aux[i] sustituir por quoted	string aux[i]
-				i += size_quoted(&aux[i]);			// + 2 ????
-				printf("parse_com comprobando si cuento bien comilla -> %c\n", aux[i]);
+				var = build_str(var, get_quoted(&aux[i], env), 1);			//&aux[i] sustituir por quoted	string aux[i]
+				i += size_quoted(&aux[i]);
 			}
-			else if(aux[i] == '$' && aux[i + 1])
-			{
-				var = build_str(var, &aux[i], env);			//&aux[i] sustituir por valor variable 	string aux[i]
-				i += size_var(&aux[i]);
-			}
+			// else if(aux[i] == '$' && aux[i + 1])
+			// {
+			// 	printf("ENTRO AQUI\n");
+			// 	var = build_str(var, &aux[i], 1);			//&aux[i] sustituir por valor variable 	string aux[i]
+			// 	i += size_var(&aux[i]);
+			// }
 			else
-				var = build_str(var, &aux[i], 1);			//caracter auxx[i]
+				var = build_str(var, ft_substr(aux, i, 1), 1);			//caracter auxx[i]
 			i++;
+			free(lst->content);
+			lst->content = ft_strdup(var);
 		}
-		free(lst->content);
-		lst->content = ft_strdup(var);
 		free(aux);
 		lst = lst->next;
 	}
