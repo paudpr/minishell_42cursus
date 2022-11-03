@@ -6,7 +6,7 @@
 /*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 15:52:10 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/11/03 10:54:55 by pdel-pin         ###   ########.fr       */
+/*   Updated: 2022/11/03 18:16:53 by pdel-pin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ void	free_struct(t_cmds *vals);
 void	free_env(t_env *env);
 void	free_list(t_def **def);
 
-// bin_.c
+// bin_*.c
 void	do_echo(t_cmds *cmds);
 int		check_flag_echo(t_cmds *cmds);
 void	do_pwd(t_cmds *cmds);

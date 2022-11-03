@@ -385,11 +385,14 @@ int parse_com(t_list *lst, t_env *env)
 		(void)env;
 		while(aux[i])
 		{
+			// printf("%d    %s     %c\n", i, aux, aux[i]);
 			if(aux[i] == '\'' || aux[i] == '\"')
 			{
 				var = build_str(var, get_quoted(&aux[i], env), 1);			//&aux[i] sustituir por quoted	string aux[i]
 				i += size_quoted(&aux[i]);
 			}
+			// else if (aux[i] == '$' && aux[i + 1] != 0)
+			// 	printf("QUE PASA AQUI\n");
 			// else if(aux[i] == '$' && aux[i + 1])
 			// {
 			// 	printf("ENTRO AQUI\n");
@@ -402,6 +405,7 @@ int parse_com(t_list *lst, t_env *env)
 			free(lst->content);
 			lst->content = ft_strdup(var);
 		}
+		free(var);
 		free(aux);
 		lst = lst->next;
 	}
@@ -422,7 +426,7 @@ void	main_parse(t_def *def, char *line, t_env *env)
 	free(aux->content);
 	free(aux);
 	if(!parse_tokens(lst) && !parse_com(lst, env))	//errores de tokens -> todo lo que no es | < > << >> 
-		printf("todo está bien \n");
+		printf("todo está bien? no\n");
 		// def = parse_nodes(def, lst);		//crear nodos con argumentos correspondientes
 	print_list(lst);
 	free_lst(lst);
