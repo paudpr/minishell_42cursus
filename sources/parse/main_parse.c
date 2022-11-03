@@ -108,6 +108,8 @@ int	parse_pipe_tokens(t_list *lst)
 	int		size;
 	int		i;
 
+	if(!lst)
+		return(0);		// revisar
 	size = ft_lstsize(lst) + 1;
 	if (!ft_strncmp(ft_lstlast(lst)->content, "|", 1)
 		|| !ft_strncmp(lst->content, "|", 1))
@@ -129,41 +131,6 @@ int	parse_pipe_tokens(t_list *lst)
 	}
 	return (0);
 }
-
-// int	parse_redir_tokens(t_list *lst)
-// {
-// 	int		size;
-// 	int		i;
-// 	char	flag;
-// 	t_list	*n_node;
-
-// 	i = 0;
-// 	flag = 0;
-// 	size = ft_lstsize(lst);
-// 	n_node = 0;
-// 	while (lst && size > 2)
-// 	{
-// 		i = 0;
-// 		if (!ft_stncmp(lst->content, "<", 1)
-// 			|| !ft_stncmp(lst->content, ">", 1))
-// 			i = 2;
-// 		if (i)
-// 		{
-// 			flag = lst->content;
-// 			if (!ft_strncmp(lst->next->content, flag, 1))
-// 				n_node = lst->next->next;
-// 			if (n_node && (!ft_strncmp(n_node->content, "<", 1)
-// 				|| !ft_strncmp(n_node->next->content, ">", 1)))
-// 				i = 3;
-// 			if (n_node && (!ft_strncmp(n_node->next->content, "<", 1)
-// 				|| !ft_strncmp(n_node->next->content, ">", 1)))
-				
-// 		}
-// 	}
-	
-
-// 	return (0);
-// }
 
 void	print_redir_err_tokens(int i, char type)
 {
@@ -281,34 +248,139 @@ int	parse_tokens(t_list *lst)
 	return (0);
 }
 
-int parse_com(t_list *lst)
+char *check_expansion(char *var, t_env *env)
 {
-	char *aux;
+	int len;
+	int aux;
+	char *name_var;
+
+	len = ft_double_len(env->env);
+	while(--len >= 0)
+	{
+		name_var = ft_substr(env->env[len], 0, ft_strlen(var));
+		aux = ft_strlen(ft_strchr(env->env[len], '=')) - ft_strlen(env->env[len]);
+		if(aux < 0)
+			aux *= -1;
+		if(!ft_strncmp(name_var, var, ft_strlen(var)) && aux == (int)ft_strlen(var))
+			return(ft_strdup(ft_strchr(env->env[len], '=') + 1));
+	}
+	return(ft_strdup(var));
+}
+
+int size_quoted(char *str)
+{
+	int i;
+	int count;
 	char flag;
 
+	i = 1;
+	count = 0;
+	if(str[0] == '"' || str[0] == '\'')
+		flag = str[0];
+	while(str[i] && str[i] != flag)
+	{
+		count++;
+		i++;
+	}
+	return (count);
+}
+
+int size_var(char *str)
+{
+	int i;
+	int count;
+
+	i = 1;
+	count = 0;
+	if(ft_isdigit(str[i]) || str[i] == '?')
+		return(1);
+	if(str[i] == 0)
+		return(0);
+	while(str[i] && str[i] != '_' && ft_isalnum(str[i]))
+	{
+		count++;
+		i++;
+	}
+}
+
+char *get_quoted(char *str, t_env *env)
+{
+	int i;
+	char flag;
+	char *aux;
+
+	i = 1;
+	flag = str[0];
+	aux = ft_strdup("");
+	while(str[i])
+	{
+		if(str[i] == flag)
+			break ;
+		else if(str[i] == '$' && flag == '"')
+		{
+			if(str[i + 1] == flag)
+				aux = build_str(aux, &str[i], 1);
+			else
+				aux = build_str(aux, sdgfhfdgfd, 1);
+			i += size_var(str);
+		}
+		else
+			aux = build_str(aux, &str[i], 1);
+		i++;
+	}
+	return(aux);
+}
+
+char *build_str(char *str_1, char *str_2, int type)
+{
+	char *aux;
+
+	if(type == 1)
+		aux = ft_strjoin(str_1, str_2);
+	else
+		aux = ft_strdup("Error parsing\n");
+	free(str_1);
+	free(str_2);
+	return(aux);
+}
+
+int parse_com(t_list *lst, t_env *env)
+{
+	int i;
+	char *aux;
+	char *var;
+
+	var = ft_strdup("");
 	while(lst)
 	{
+		i = 0;
 		aux = ft_strdup(lst->content);
-		if(aux[0] == '\'' || aux[0] == '"')
+		while(aux[i])
 		{
-			flag = aux[0];
-			if(aux[ft_strlen(aux) - 1] != flag)
+			if(aux[i] == '\'' || aux[i] == '\"')
 			{
-				printf("minishell: syntax error near unexpected token %c\n", flag);
-				// realmente lee normal si no hay comillas. si existen comillas, lee desde la primera comilla
-				// no olvidar que si hay un \comilla, ese caracter lo lee normal 
-				//poner readline hasta que me metan el mismo caracter
-				free(aux);
-				return(1);
+				var = build_str(var, &aux[i], env);			//&aux[i] sustituir por quoted	string aux[i]
+				i += size_quoted(&aux[i]);			// + 2 ????
+				printf("parse_com comprobando si cuento bien comilla -> %c\n", aux[i]);
 			}
+			else if(aux[i] == '$' && aux[i + 1])
+			{
+				var = build_str(var, &aux[i], env);			//&aux[i] sustituir por valor variable 	string aux[i]
+				i += size_var(&aux[i]);
+			}
+			else
+				var = build_str(var, &aux[i], 1);			//caracter auxx[i]
+			i++;
 		}
+		free(lst->content);
+		lst->content = ft_strdup(var);
 		free(aux);
 		lst = lst->next;
 	}
-	return(0);
+	return (0);
 }
 
-void	main_parse(t_def *def, char *line)
+void	main_parse(t_def *def, char *line, t_env *env)
 {
 	t_list	*lst;
 	t_list	*aux;
@@ -321,11 +393,9 @@ void	main_parse(t_def *def, char *line)
 	aux->next = NULL;
 	free(aux->content);
 	free(aux);
-	if(!parse_tokens(lst) && !parse_com(lst))	//errores de tokens -> todo lo que no es | < > << >> 
+	if(!parse_tokens(lst) && !parse_com(lst, env))	//errores de tokens -> todo lo que no es | < > << >> 
 		printf("todo está bien \n");
 		// def = parse_nodes(def, lst);		//crear nodos con argumentos correspondientes
 	print_list(lst);
 	free_lst(lst);
-
-		
 }

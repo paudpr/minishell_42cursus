@@ -68,7 +68,7 @@ $(NAME): $(OBJS)
 	make -C $(LIBFT_DIR)
 	$(CC) $^ -o $@ $(CFLAGS) $(LDFLAGS) $(LDLIBS)
 
-debug: CFLAGS += -g3 -fsanitize=address 
+debug: CFLAGS += -fsanitize=address -g3
 debug: $(NAME)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c

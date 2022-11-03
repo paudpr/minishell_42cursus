@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pauladelpinoramirez <pauladelpinoramire    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 15:52:10 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/10/27 18:33:00 by pdel-pin         ###   ########.fr       */
+/*   Updated: 2022/10/30 22:07:55 by pauladelpin      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ void	del_var(t_cmds *cmds, int i, int len);
 int		var_exists(t_cmds *cmds, int i, int len);
 
 /* PARSE */
-void	main_parse(t_def *def, char *line);
+void	main_parse(t_def *def, char *line, t_env *env);
 
 // luego borrar para poner parse bien
 void	get_list(t_def **def, char *argv);	//quitar cuando esté parseo
