@@ -250,6 +250,7 @@ int size_quoted(char *str)
 		flag = str[0];
 	while(str[i] && str[i] != flag)
 	{
+		printf("\t\tSkips: '%c'\n", str[i]);
 		count++;
 		i++;
 	}
@@ -261,6 +262,7 @@ int size_var(char *str)
 	int i;
 
 	i = 1;
+	printf("\t%zu\n", ft_strlen(str));
 	if(ft_isdigit(str[i]) || str[i] == '?')
 		return(1);
 	if(str[i] == 0 || (str[i] != '_' && !ft_isalnum(str[i])))
@@ -341,20 +343,22 @@ char *get_quoted(char *str, t_env *env)
 	while(str[i])
 	{
 		c = str[i];
-		if(str[i] == flag)
+		if(c == flag)
 			break ;
-		else if(str[i] == '$' && flag == '"')
+		printf("\t\t-> Reads: '%c'\n", c);
+		if(str[i] == '$' && flag == '"')
 		{
 			if(str[i + 1] == flag)
-				aux = build_str(aux, ft_strdup(&c), 1);		//comprobar strdup que no pete
+				aux = build_str(aux, ft_chrdup(c), 1);		//comprobar strdup que no pete
 			else
 				aux = build_str(aux, get_var(&str[i], env), 1);
 			i += size_var(str);
 		}
 		else
-			aux = build_str(aux, ft_strdup(&c), 1);			//comprobar strdup que no pete
+			aux = build_str(aux, ft_chrdup(c), 1);			//comprobar strdup que no pete
 		i++;
 	}
+	printf("\t\tReturns: '%s'\n\n", aux);
 	return(aux);
 }
 
@@ -385,20 +389,21 @@ int parse_com(t_list *lst, t_env *env)
 		(void)env;
 		while(aux[i])
 		{
+			printf("\t-> '%c'\n", aux[i]);
 			// printf("%d    %s     %c\n", i, aux, aux[i]);
 			if(aux[i] == '\'' || aux[i] == '\"')
 			{
-				var = build_str(var, get_quoted(&aux[i], env), 1);			//&aux[i] sustituir por quoted	string aux[i]
-				i += size_quoted(&aux[i]);
+				var = build_str(var, get_quoted(&(aux[i]), env), 1);			//&aux[i] sustituir por quoted	string aux[i]
+				i += size_quoted(&aux[i]) + 1;
 			}
 			// else if (aux[i] == '$' && aux[i + 1] != 0)
 			// 	printf("QUE PASA AQUI\n");
-			// else if(aux[i] == '$' && aux[i + 1])
-			// {
-			// 	printf("ENTRO AQUI\n");
-			// 	var = build_str(var, &aux[i], 1);			//&aux[i] sustituir por valor variable 	string aux[i]
-			// 	i += size_var(&aux[i]);
-			// }
+			else if(aux[i] == '$' && aux[i + 1])
+			{
+				printf("ENTRO AQUI\n");
+				var = build_str(var, &aux[i], 1);			//&aux[i] sustituir por valor variable 	string aux[i]
+				i += size_var(&aux[i]);
+			}
 			else
 				var = build_str(var, ft_substr(aux, i, 1), 1);			//caracter auxx[i]
 			i++;

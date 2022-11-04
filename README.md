@@ -123,3 +123,5 @@ cat | cat | cat << eof | ls
 
 
 < test.sh cat > salida >> salida2 > salida3
+
+
