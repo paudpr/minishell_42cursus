@@ -250,7 +250,6 @@ int size_quoted(char *str)
 		flag = str[0];
 	while(str[i] && str[i] != flag)
 	{
-		printf("\t\tSkips: '%c'\n", str[i]);
 		count++;
 		i++;
 	}
@@ -262,20 +261,10 @@ int size_var(char *str)
 	int i;
 
 	i = 1;
-	printf("\t%zu\n", ft_strlen(str));
 	if(ft_isdigit(str[i]) || str[i] == '?')
 		return(1);
-	if(str[i] == 0 || (str[i] != '_' && !ft_isalnum(str[i])))
-		return(0);
 	while(str[i])					// revisar esto esta maaaaaaaaaaaal
-	{
 		i++;
-		if(!ft_isalnum(str[i] || str[i] != '_'))
-		{
-			i--;
-			break ;
-		}
-	}
 	if(str[i] == 0)
 		i--;
 	return(i);
@@ -299,7 +288,7 @@ char *check_expansion(char *var, t_env *env)
 		if(!ft_strncmp(name_var, var, ft_strlen(var)) && aux == (int)ft_strlen(var))
 			return(ft_strdup(ft_strchr(env->env[len], '=') + 1));
 	}
-	return(ft_strdup(var));
+	return(ft_strdup(""));
 }
 
 char *get_var(char *str, t_env *env)
@@ -313,17 +302,8 @@ char *get_var(char *str, t_env *env)
 		return (ft_strdup(""));
 	// if(str[i] = '?')			// cosa de señales
 	// 	return (señales);
-	if(!ft_isalnum(str[i]) || str[i] != '_')
-		return (ft_strdup(""));
 	while(str[i])
-	{
 		i++;
-		if(!ft_isalnum(str[i] || str[i] != '_'))
-		{
-			i--;
-			break ;
-		}
-	}
 	aux = ft_substr(str, 1, i);
 	var = check_expansion(aux, env);
 	free(aux);
@@ -345,7 +325,6 @@ char *get_quoted(char *str, t_env *env)
 		c = str[i];
 		if(c == flag)
 			break ;
-		printf("\t\t-> Reads: '%c'\n", c);
 		if(str[i] == '$' && flag == '"')
 		{
 			if(str[i + 1] == flag)
@@ -358,7 +337,6 @@ char *get_quoted(char *str, t_env *env)
 			aux = build_str(aux, ft_chrdup(c), 1);			//comprobar strdup que no pete
 		i++;
 	}
-	printf("\t\tReturns: '%s'\n\n", aux);
 	return(aux);
 }
 
@@ -389,23 +367,18 @@ int parse_com(t_list *lst, t_env *env)
 		(void)env;
 		while(aux[i])
 		{
-			printf("\t-> '%c'\n", aux[i]);
-			// printf("%d    %s     %c\n", i, aux, aux[i]);
 			if(aux[i] == '\'' || aux[i] == '\"')
 			{
-				var = build_str(var, get_quoted(&(aux[i]), env), 1);			//&aux[i] sustituir por quoted	string aux[i]
+				var = build_str(var, get_quoted(&(aux[i]), env), 1);
 				i += size_quoted(&aux[i]) + 1;
 			}
-			// else if (aux[i] == '$' && aux[i + 1] != 0)
-			// 	printf("QUE PASA AQUI\n");
 			else if(aux[i] == '$' && aux[i + 1])
 			{
-				printf("ENTRO AQUI\n");
-				var = build_str(var, &aux[i], 1);			//&aux[i] sustituir por valor variable 	string aux[i]
+				var = build_str(var, get_var(&aux[i], env), 1);
 				i += size_var(&aux[i]);
 			}
 			else
-				var = build_str(var, ft_substr(aux, i, 1), 1);			//caracter auxx[i]
+				var = build_str(var, ft_chrdup(aux[i]), 1);
 			i++;
 			free(lst->content);
 			lst->content = ft_strdup(var);
