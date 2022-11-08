@@ -328,10 +328,10 @@ char *get_quoted(char *str, t_env *env)
 		if(str[i] == '$' && flag == '"')
 		{
 			if(str[i + 1] == flag)
-				aux = build_str(aux, ft_chrdup(c), 1);		//comprobar strdup que no pete
+				aux = build_str(aux, ft_chrdup(c), 1);
 			else
 				aux = build_str(aux, get_var(&str[i], env), 1);
-			i += size_var(str);
+			i += size_var(aux);
 		}
 		else
 			aux = build_str(aux, ft_chrdup(c), 1);			//comprobar strdup que no pete
@@ -353,6 +353,42 @@ char *build_str(char *str_1, char *str_2, int type)
 	return(aux);
 }
 
+void check_closed_coms(char *str)
+{
+	int		i;
+	char	flag;
+	// char	*line;
+	// char	*aux;
+
+	i = 0;
+	flag = 0;
+	printf("STR -> %s\n", str);
+	while(str[i])
+	{
+		if(flag == 0 && (str[i] == '"' || str[i] == '\''))
+			flag = str[i];
+		while(flag != 0)
+		{
+			i++;
+			if(str[i] == flag || (i > 0 && str[i - 1] != '\\'))
+				flag = 0;
+			if(i == (int)ft_strlen(str) - 1)
+			{
+				// line = get_next_line(0);
+				// aux = ft_strjoin(str, ft_chrdup('\n'));
+				// free(str);
+				// str = ft_strjoin(aux, line);
+				// free(line);
+				printf("A ver qye pasa \n");
+			}
+		}
+		i++;
+	}
+	printf("flag -> %d\n", flag);
+	printf("DENTRO DE CHECK_CLOSED_COMS%s\n", str);
+
+}
+
 int parse_com(t_list *lst, t_env *env)
 {
 	int i;
@@ -364,25 +400,27 @@ int parse_com(t_list *lst, t_env *env)
 		var = ft_strdup("");
 		i = 0;
 		aux = ft_strdup(lst->content);
+		check_closed_coms(aux);
+		printf("salgo comprobación cerradas -> %s\n\n", aux);
 		(void)env;
-		while(aux[i])
-		{
-			if(aux[i] == '\'' || aux[i] == '\"')
-			{
-				var = build_str(var, get_quoted(&(aux[i]), env), 1);
-				i += size_quoted(&aux[i]) + 1;
-			}
-			else if(aux[i] == '$' && aux[i + 1])
-			{
-				var = build_str(var, get_var(&aux[i], env), 1);
-				i += size_var(&aux[i]);
-			}
-			else
-				var = build_str(var, ft_chrdup(aux[i]), 1);
-			i++;
+		// while(aux[i])
+		// {
+		// 	if((aux[i] == '\'' || aux[i] == '"') && aux[i + 1])
+		// 	{
+		// 		var = build_str(var, get_quoted(&(aux[i]), env), 1);
+		// 		i += size_quoted(&aux[i]) + 1;
+		// 	}
+		// 	else if(aux[i] == '$' && aux[i + 1])
+		// 	{
+		// 		var = build_str(var, get_var(&aux[i], env), 1);
+		// 		i += size_var(&aux[i]);
+		// 	}
+		// 	else
+		// 		var = build_str(var, ft_chrdup(aux[i]), 1);
+		// 	i++;
 			free(lst->content);
 			lst->content = ft_strdup(var);
-		}
+		// }
 		free(var);
 		free(aux);
 		lst = lst->next;
