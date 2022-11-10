@@ -21,12 +21,15 @@ int	len_block(char *line, int i)
 	{
 		if (line[i + len] == 34 || line [i + len] == 39)
 		{
-			flag = line[i + len];
-			while (line[i + len])
+			if(i + len == 0 || (i + len > 0 && line[i + len - 1] != '\\'))
 			{
-				len++;
-				if (flag == line[i + len])
-					return (len + 1);
+				flag = line[i + len];
+				while (line[i + len])
+				{
+					len++;
+					if (flag == line[i + len] && line[i + len - 1] != '\\')
+						return (len + 1);
+				}
 			}
 		}
 		else if (line[i + len] == ' ' || line[i + len] == '<'
@@ -137,7 +140,7 @@ void	print_redir_err_tokens(int i, char type)
 	int count;
 
 	count = 0;
-	printf("minishell: syntax error near unexpected token '%c", type);
+	printf("minishell: syntax error near unexpected token '%c'", type);
 	while (count < i && count < 2)
 	{
 		printf("%c", type);
@@ -248,10 +251,17 @@ int size_quoted(char *str)
 	count = 0;
 	if(str[0] == '"' || str[0] == '\'')
 		flag = str[0];
-	while(str[i] && str[i] != flag)
+	while(str[i])
 	{
-		count++;
-		i++;
+		if(str[i] == flag && i != 0 && str[i - 1] == '\\')
+			i++;
+		else if (str[i] == flag)
+			break ;
+		else
+		{
+			count++;
+			i++;
+		}
 	}
 	return (count);
 }
@@ -314,7 +324,6 @@ char *get_quoted(char *str, t_env *env)
 {
 	int i;
 	char flag;
-	char c;
 	char *aux;
 
 	i = 1;
@@ -322,19 +331,20 @@ char *get_quoted(char *str, t_env *env)
 	aux = ft_strdup("");
 	while(str[i])
 	{
-		c = str[i];
-		if(c == flag)
+		if(str[i] == '\\' && str[++i])
+			aux = build_str(aux, ft_chrdup(str[i]), 1);
+		else if(str[i] == flag)
 			break ;
-		if(str[i] == '$' && flag == '"')
+		else if(str[i] == '$' && flag == '"')
 		{
 			if(str[i + 1] == flag)
-				aux = build_str(aux, ft_chrdup(c), 1);
+				aux = build_str(aux, ft_chrdup(str[i]), 1);
 			else
 				aux = build_str(aux, get_var(&str[i], env), 1);
 			i += size_var(aux);
 		}
-		else
-			aux = build_str(aux, ft_chrdup(c), 1);			//comprobar strdup que no pete
+		else if (str[i])
+			aux = build_str(aux, ft_chrdup(str[i]), 1);			//comprobar strdup que no pete
 		i++;
 	}
 	return(aux);
@@ -353,40 +363,51 @@ char *build_str(char *str_1, char *str_2, int type)
 	return(aux);
 }
 
-void check_closed_coms(char *str)
+int check_closed_coms(char *str)
 {
 	int		i;
+	int		num;
 	char	flag;
 	// char	*line;
-	// char	*aux;
 
-	i = 0;
+	i = -1;
 	flag = 0;
-	printf("STR -> %s\n", str);
-	while(str[i])
+	while(str[++i])
 	{
-		if(flag == 0 && (str[i] == '"' || str[i] == '\''))
-			flag = str[i];
-		while(flag != 0)
+		if(str[i] == '"' || str[i] == '\'')
 		{
-			i++;
-			if(str[i] == flag || (i > 0 && str[i - 1] != '\\'))
-				flag = 0;
-			if(i == (int)ft_strlen(str) - 1)
+			if(i == 0 || (i > 0 && str[i - 1] != '\\'))
 			{
-				// line = get_next_line(0);
-				// aux = ft_strjoin(str, ft_chrdup('\n'));
-				// free(str);
-				// str = ft_strjoin(aux, line);
-				// free(line);
-				printf("A ver qye pasa \n");
+				flag = str[i];
+				break;
 			}
 		}
-		i++;
 	}
-	printf("flag -> %d\n", flag);
-	printf("DENTRO DE CHECK_CLOSED_COMS%s\n", str);
-
+	i = -1;
+	num = 0;
+	while(str[++i] && flag != 0)
+	{
+		if(str[i] == flag)
+			num++;
+		if(str[i] == flag && (i > 0 && str[i - 1] == '\\'))
+			num--;
+	}
+	if(num % 2 != 0)
+	{
+		printf("minishell: syntax error near unexpected token %c\n", flag);
+		return (1);
+	}
+	// line = NULL;									// para que funcione como en bash y siga recogiendo hasta encontrar la comilla de cierre
+	// if(num % 2 != 0)
+	// 	line = get_next_line(0);
+	// while(line)
+	// {
+	// 	free(str);
+	// 	str = ft_strjoin(aux, line);
+	// 	check_closed_coms(str);
+	// 	// free(line);								// peta aqui
+	// }
+	return(0);
 }
 
 int parse_com(t_list *lst, t_env *env)
@@ -400,27 +421,29 @@ int parse_com(t_list *lst, t_env *env)
 		var = ft_strdup("");
 		i = 0;
 		aux = ft_strdup(lst->content);
-		check_closed_coms(aux);
-		printf("salgo comprobación cerradas -> %s\n\n", aux);
-		(void)env;
-		// while(aux[i])
-		// {
-		// 	if((aux[i] == '\'' || aux[i] == '"') && aux[i + 1])
-		// 	{
-		// 		var = build_str(var, get_quoted(&(aux[i]), env), 1);
-		// 		i += size_quoted(&aux[i]) + 1;
-		// 	}
-		// 	else if(aux[i] == '$' && aux[i + 1])
-		// 	{
-		// 		var = build_str(var, get_var(&aux[i], env), 1);
-		// 		i += size_var(&aux[i]);
-		// 	}
-		// 	else
-		// 		var = build_str(var, ft_chrdup(aux[i]), 1);
-		// 	i++;
+		if (check_closed_coms(aux))
+			return (1);
+		while(aux[i])
+		{
+			if(((aux[i] == '\'' || aux[i] == '"') && aux[i + 1])
+				&& (i == 0 || (i > 0 && aux[i - 1] != '\\')))
+			{
+				var = build_str(var, get_quoted(&(aux[i]), env), 1);
+				i += size_quoted(&aux[i]) + 1;
+			}
+			else if ((aux[i] == '"' || aux[i] == '\'') && i == (int)ft_strlen(aux) - 1)
+				break ;
+			else if(aux[i] == '$' && aux[i + 1])
+			{
+				var = build_str(var, get_var(&aux[i], env), 1);
+				i += size_var(&aux[i]);
+			}
+			else
+				var = build_str(var, ft_chrdup(aux[i]), 1);
+			i++;
 			free(lst->content);
 			lst->content = ft_strdup(var);
-		// }
+		}
 		free(var);
 		free(aux);
 		lst = lst->next;
@@ -442,7 +465,7 @@ void	main_parse(t_def *def, char *line, t_env *env)
 	free(aux->content);
 	free(aux);
 	if(!parse_tokens(lst) && !parse_com(lst, env))	//errores de tokens -> todo lo que no es | < > << >> 
-		printf("todo está bien? no\n");
+		printf("todo está bien, pasamos a nodos def\n");
 		// def = parse_nodes(def, lst);		//crear nodos con argumentos correspondientes
 	print_list(lst);
 	free_lst(lst);
