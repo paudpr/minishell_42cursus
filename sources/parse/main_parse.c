@@ -200,9 +200,9 @@ int parse_redir_tokens(t_list *lst)
 					lst = lst->next;
 			}
 			else if(lst && ft_strncmp(lst->content, &flag, 1)					//si mezcla redirecciones simples
-				&& (!ft_strncmp(lst->next->content, "|", 1)	
-					|| !ft_strncmp(lst->next->content, "<", 1)
-					|| ft_strncmp(lst->next->content, ">", 1)))
+				&& (!ft_strncmp(lst->content, "|", 1)
+					|| !ft_strncmp(lst->content, "<", 1)
+					|| !ft_strncmp(lst->content, ">", 1)))
 			{
 				free(aux);
 				aux = ft_strdup(lst->content);
@@ -465,8 +465,8 @@ void	main_parse(t_def *def, char *line, t_env *env)
 	free(aux->content);
 	free(aux);
 	if(!parse_tokens(lst) && !parse_com(lst, env))	//errores de tokens -> todo lo que no es | < > << >> 
-		printf("todo está bien, pasamos a nodos def\n");
-		// def = parse_nodes(def, lst);		//crear nodos con argumentos correspondientes
-	print_list(lst);
+		def = parse_nodes(def, lst);		//crear nodos con argumentos correspondientes
+		// printf("aqui entro si todo está bien\n");
+	// print_list(lst);
 	free_lst(lst);
 }

@@ -6,7 +6,7 @@
 /*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 15:52:10 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/11/03 18:16:53 by pdel-pin         ###   ########.fr       */
+/*   Updated: 2022/11/11 11:43:34 by pdel-pin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,7 @@ int		var_exists(t_cmds *cmds, int i, int len);
 void	main_parse(t_def *def, char *line, t_env *env);
 
 char	*build_str(char *str_1, char *str_2, int type);
+t_def	*parse_nodes(t_def *def, t_list *lst);
 
 // luego borrar para poner parse bien
 void	get_list(t_def **def, char *argv);	//quitar cuando esté parseo
