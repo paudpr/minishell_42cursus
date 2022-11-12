@@ -187,6 +187,8 @@ int parse_redir_tokens(t_list *lst)
 			if (lst && !ft_strncmp(lst->content, &flag, 1)) 					//si es un heredoc o un append
 			{
 				lst = lst->next;
+				if(!lst)
+					return(1);
 				free(aux);
 				aux = ft_strdup(lst->content);
 				if (lst && !ft_strncmp(lst->content, &flag, 1))					//si es un fallo porque muchas redirecciones 

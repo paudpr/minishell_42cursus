@@ -7,14 +7,55 @@ void print_nodes(t_def *def)
 	while(def)
 	{
 		printf("%p\t\t%p\n", def, def->next);
-		printf("%d\t\t", *(def)->type);
 		i = -1;
-		while(def->argv[++i])
+		while(++i < ft_double_len(def->argv))
 			printf("%s\t\t", def->argv[i]);
+		i = -1;
+		printf("\n");
+		while(++i < ft_double_len(def->argv))
+			printf("%d\t\t", def->type[i]);
 		printf("\n\n");
 		def = def->next;
 	}
 }
+
+int clean_redir(t_list *lst)
+{
+	char *tmp;
+	t_list *aux;
+
+	aux = NULL;
+	while(lst)
+	{
+		if(!ft_strncmp(lst->content, "<", 1) || !ft_strncmp(lst->content, ">", 1))
+		{
+			if(!lst->next)
+			{
+				printf("minishell: syntax error near unexpected token `newline`\n");
+				return(1);
+			}
+			if(!ft_strncmp(lst->next->content, "<", 1) || !ft_strncmp(lst->next->content, ">", 1))
+			{
+				tmp = ft_strdup(lst->content);
+				free(lst->content);
+				lst->content = ft_strjoin(tmp, lst->next->content);
+				free(tmp);
+				aux = lst->next;
+				lst->next = lst->next->next;
+				free(aux->content);
+				free(aux);
+				if(!lst->next)
+				{
+					printf("minishell: syntax error near unexpected token `newline`\n");
+					return(1);
+				}
+			}
+		}
+		lst = lst->next;
+	}
+	return(0);
+}
+
 
 int count_argvs(t_list *lst)
 {
@@ -32,17 +73,17 @@ int count_argvs(t_list *lst)
 	return(count);
 }
 
-int get_type(char **argv, int i)
+int get_type(char *argv)
 {
 	int type;
 
-	if(!ft_strncmp(argv[i], "<", ft_strlen(argv[i])))
+	if(!ft_strncmp(argv, "<", 1))
 		type = T_RIN;
-	if(!ft_strncmp(argv[i], "<<", ft_strlen(argv[i])))
+	else if(!ft_strncmp(argv, "<<", 2))
 		type = T_HD;
-	if(!ft_strncmp(argv[i], ">", ft_strlen(argv[i])))
+	else if(!ft_strncmp(argv, ">", 1))
 		type = T_ROUT;
-	if(!ft_strncmp(argv[i], ">>", ft_strlen(argv[i])))
+	else if(!ft_strncmp(argv, ">>", 2))
 		type = T_APP;
 	else
 		type = T_CMD;
@@ -54,45 +95,33 @@ t_def *create_node(int size, t_list *lst)
 	int i;
 	t_def *new;
 
-	new = malloc(sizeof(t_def) * 1);
+	new = ft_calloc(1, sizeof(t_def));
 	if(new == NULL)
 		return(new);
-	new->argv = malloc(sizeof(char *) * (size + 1));
+	new->argv = ft_calloc(size, sizeof(char *));
 	if(new->argv == NULL)
 		return(NULL);
-	new->type = malloc(sizeof(int) * (size + 1));
+	new->type = ft_calloc(size, sizeof(int));
 	if(new->type == NULL)
 		return(NULL);
-	new->argv[size] = NULL;
-	printf("--------------------------------------------------------\n");
 	i = 0;
 	while(i < size)
 	{
 		new->argv[i] = ft_strdup(lst->content);
-		new->type[i] = get_type(new->argv, i);
-		printf("\ti -> %d\n", i);
-		printf("tyyyypeeeeee -> %d\n", new->type[i]);
-		// if(new->type[i] && new->type[i] < 4)
-		// {
-		// 	if(size - i <= 1)
-		// 	{
-		// 		printf("minishell: syntax error near unexpected token `newline`\n");
-		// 		return (NULL);
-		// 	}
-		// 	i++;
-		// 	lst = lst->next;
-		// 	new->argv[i] = ft_strdup(lst->content);
-		// 	new->type[i] = new->type[i - 1];
-		// 	if(i >= size) 
-		// 		break;
-		// }
+		new->type[i] = get_type(new->argv[i]);
+		if(new->type[i] && new->type[i] < 4)
+		{
+			i++;
+			lst = lst->next;
+			new->argv[i] = ft_strdup(lst->content);
+			new->type[i] = new->type[i - 1];
+			if(i >= size) 
+				break;
+		}
 		i++;
 		lst = lst->next;
 	}
-	// printf("i -> %d\n", i);
 	return(new);
-	(void)size;
-	(void)lst;
 }
 
 t_def *parse_nodes(t_def *def, t_list *lst)
@@ -105,6 +134,8 @@ t_def *parse_nodes(t_def *def, t_list *lst)
 	aux = lst;
 	size = 0;
 	flag = 0;
+	if(clean_redir(lst))
+		return(NULL);
 	while(lst)
 	{
 		if(size == 0)
@@ -114,9 +145,8 @@ t_def *parse_nodes(t_def *def, t_list *lst)
 		}
 		if(flag == 1)
 		{
-			printf("entro aqui con:\n\tsize = %d\n\tcontent = %s\n", size, lst->content);
 			new = create_node(size, lst);
-			// mini_lstadd_back(def, new);
+			mini_lstadd_back(&def, new);
 			flag = 0;
 		}
 		size--;
@@ -124,6 +154,6 @@ t_def *parse_nodes(t_def *def, t_list *lst)
 		if(size == 0 && lst && lst->next)
 			lst = lst->next;
 	}
-	print_nodes(def);
+	// print_nodes(def);
 	return(def);
 }
