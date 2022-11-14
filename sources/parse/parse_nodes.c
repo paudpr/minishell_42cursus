@@ -124,20 +124,20 @@ t_def *create_node(int size, t_list *lst)
 	return(new);
 }
 
-t_def *parse_nodes(t_def *def, t_list *lst)
+t_def *parse_nodes(t_list *lst)
 {
 	int	size;
 	int flag;
-	t_list *aux;
 	t_def *new;
+	t_def *nodes;
 
-	aux = lst;
 	size = 0;
 	flag = 0;
 	if(clean_redir(lst))
 		return(NULL);
 	while(lst)
 	{
+		printf("AAAAAAA\n");
 		if(size == 0)
 		{
 			size = count_argvs(lst);
@@ -146,7 +146,8 @@ t_def *parse_nodes(t_def *def, t_list *lst)
 		if(flag == 1)
 		{
 			new = create_node(size, lst);
-			mini_lstadd_back(&def, new);
+			printf("%s\t%d\t%p\n", new->argv[0], new->type[0], new);
+			// mini_lstadd_back(&nodes, new);
 			flag = 0;
 		}
 		size--;
@@ -155,5 +156,5 @@ t_def *parse_nodes(t_def *def, t_list *lst)
 			lst = lst->next;
 	}
 	// print_nodes(def);
-	return(def);
+	return(nodes);
 }

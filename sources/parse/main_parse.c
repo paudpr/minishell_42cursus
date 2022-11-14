@@ -453,8 +453,9 @@ int parse_com(t_list *lst, t_env *env)
 	return (0);
 }
 
-void	main_parse(t_def *def, char *line, t_env *env)
+void	main_parse(t_def **def, char *line, t_env *env)
 {
+	t_def	*nodes;
 	t_list	*lst;
 	t_list	*aux;
 
@@ -466,9 +467,11 @@ void	main_parse(t_def *def, char *line, t_env *env)
 	aux->next = NULL;
 	free(aux->content);
 	free(aux);
+	nodes = NULL;
 	if(!parse_tokens(lst) && !parse_com(lst, env))	//errores de tokens -> todo lo que no es | < > << >> 
-		def = parse_nodes(def, lst);		//crear nodos con argumentos correspondientes
+		nodes = parse_nodes(lst);		//crear nodos con argumentos correspondientes
 		// printf("aqui entro si todo está bien\n");
 	// print_list(lst);
+	def = &nodes;
 	free_lst(lst);
 }

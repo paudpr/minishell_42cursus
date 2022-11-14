@@ -22,7 +22,8 @@ int	main(void)
 		}
 		if (line != NULL && *line != 0)
 			add_history(line);
-		main_parse(def, line, env);
+		main_parse(&def, line, env);
+		printf("def -> %p\n", def);
 		// get_list(&def, line);			// main_parse();
 		// main_exec(def, env);
 		free(line);
@@ -31,4 +32,3 @@ int	main(void)
 	free_env(env);
 	return (0);
 }
-
