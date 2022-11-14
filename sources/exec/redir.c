@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pauladelpinoramirez <pauladelpinoramire    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 15:52:57 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/10/03 15:52:58 by pdel-pin         ###   ########.fr       */
+/*   Updated: 2022/11/14 14:45:09 by pauladelpin      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void	check_redir(t_def *def, t_cmds *cmds)
 	flag = 0;
 	while (def->argv[++i])
 	{
-		if (def->type[i] == 0 && flag == 0)
+		if (def->type[i] == T_HD && flag == 0)
 		{
 			i++;
 			heredoc = hd_filename(cmds);
@@ -100,11 +100,11 @@ void	check_redir(t_def *def, t_cmds *cmds)
 			free(heredoc);
 			cmds->hd++;
 		}
-		if (def->type[i] == 1 && flag == 0)
+		if (def->type[i] == T_RIN && flag == 0)
 			redir_in(def->argv[++i], &flag);
-		if (def->type[i] == 2 && flag == 0)
+		if (def->type[i] == T_ROUT && flag == 0)
 			redir_out(def->argv[++i], &flag);
-		if (def->type[i] == 3 && flag == 0)
+		if (def->type[i] == T_APP && flag == 0)
 			redir_app(def->argv[++i], &flag);
 	}
 }

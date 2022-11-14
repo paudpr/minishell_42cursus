@@ -6,14 +6,14 @@ void print_nodes(t_def *def)
 
 	while(def)
 	{
-		printf("%p\t\t%p\n", def, def->next);
+		printf("%p\t%p\n", def, def->next);
 		i = -1;
 		while(++i < ft_double_len(def->argv))
-			printf("%s\t\t", def->argv[i]);
+			printf("%s\t", def->argv[i]);
 		i = -1;
 		printf("\n");
 		while(++i < ft_double_len(def->argv))
-			printf("%d\t\t", def->type[i]);
+			printf("%d\t", def->type[i]);
 		printf("\n\n");
 		def = def->next;
 	}
@@ -77,14 +77,14 @@ int get_type(char *argv)
 {
 	int type;
 
-	if(!ft_strncmp(argv, "<", 1))
-		type = T_RIN;
-	else if(!ft_strncmp(argv, "<<", 2))
+	if(!ft_strncmp(argv, "<<", 2))
 		type = T_HD;
-	else if(!ft_strncmp(argv, ">", 1))
-		type = T_ROUT;
+	else if(!ft_strncmp(argv, "<", 1))
+		type = T_RIN;
 	else if(!ft_strncmp(argv, ">>", 2))
 		type = T_APP;
+	else if(!ft_strncmp(argv, ">", 1))
+		type = T_ROUT;
 	else
 		type = T_CMD;
 	return(type);
@@ -98,10 +98,10 @@ t_def *create_node(int size, t_list *lst)
 	new = ft_calloc(1, sizeof(t_def));
 	if(new == NULL)
 		return(new);
-	new->argv = ft_calloc(size, sizeof(char *));
+	new->argv = ft_calloc(size + 1, sizeof(char *));
 	if(new->argv == NULL)
 		return(NULL);
-	new->type = ft_calloc(size, sizeof(int));
+	new->type = ft_calloc(size + 1, sizeof(int));
 	if(new->type == NULL)
 		return(NULL);
 	i = 0;
@@ -109,14 +109,14 @@ t_def *create_node(int size, t_list *lst)
 	{
 		new->argv[i] = ft_strdup(lst->content);
 		new->type[i] = get_type(new->argv[i]);
-		if(new->type[i] && new->type[i] < 4)
+		if(new->type[i] && new->type[i] < 5)
 		{
 			i++;
 			lst = lst->next;
 			new->argv[i] = ft_strdup(lst->content);
 			new->type[i] = new->type[i - 1];
-			if(i >= size) 
-				break;
+			if (i >= size) 
+				break ;
 		}
 		i++;
 		lst = lst->next;
@@ -133,11 +133,11 @@ t_def *parse_nodes(t_list *lst)
 
 	size = 0;
 	flag = 0;
+	nodes = NULL;
 	if(clean_redir(lst))
 		return(NULL);
 	while(lst)
 	{
-		printf("AAAAAAA\n");
 		if(size == 0)
 		{
 			size = count_argvs(lst);
@@ -146,8 +146,7 @@ t_def *parse_nodes(t_list *lst)
 		if(flag == 1)
 		{
 			new = create_node(size, lst);
-			printf("%s\t%d\t%p\n", new->argv[0], new->type[0], new);
-			// mini_lstadd_back(&nodes, new);
+			mini_lstadd_back(&nodes, new);
 			flag = 0;
 		}
 		size--;
@@ -155,6 +154,6 @@ t_def *parse_nodes(t_list *lst)
 		if(size == 0 && lst && lst->next)
 			lst = lst->next;
 	}
-	// print_nodes(def);
+	// print_nodes(nodes);
 	return(nodes);
 }

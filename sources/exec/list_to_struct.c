@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list_to_struct.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pauladelpinoramirez <pauladelpinoramire    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 15:52:52 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/10/03 15:52:53 by pdel-pin         ###   ########.fr       */
+/*   Updated: 2022/11/14 14:44:40 by pauladelpin      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static int	size_cmds(t_def *def)
 	size = 0;
 	while (def->argv[i])
 	{
-		if (def->type[i] == 4)
+		if (def->type[i] == T_CMD)
 			size++;
 		i++;
 	}
@@ -60,7 +60,7 @@ static char	**get_argv(t_def *def)
 		return (cmds);
 	while (def->argv[i])
 	{
-		if (def->type[i] == 4)
+		if (def->type[i] == T_CMD)
 		{
 			cmds[j] = ft_strdup(def->argv[i]);
 			j++;

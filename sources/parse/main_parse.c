@@ -40,6 +40,24 @@ int	len_block(char *line, int i)
 	return (len);
 }
 
+int check_next(char *line, int i)
+{
+	i++;
+	if(line[i] && line[i] != '<' && line[i] != '>')
+	{
+		if(line[i] == ' ')
+		{
+			i += ignore_spaces(line, i);
+			if(line[i] && (line[i] == '<' || line[i] == '>'))
+			{
+				printf("minishell: syntax error near unexpected token `%c`\n", line[i]);
+				return (1);
+			}
+		}
+	}
+	return(0);
+}
+
 t_list	*split_blocks(char *line)
 {
 	t_list	*lst;
@@ -55,6 +73,8 @@ t_list	*split_blocks(char *line)
 		if ((line[i] == '<' || line[i] == '>' || line[i] == '|') && line[i])
 		{
 			len = 1;
+			if (check_next(line, i))
+				return (NULL);
 			ft_lstadd_back(&lst, ft_lstnew(ft_substr(line, i, len)));
 			i += len;
 		}
@@ -455,7 +475,7 @@ int parse_com(t_list *lst, t_env *env)
 
 void	main_parse(t_def **def, char *line, t_env *env)
 {
-	t_def	*nodes;
+	// t_def	*nodes;
 	t_list	*lst;
 	t_list	*aux;
 
@@ -467,11 +487,13 @@ void	main_parse(t_def **def, char *line, t_env *env)
 	aux->next = NULL;
 	free(aux->content);
 	free(aux);
-	nodes = NULL;
+	// nodes = NULL;
 	if(!parse_tokens(lst) && !parse_com(lst, env))	//errores de tokens -> todo lo que no es | < > << >> 
-		nodes = parse_nodes(lst);		//crear nodos con argumentos correspondientes
+		*def = parse_nodes(lst);		//crear nodos con argumentos correspondientes
 		// printf("aqui entro si todo está bien\n");
-	// print_list(lst);
-	def = &nodes;
+	// // print_list(lst);
+	// def = &nodes;
+	// free_list(&nodes);
 	free_lst(lst);
+	// (void)env;
 }

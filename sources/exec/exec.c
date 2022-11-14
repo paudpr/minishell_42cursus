@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pauladelpinoramirez <pauladelpinoramire    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 15:52:43 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/10/03 15:52:44 by pdel-pin         ###   ########.fr       */
+/*   Updated: 2022/11/14 14:43:58 by pauladelpin      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ void	do_process(t_def *def, t_cmds *cmds)
 			do_last_command(def, cmds, &check);
 		else if (check == 0)
 			do_commands(def, cmds, &check);
-		if (def->type[i] == 0)
+		if (def->type[i] == T_HD)
 		{
 			i++;
 			cmds->hd++;

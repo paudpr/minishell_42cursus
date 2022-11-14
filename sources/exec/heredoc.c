@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pauladelpinoramirez <pauladelpinoramire    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 15:52:47 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/10/03 15:52:48 by pdel-pin         ###   ########.fr       */
+/*   Updated: 2022/11/14 14:44:08 by pauladelpin      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int	check_hd(t_def *def)
 		i = 0;
 		while (def->argv[i])
 		{
-			if (def->type[i] == 0)
+			if (def->type[i] == T_HD)
 			{
 				i++;
 				create_hd(hd, def->argv[i]);

@@ -6,18 +6,18 @@
 /*   By: pauladelpinoramirez <pauladelpinoramire    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 15:52:10 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/11/13 17:00:29 by pauladelpin      ###   ########.fr       */
+/*   Updated: 2022/11/14 14:43:15 by pauladelpin      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# define T_HD	0
-# define T_RIN	1
-# define T_ROUT	2
-# define T_APP	3
-# define T_CMD	4
+# define T_HD	1
+# define T_RIN	2
+# define T_ROUT	3
+# define T_APP	4
+# define T_CMD	5
 
 # include <stdio.h>
 # include <stdlib.h>
