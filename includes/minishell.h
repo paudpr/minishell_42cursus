@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pauladelpinoramirez <pauladelpinoramire    +#+  +:+       +#+        */
+/*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 15:52:10 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/11/14 14:43:15 by pauladelpin      ###   ########.fr       */
+/*   Updated: 2022/11/15 11:43:25 by pdel-pin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,9 @@ typedef struct s_cmds
 	int		hd;
 	int		bin;
 }	t_cmds;
+
+
+/* EXEC */
 
 // env.c
 t_env	*get_struct_env(char **environ);
@@ -134,10 +137,31 @@ void	del_var(t_cmds *cmds, int i, int len);
 int		var_exists(t_cmds *cmds, int i, int len);
 
 /* PARSE */
+
 void	main_parse(t_def **def, char *line, t_env *env);
 
+// parse_nodes.c
 char	*build_str(char *str_1, char *str_2, int type);
 t_def	*parse_nodes(t_list *lst);
+
+// parse_tokens.c
+int		parse_tokens(t_list *lst);
+int		parse_redir_tokens(t_list *lst);
+int		error_redir_tokens(t_list **lst, char flag);
+void	print_redir_err_tokens(int i, char type);
+int		parse_pipe_tokens(t_list *lst);
+int		parse_pipe_aux(int i);
+
+// parse_com.c
+int		parse_com(t_list *lst, t_env *env);
+int		check_closed_coms(char *str);
+char	*build_str(char *str_1, char *str_2, int type);
+char	*get_quoted(char *str, t_env *env);
+char	*get_var(char *str, t_env *env);
+char	*check_expansion(char *var, t_env *env);
+int		size_var(char *str);
+int		size_quoted(char *str);
+
 
 // luego borrar para poner parse bien
 void	get_list(t_def **def, char *argv);	//quitar cuando esté parseo

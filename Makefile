@@ -47,6 +47,8 @@ SRCS_EXEC = main_exec.c \
 SRCS_PARSE = init_exec.c \
 			main_parse.c \
 			parse_nodes.c \
+			parse_tokens.c \
+			parse_com.c \
 
 SRCS = main.c
 

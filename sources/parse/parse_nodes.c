@@ -1,40 +1,42 @@
 #include "minishell.h"
 
-void print_nodes(t_def *def)
+void	print_nodes(t_def *def)
 {
-	int i;
+	int	i;
 
-	while(def)
+	while (def)
 	{
 		printf("%p\t%p\n", def, def->next);
 		i = -1;
-		while(++i < ft_double_len(def->argv))
+		while (++i < ft_double_len(def->argv))
 			printf("%s\t", def->argv[i]);
 		i = -1;
 		printf("\n");
-		while(++i < ft_double_len(def->argv))
+		while (++i < ft_double_len(def->argv))
 			printf("%d\t", def->type[i]);
 		printf("\n\n");
 		def = def->next;
 	}
 }
 
-int clean_redir(t_list *lst)
+int	clean_redir(t_list *lst)
 {
-	char *tmp;
-	t_list *aux;
+	char	*tmp;
+	t_list	*aux;
 
 	aux = NULL;
-	while(lst)
+	while (lst)
 	{
-		if(!ft_strncmp(lst->content, "<", 1) || !ft_strncmp(lst->content, ">", 1))
+		if (!ft_strncmp(lst->content, "<", 1)
+			|| !ft_strncmp(lst->content, ">", 1))
 		{
-			if(!lst->next)
+			if (!lst->next)
 			{
 				printf("minishell: syntax error near unexpected token `newline`\n");
-				return(1);
+				return (1);
 			}
-			if(!ft_strncmp(lst->next->content, "<", 1) || !ft_strncmp(lst->next->content, ">", 1))
+			if (!ft_strncmp(lst->next->content, "<", 1)
+				|| !ft_strncmp(lst->next->content, ">", 1))
 			{
 				tmp = ft_strdup(lst->content);
 				free(lst->content);
@@ -44,106 +46,104 @@ int clean_redir(t_list *lst)
 				lst->next = lst->next->next;
 				free(aux->content);
 				free(aux);
-				if(!lst->next)
+				if (!lst->next)
 				{
 					printf("minishell: syntax error near unexpected token `newline`\n");
-					return(1);
+					return (1);
 				}
 			}
 		}
 		lst = lst->next;
 	}
-	return(0);
+	return (0);
 }
 
-
-int count_argvs(t_list *lst)
+int	count_argvs(t_list *lst)
 {
-	int count;
+	int	count;
 
 	count = 0;
-	
-	while(lst)
+	while (lst)
 	{
-		if(!ft_strncmp(lst->content, "|", 1))
-			break;
+		if (!ft_strncmp(lst->content, "|", 1))
+			break ;
 		count++;
 		lst = lst->next;
 	}
-	return(count);
+	return (count);
 }
 
-int get_type(char *argv)
+int	get_type(char *argv)
 {
-	int type;
+	int	type;
 
-	if(!ft_strncmp(argv, "<<", 2))
+	if (!ft_strncmp(argv, "<<", 2))
 		type = T_HD;
-	else if(!ft_strncmp(argv, "<", 1))
+	else if (!ft_strncmp(argv, "<", 1))
 		type = T_RIN;
-	else if(!ft_strncmp(argv, ">>", 2))
+	else if (!ft_strncmp(argv, ">>", 2))
 		type = T_APP;
-	else if(!ft_strncmp(argv, ">", 1))
+	else if (!ft_strncmp(argv, ">", 1))
 		type = T_ROUT;
 	else
 		type = T_CMD;
-	return(type);
+	return (type);
 }
 
-t_def *create_node(int size, t_list *lst)
+t_def	*create_node(int size, t_list *lst)
 {
-	int i;
-	t_def *new;
+	int		i;
+	t_def	*new;
 
 	new = ft_calloc(1, sizeof(t_def));
-	if(new == NULL)
-		return(new);
+	if (new == NULL)
+		return (new);
 	new->argv = ft_calloc(size + 1, sizeof(char *));
-	if(new->argv == NULL)
-		return(NULL);
+	if (new->argv == NULL)
+		return (NULL);
 	new->type = ft_calloc(size + 1, sizeof(int));
-	if(new->type == NULL)
-		return(NULL);
+	if (new->type == NULL)
+		return (NULL);
 	i = 0;
-	while(i < size)
+	while (i < size)
 	{
 		new->argv[i] = ft_strdup(lst->content);
 		new->type[i] = get_type(new->argv[i]);
-		if(new->type[i] && new->type[i] < 5)
+		if (new->type[i] && new->type[i] < 5)
 		{
 			i++;
 			lst = lst->next;
 			new->argv[i] = ft_strdup(lst->content);
 			new->type[i] = new->type[i - 1];
-			if (i >= size) 
+			if (i >= size)
 				break ;
 		}
 		i++;
 		lst = lst->next;
 	}
-	return(new);
+	return (new);
 }
 
-t_def *parse_nodes(t_list *lst)
+t_def	*parse_nodes(t_list *lst)
 {
-	int	size;
-	int flag;
-	t_def *new;
-	t_def *nodes;
+	int		size;
+	int		flag;
+	t_def	*new;
+	t_def	*nodes;
 
 	size = 0;
 	flag = 0;
 	nodes = NULL;
-	if(clean_redir(lst))
-		return(NULL);
-	while(lst)
+	if (clean_redir(lst))
+		return (NULL);
+	while (lst)
 	{
-		if(size == 0)
+		if (size == 0)
 		{
 			size = count_argvs(lst);
 			flag = 1;
 		}
-		if(flag == 1)
+		if (flag == 1)
 		{
 			new = create_node(size, lst);
 			mini_lstadd_back(&nodes, new);
@@ -151,9 +151,9 @@ t_def *parse_nodes(t_list *lst)
 		}
 		size--;
 		lst = lst->next;
-		if(size == 0 && lst && lst->next)
+		if (size == 0 && lst && lst->next)
 			lst = lst->next;
 	}
 	// print_nodes(nodes);
-	return(nodes);
+	return (nodes);
 }
