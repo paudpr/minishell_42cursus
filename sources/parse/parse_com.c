@@ -91,11 +91,11 @@ char	*get_quoted(char *str, t_env *env)
 	aux = ft_strdup("");
 	while (str[i])
 	{
-		if (str[i] == '\\' && str[++i])
+		if (str[i] == '\\' && str[++i])				// ignora la contrabarra si la hay
 			aux = build_str(aux, ft_chrdup(str[i]), 1);
-		else if (str[i] == flag)
+		else if (str[i] == flag)					// cierra comilla
 			break ;
-		else if (str[i] == '$' && flag == '"')
+		else if (str[i] == '$' && flag == '"')		// gestiona expansión
 		{
 			if (str[i + 1] == flag)
 				aux = build_str(aux, ft_chrdup(str[i]), 1);
@@ -103,8 +103,8 @@ char	*get_quoted(char *str, t_env *env)
 				aux = build_str(aux, get_var(&str[i], env), 1);
 			i += size_var(aux);
 		}
-		else if (str[i])
-			aux = build_str(aux, ft_chrdup(str[i]), 1);			//comprobar strdup que no pete
+		else if (str[i])							// continua por caracter
+			aux = build_str(aux, ft_chrdup(str[i]), 1);
 		i++;
 	}
 	return (aux);
@@ -114,6 +114,8 @@ char	*build_str(char *str_1, char *str_2, int type)
 {
 	char	*aux;
 
+	// printf("%s\t-\t%s\n", str_1, str_2);
+	// printf("%d\t-\t%d\n", str_1[0], str_2[0]);
 	if (type == 1)
 		aux = ft_strjoin(str_1, str_2);
 	else
@@ -154,6 +156,7 @@ int	check_closed_coms(char *str)
 	if (num % 2 != 0)
 	{
 		printf("minishell: syntax error near unexpected token %c\n", flag);
+		free(str);
 		return (1);
 	}
 	// line = NULL;									// para que funcione como en bash y siga recogiendo hasta encontrar la comilla de cierre
@@ -169,41 +172,15 @@ int	check_closed_coms(char *str)
 	return (0);
 }
 
-int	parse_com(t_list *lst, t_env *env)
+int	parse_com(t_list *lst)
 {
-	int		i;
 	char	*aux;
-	char	*var;
 
 	while (lst)
 	{
-		var = ft_strdup("");
-		i = 0;
 		aux = ft_strdup(lst->content);
 		if (check_closed_coms(aux))
 			return (1);
-		while (aux[i])
-		{
-			if (((aux[i] == '\'' || aux[i] == '"') && aux[i + 1])
-				&& (i == 0 || (i > 0 && aux[i - 1] != '\\')))
-			{
-				var = build_str(var, get_quoted(&(aux[i]), env), 1);
-				i += size_quoted(&aux[i]) + 1;
-			}
-			else if ((aux[i] == '"' || aux[i] == '\'') && i == (int)ft_strlen(aux) - 1)
-				break ;
-			else if (aux[i] == '$' && aux[i + 1])
-			{
-				var = build_str(var, get_var(&aux[i], env), 1);
-				i += size_var(&aux[i]);
-			}
-			else
-				var = build_str(var, ft_chrdup(aux[i]), 1);
-			i++;
-			free(lst->content);
-			lst->content = ft_strdup(var);
-		}
-		free(var);
 		free(aux);
 		lst = lst->next;
 	}

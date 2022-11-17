@@ -49,6 +49,7 @@ SRCS_PARSE = init_exec.c \
 			parse_nodes.c \
 			parse_tokens.c \
 			parse_com.c \
+			clean_com.c \
 
 SRCS = main.c
 

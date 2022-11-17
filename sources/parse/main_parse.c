@@ -17,18 +17,29 @@ int	len_block(char *line, int i)
 	char	flag;
 
 	len = 0;
-	while (line[i + len])
+	while (/*line[i + len]*/i + len < (int)ft_strlen(line))
 	{
 		if (line[i + len] == 34 || line [i + len] == 39)
 		{
 			if (i + len == 0 || (i + len > 0 && line[i + len - 1] != '\\'))
 			{
 				flag = line[i + len];
+				len++;
 				while (line[i + len])
 				{
+					if(flag == line[i + len] && line[i + len - 1] != '\\')
+					{
+						len++;
+						while(line[i + len])
+						{
+							if(line[i + len] == ' '
+							|| line[i + len] == '<' || line[i + len] == '>'
+							|| line[i + len] == '|')
+								return(len);
+							len++;
+						}
+					}
 					len++;
-					if (flag == line[i + len] && line[i + len - 1] != '\\')
-						return (len + 1);
 				}
 			}
 		}
@@ -67,7 +78,7 @@ t_list	*split_blocks(char *line)
 	i = 0;
 	len = 0;
 	lst = ft_lstnew(ft_strdup(line));
-	while (line[i])
+	while (/*line[i]*/i < (int)ft_strlen(line))
 	{	
 		i = ignore_spaces(line, i);
 		if ((line[i] == '<' || line[i] == '>' || line[i] == '|') && line[i])
@@ -111,6 +122,45 @@ void	free_lst(t_list *lst)
 	}
 }
 
+int	clean_redir(t_list *lst)
+{
+	char	*tmp;
+	t_list	*aux;
+
+	aux = NULL;
+	while (lst)
+	{
+		if (!ft_strncmp(lst->content, "<", 1)
+			|| !ft_strncmp(lst->content, ">", 1))
+		{
+			if (!lst->next)
+			{
+				printf("minishell: syntax error near unexpected token `newline`\n");
+				return (1);
+			}
+			if (!ft_strncmp(lst->next->content, "<", 1)
+				|| !ft_strncmp(lst->next->content, ">", 1))
+			{
+				tmp = ft_strdup(lst->content);
+				free(lst->content);
+				lst->content = ft_strjoin(tmp, lst->next->content);
+				free(tmp);
+				aux = lst->next;
+				lst->next = lst->next->next;
+				free(aux->content);
+				free(aux);
+				if (!lst->next)
+				{
+					printf("minishell: syntax error near unexpected token `newline`\n");
+					return (1);
+				}
+			}
+		}
+		lst = lst->next;
+	}
+	return (0);
+}
+
 void	main_parse(t_def **def, char *line, t_env *env)
 {
 	t_list	*lst;
@@ -127,10 +177,16 @@ void	main_parse(t_def **def, char *line, t_env *env)
 		free(aux->content);
 		free(aux);
 	}
-	if (!parse_tokens(lst) && !parse_com(lst, env))
-		*def = parse_nodes(lst);
+	if(clean_redir(lst))
+	{
+		free_lst(lst);
+		return ;
+	}
+	// print_list(lst);
+	if (!parse_tokens(lst) && !parse_com(lst))
+		*def = parse_nodes(lst, env);
 		// printf("aqui entro si todo está bien\n");
-	// // print_list(lst);
-	free_lst(lst);
 	// (void)env;
+	// print_nodes(*def);
+	free_lst(lst);
 }

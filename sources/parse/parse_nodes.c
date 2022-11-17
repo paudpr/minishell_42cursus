@@ -19,45 +19,6 @@ void	print_nodes(t_def *def)
 	}
 }
 
-int	clean_redir(t_list *lst)
-{
-	char	*tmp;
-	t_list	*aux;
-
-	aux = NULL;
-	while (lst)
-	{
-		if (!ft_strncmp(lst->content, "<", 1)
-			|| !ft_strncmp(lst->content, ">", 1))
-		{
-			if (!lst->next)
-			{
-				printf("minishell: syntax error near unexpected token `newline`\n");
-				return (1);
-			}
-			if (!ft_strncmp(lst->next->content, "<", 1)
-				|| !ft_strncmp(lst->next->content, ">", 1))
-			{
-				tmp = ft_strdup(lst->content);
-				free(lst->content);
-				lst->content = ft_strjoin(tmp, lst->next->content);
-				free(tmp);
-				aux = lst->next;
-				lst->next = lst->next->next;
-				free(aux->content);
-				free(aux);
-				if (!lst->next)
-				{
-					printf("minishell: syntax error near unexpected token `newline`\n");
-					return (1);
-				}
-			}
-		}
-		lst = lst->next;
-	}
-	return (0);
-}
-
 int	count_argvs(t_list *lst)
 {
 	int	count;
@@ -109,6 +70,7 @@ t_def	*create_node(int size, t_list *lst)
 	{
 		new->argv[i] = ft_strdup(lst->content);
 		new->type[i] = get_type(new->argv[i]);
+		// printf("%d -> %s \n", new->type[i], new->argv[i]);
 		if (new->type[i] && new->type[i] < 5)
 		{
 			i++;
@@ -124,7 +86,7 @@ t_def	*create_node(int size, t_list *lst)
 	return (new);
 }
 
-t_def	*parse_nodes(t_list *lst)
+t_def	*parse_nodes(t_list *lst, t_env *env)
 {
 	int		size;
 	int		flag;
@@ -134,8 +96,7 @@ t_def	*parse_nodes(t_list *lst)
 	size = 0;
 	flag = 0;
 	nodes = NULL;
-	if (clean_redir(lst))
-		return (NULL);
+	// print_list(lst);
 	while (lst)
 	{
 		if (size == 0)
@@ -146,13 +107,19 @@ t_def	*parse_nodes(t_list *lst)
 		if (flag == 1)
 		{
 			new = create_node(size, lst);
+			// print_nodes(new);
+			// printf("%s\t%s\t%s\t%s\n", new->argv[0], new->argv[1], new->argv[2], new->argv[3]);
+			clean_com(new->argv, env);
+			// (void)env;
 			mini_lstadd_back(&nodes, new);
 			flag = 0;
 		}
 		size--;
+		// printf("%p\t%p\n", lst, lst->next);
 		lst = lst->next;
 		if (size == 0 && lst && lst->next)
 			lst = lst->next;
+		// printf("%p\t%p\n", lst, lst->next);
 	}
 	// print_nodes(nodes);
 	return (nodes);

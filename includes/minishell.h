@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pauladelpinoramirez <pauladelpinoramire    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 15:52:10 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/11/15 11:43:25 by pdel-pin         ###   ########.fr       */
+/*   Updated: 2022/11/16 18:21:07 by pauladelpin      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ void	main_parse(t_def **def, char *line, t_env *env);
 
 // parse_nodes.c
 char	*build_str(char *str_1, char *str_2, int type);
-t_def	*parse_nodes(t_list *lst);
+t_def	*parse_nodes(t_list *lst, t_env *env);
 
 // parse_tokens.c
 int		parse_tokens(t_list *lst);
@@ -153,7 +153,7 @@ int		parse_pipe_tokens(t_list *lst);
 int		parse_pipe_aux(int i);
 
 // parse_com.c
-int		parse_com(t_list *lst, t_env *env);
+int		parse_com(t_list *lst);
 int		check_closed_coms(char *str);
 char	*build_str(char *str_1, char *str_2, int type);
 char	*get_quoted(char *str, t_env *env);
@@ -162,8 +162,13 @@ char	*check_expansion(char *var, t_env *env);
 int		size_var(char *str);
 int		size_quoted(char *str);
 
+/* clean_com.c */
+void clean_com(char **str, t_env *env);
+
+
 
 // luego borrar para poner parse bien
 void	get_list(t_def **def, char *argv);	//quitar cuando esté parseo
 void	print_list(t_list *lst);
+void	print_nodes(t_def *def);
 #endif
