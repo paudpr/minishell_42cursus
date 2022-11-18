@@ -31,11 +31,11 @@ int	size_var(char *str)
 	int	i;
 
 	i = 1;
-	if (ft_isdigit(str[i]) || str[i] == '?')
+	if (i < (int)ft_strlen(str) && (ft_isdigit(str[i]) || str[i] == '?'))
 		return (1);
-	while (str[i])					// revisar esto esta maaaaaaaaaaaal
+	while (i < (int)ft_strlen(str))					// revisar esto esta maaaaaaaaaaaal
 		i++;
-	if (str[i] == 0)
+	if (i == (int)ft_strlen(str) - 1)
 		i--;
 	return (i);
 }

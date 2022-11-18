@@ -30,7 +30,7 @@ void clean_com(char **str, t_env *env)
 			else if (str[j][i] == '$' && str[j][i + 1])
 			{
 				// printf("*****\n");
-				var = build_str(var, get_var(ft_chrdup(str[j][i]), env), 1);
+				var = build_str(var, get_var(&str[j][i], env), 1);
 				i += size_var(&str[j][i]);
 			}
 			else
