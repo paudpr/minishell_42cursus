@@ -31,7 +31,7 @@ int	size_var(char *str)
 	int	i;
 
 	i = 1;
-	if (i < (int)ft_strlen(str) && (ft_isdigit(str[i]) || str[i] == '?'))
+	if (i < (int)ft_strlen(str) && (ft_isdigit(str[i]) || str[i] == '?' || str[i] == '$'))
 		return (1);
 	while (i < (int)ft_strlen(str))					// revisar esto esta maaaaaaaaaaaal
 		i++;
@@ -46,6 +46,7 @@ char	*check_expansion(char *var, t_env *env)
 	int		aux;
 	char	*name_var;
 
+	// printf("var -> %p\t%s\n", &var, var);
 	if (!var)
 		return (ft_strdup(""));
 	len = ft_double_len(env->env);
@@ -56,8 +57,13 @@ char	*check_expansion(char *var, t_env *env)
 		if (aux < 0)
 			aux *= -1;
 		if (!ft_strncmp(name_var, var, ft_strlen(var)) && aux == (int)ft_strlen(var))
+		{
+			free(name_var);
 			return (ft_strdup(ft_strchr(env->env[len], '=') + 1));
+		}
+		free(name_var);
 	}
+	free(var);
 	return (ft_strdup(""));
 }
 
@@ -70,11 +76,13 @@ char	*get_var(char *str, t_env *env)
 	i = 1;
 	if (ft_isdigit(str[i]))
 		return (ft_strdup(""));
+	if(str[i] == '$')
+		return(ft_itoa(getpid()));
 	// if(str[i] = '?')			// cosa de señales
 	// 	return (señales);
-	while (str[i])
+	while (str[i] && str[i] != '"')
 		i++;
-	aux = ft_substr(str, 1, i);
+	aux = ft_substr(str, 1, i - 1);
 	var = check_expansion(aux, env);
 	free(aux);
 	return (var);
@@ -89,19 +97,21 @@ char	*get_quoted(char *str, t_env *env)
 	i = 1;
 	flag = str[0];
 	aux = ft_strdup("");
-	while (str[i])
+	while (i < (int)ft_strlen(str))
 	{
 		if (str[i] == '\\' && str[++i])				// ignora la contrabarra si la hay
 			aux = build_str(aux, ft_chrdup(str[i]), 1);
 		else if (str[i] == flag)					// cierra comilla
 			break ;
-		else if (str[i] == '$' && flag == '"')		// gestiona expansión
+		else if (str[i] == '$' && flag == '"')		// gestiona $ y expansión
 		{
 			if (str[i + 1] == flag)
 				aux = build_str(aux, ft_chrdup(str[i]), 1);
 			else
+			{
 				aux = build_str(aux, get_var(&str[i], env), 1);
-			i += size_var(aux);
+			}
+			i += size_var(&str[i + 1]);
 		}
 		else if (str[i])							// continua por caracter
 			aux = build_str(aux, ft_chrdup(str[i]), 1);
@@ -155,7 +165,7 @@ int	check_closed_coms(char *str)
 	}
 	if (num % 2 != 0)
 	{
-		printf("minishell: syntax error near unexpected token %c\n", flag);
+		printf("minishell: syntax error near unexpected token '%c'\n", flag);
 		free(str);
 		return (1);
 	}

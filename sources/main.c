@@ -24,6 +24,7 @@ int	main(void)
 			add_history(line);
 		main_parse(&def, line, env);
 		// get_list(&def, line);			// main_parse();
+		// printf("def -> %p\n", def);
 		main_exec(def, env);
 		free(line);
 		free_list(&def);

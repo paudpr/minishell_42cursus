@@ -2,7 +2,7 @@
 
 int	ignore_spaces(char *line, int i)
 {
-	while (line[i])
+	while (i < (int)ft_strlen(line))
 	{
 		if (line[i] != ' ')
 			break ;
@@ -58,10 +58,10 @@ int	check_next(char *line, int i)
 	{
 		if (line[i] == ' ')
 		{
-			i = ignore_spaces(line, i);
+			i = ignore_spaces(line + i, i);
 			if (line[i] && (line[i] == '<' || line[i] == '>'))
 			{
-				printf("minishell: syntax error near unexpected token `%c`\n", line[i]);
+				printf("minishell: syntax error near unexpected token '%c'\n", line[i]);
 				return (1);
 			}
 		}
@@ -85,7 +85,10 @@ t_list	*split_blocks(char *line)
 		{
 			len = 1;
 			if (check_next(line, i))
-				return (lst);
+			{
+				free_lst(lst);
+				return (NULL);
+			}
 			ft_lstadd_back(&lst, ft_lstnew(ft_substr(line, i, len)));
 			i += len;
 		}
@@ -166,6 +169,7 @@ void	main_parse(t_def **def, char *line, t_env *env)
 	t_list	*lst;
 	t_list	*aux;
 
+	// printf("Line   %s\n", line);
 	if (!line)
 		def = NULL;
 	lst = split_blocks(line);
@@ -182,7 +186,8 @@ void	main_parse(t_def **def, char *line, t_env *env)
 		free_lst(lst);
 		return ;
 	}
-	// print_list(lst);
+	print_list(lst);
+	// printf("%d - %d - %p\n", parse_tokens(lst), parse_tokens(lst), def);
 	if (!parse_tokens(lst) && !parse_com(lst))
 		*def = parse_nodes(lst, env);
 		// printf("aqui entro si todo está bien\n");

@@ -9,13 +9,17 @@ void clean_com(char **str, t_env *env)
 	char *var;
 
 	j = 0;
+	// printf("----- ----- ----- -----\n");
+	// print_double(str);
+	// printf("%d\n", ft_double_len(str));
+	// printf("····· ····· ····· ·····\n");
 	while(j < ft_double_len(str))
 	{
 		var = ft_strdup("");
 		i = 0;
 		while (i < (int)ft_strlen(str[j]))
 		{
-			// printf("bucle %d\n", i);
+			// printf("bucle %d -> %c\n", i, str[j][i]);
 			if (((str[j][i] == '\'' || str[j][i] == '"') && str[j][i + 1])
 				&& (i == 0 || (i > 0 && str[j][i - 1] != '\\')))
 			{

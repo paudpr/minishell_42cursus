@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pauladelpinoramirez <pauladelpinoramire    +#+  +:+       +#+        */
+/*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 15:52:10 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/11/16 18:21:07 by pauladelpin      ###   ########.fr       */
+/*   Updated: 2022/11/23 17:22:15 by pdel-pin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,4 +171,5 @@ void clean_com(char **str, t_env *env);
 void	get_list(t_def **def, char *argv);	//quitar cuando esté parseo
 void	print_list(t_list *lst);
 void	print_nodes(t_def *def);
+void	free_lst(t_list *lst);
 #endif
