@@ -53,11 +53,41 @@ int	len_block(char *line, int i)
 
 int	check_next(char *line, int i, char flag)
 {
-	int count;
-	int j;
+	// int count;
+	// int j;
 
-	j = -1;
-	count = 1;
+	// j = -1;
+	// count = 1;
+// 	if (line[i] && line[i] != '<' && line[i] != '>')
+// 	{
+// 		if (line[i] == ' ')
+// 		{
+// 			i = ignore_spaces(line + i, i);
+// 			if (line[i] && (line[i] == '<' || line[i] == '>'))
+// 			{
+// 				while(line[i] && line[i] == flag)
+// 				{
+// 					count++;
+// 					i++;
+// 				}
+// 				printf("count -> %d\n", count);
+// 				if(count == 1)
+// 					print_redir_err_tokens(1, line[i]);
+// 				else if(count == 1)
+// 				{
+// 				printf("HE LLEGADO AQI\n");
+// 					if(line[i+count] && flag != line[i + count - 1])
+// 						printf("minishell: syntax error near unexpected token '%c%c'\n", flag, line[i + count]);
+// 				}
+// 				else
+// 					print_redir_err_tokens(count + 1, flag);
+// 				printf("minishell: syntax error near unexpected token '%c'\n", line[i]);
+// 				return (1);
+// 			}
+// 		}
+// 	}
+	i++;
+	(void)flag;
 	if (line[i] && line[i] != '<' && line[i] != '>')
 	{
 		if (line[i] == ' ')
@@ -65,36 +95,11 @@ int	check_next(char *line, int i, char flag)
 			i = ignore_spaces(line + i, i);
 			if (line[i] && (line[i] == '<' || line[i] == '>'))
 			{
-				while(line[i] && line[i] == flag)
-				{
-					count++;
-					i++;
-				}
-				printf("count -> %d\n", count);
-				if(count == 1)
-					print_redir_err_tokens(1, line[i]);
-				else if(count == 1)
-				{
-				printf("HE LLEGADO AQI\n");
-					if(line[i+count] && flag != line[i + count - 1])
-						printf("minishell: syntax error near unexpected token '%c%c'\n", flag, line[i + count]);
-				}
-				else
-					print_redir_err_tokens(count + 1, flag);
-				printf("3minishell: syntax error near unexpected token '%c'\n", line[i]);
+				printf("minishell: syntax error near unexpected token '%c'\n", line[i]);
 				return (1);
 			}
 		}
 	}
-	// if(line[i] && (line[i] == '<' || line[i] == '>'))
-	// {
-	// 	if(line[i + 1] && (line[i + 1] == '<' || line[i + 1] == '>'))
-	// 	{
-			
-	// 		printf("minishell: syntax error near unexpected token '%c'\n", line[i]);
-	// 		return (1);
-	// 	}
-	// }
 	return (0);
 }
 
@@ -169,7 +174,7 @@ int	clean_redir(t_list *lst)
 		{
 			if (!lst->next)
 			{
-				printf("minishell: syntax error near unexpected token `newline`\n");
+				printf("minishell: syntax error near unexpected token 'newline'\n");
 				return (1);
 			}
 			if (!ft_strncmp(lst->next->content, "<", 1)
@@ -185,7 +190,7 @@ int	clean_redir(t_list *lst)
 				free(aux);
 				if (!lst->next)
 				{
-					printf("2minishell: syntax error near unexpected token `newline`\n");
+					printf("minishell: syntax error near unexpected token 'newline'\n");
 					return (1);
 				}
 			}
@@ -217,7 +222,7 @@ void	main_parse(t_def **def, char *line, t_env *env)
 		free_lst(lst);
 		return ;
 	}
-	print_list(lst);
+	// print_list(lst);
 	// printf("%d - %d - %p\n", parse_tokens(lst), parse_tokens(lst), def);
 	if (!parse_tokens(lst) && !parse_com(lst))
 		*def = parse_nodes(lst, env);

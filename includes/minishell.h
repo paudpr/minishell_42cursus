@@ -6,7 +6,7 @@
 /*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 15:52:10 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/11/23 17:22:15 by pdel-pin         ###   ########.fr       */
+/*   Updated: 2022/11/28 14:21:53 by pdel-pin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,7 @@ t_def	*parse_nodes(t_list *lst, t_env *env);
 // parse_tokens.c
 int		parse_tokens(t_list *lst);
 int		parse_redir_tokens(t_list *lst);
-int		error_redir_tokens(t_list **lst, char flag);
+int		error_redir_tokens(t_list *lst, char flag, int type);
 void	print_redir_err_tokens(int i, char type);
 int		parse_pipe_tokens(t_list *lst);
 int		parse_pipe_aux(int i);

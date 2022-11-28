@@ -168,7 +168,7 @@ int	check_closed_coms(char *str)
 	}
 	if (num % 2 != 0)
 	{
-		printf("4minishell: syntax error near unexpected token '%c'\n", flag);
+		printf("minishell: syntax error near unexpected token '%c'\n", flag);
 		free(str);
 		return (1);
 	}
