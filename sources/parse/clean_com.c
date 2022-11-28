@@ -1,7 +1,5 @@
 #include "minishell.h"
 
-
-// str es lst->content por cada uno de las separaciones
 void clean_com(char **str, t_env *env)
 {
 	int i;
@@ -9,10 +7,6 @@ void clean_com(char **str, t_env *env)
 	char *var;
 
 	j = 0;
-	// printf("----- ----- ----- -----\n");
-	// print_double(str);
-	// printf("%d\n", ft_double_len(str));
-	// printf("····· ····· ····· ·····\n");
 	while(j < ft_double_len(str))
 	{
 		var = ft_strdup("");
@@ -35,7 +29,9 @@ void clean_com(char **str, t_env *env)
 			{
 				// printf("*****\n");
 				var = build_str(var, get_var(&str[j][i], env), 1);
+				// printf("var -> %s\t%c\n", var, var[0]);
 				i += size_var(&str[j][i]);
+				// printf("%d %d %c\n", i, str[j][i], str[j][i]);
 			}
 			else
 			{

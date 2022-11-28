@@ -31,7 +31,8 @@ int	size_var(char *str)
 	int	i;
 
 	i = 1;
-	if (i < (int)ft_strlen(str) && (ft_isdigit(str[i]) || str[i] == '?' || str[i] == '$'))
+	if (i < (int)ft_strlen(str) && (ft_isdigit(str[i])
+		|| str[i] == '?' || str[i] == '$' || str[i] == '#' || str[i] == '"' || str[i] == '\''))
 		return (1);
 	while (i < (int)ft_strlen(str))					// revisar esto esta maaaaaaaaaaaal
 		i++;
@@ -63,7 +64,7 @@ char	*check_expansion(char *var, t_env *env)
 		}
 		free(name_var);
 	}
-	free(var);
+	// free(var);
 	return (ft_strdup(""));
 }
 
@@ -74,10 +75,12 @@ char	*get_var(char *str, t_env *env)
 	char	*aux;
 
 	i = 1;
-	if (ft_isdigit(str[i]))
+	if (ft_isdigit(str[i]) || str[i] == '"' || str[i] == '\'')
 		return (ft_strdup(""));
 	if(str[i] == '$')
 		return(ft_itoa(getpid()));
+	if(str[i] == '#')
+		return(ft_strdup("0"));
 	// if(str[i] = '?')			// cosa de señales
 	// 	return (señales);
 	while (str[i] && str[i] != '"')
@@ -165,7 +168,7 @@ int	check_closed_coms(char *str)
 	}
 	if (num % 2 != 0)
 	{
-		printf("minishell: syntax error near unexpected token '%c'\n", flag);
+		printf("4minishell: syntax error near unexpected token '%c'\n", flag);
 		free(str);
 		return (1);
 	}

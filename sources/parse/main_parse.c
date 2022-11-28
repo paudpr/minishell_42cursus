@@ -51,9 +51,13 @@ int	len_block(char *line, int i)
 	return (len);
 }
 
-int	check_next(char *line, int i)
+int	check_next(char *line, int i, char flag)
 {
-	i++;
+	int count;
+	int j;
+
+	j = -1;
+	count = 1;
 	if (line[i] && line[i] != '<' && line[i] != '>')
 	{
 		if (line[i] == ' ')
@@ -61,11 +65,36 @@ int	check_next(char *line, int i)
 			i = ignore_spaces(line + i, i);
 			if (line[i] && (line[i] == '<' || line[i] == '>'))
 			{
-				printf("minishell: syntax error near unexpected token '%c'\n", line[i]);
+				while(line[i] && line[i] == flag)
+				{
+					count++;
+					i++;
+				}
+				printf("count -> %d\n", count);
+				if(count == 1)
+					print_redir_err_tokens(1, line[i]);
+				else if(count == 1)
+				{
+				printf("HE LLEGADO AQI\n");
+					if(line[i+count] && flag != line[i + count - 1])
+						printf("minishell: syntax error near unexpected token '%c%c'\n", flag, line[i + count]);
+				}
+				else
+					print_redir_err_tokens(count + 1, flag);
+				printf("3minishell: syntax error near unexpected token '%c'\n", line[i]);
 				return (1);
 			}
 		}
 	}
+	// if(line[i] && (line[i] == '<' || line[i] == '>'))
+	// {
+	// 	if(line[i + 1] && (line[i + 1] == '<' || line[i + 1] == '>'))
+	// 	{
+			
+	// 		printf("minishell: syntax error near unexpected token '%c'\n", line[i]);
+	// 		return (1);
+	// 	}
+	// }
 	return (0);
 }
 
@@ -81,10 +110,11 @@ t_list	*split_blocks(char *line)
 	while (/*line[i]*/i < (int)ft_strlen(line))
 	{	
 		i = ignore_spaces(line, i);
-		if ((line[i] == '<' || line[i] == '>' || line[i] == '|') && line[i])
+		if (line[i] && (line[i] == '<' || line[i] == '>' || line[i] == '|'))
 		{
 			len = 1;
-			if (check_next(line, i))
+			// printf("--------> %c    %c    %d\n", line[i], line[i + 1], i);
+			if (check_next(line, i + 1, line[i]))
 			{
 				free_lst(lst);
 				return (NULL);
@@ -131,6 +161,7 @@ int	clean_redir(t_list *lst)
 	t_list	*aux;
 
 	aux = NULL;
+	// print_list(lst);
 	while (lst)
 	{
 		if (!ft_strncmp(lst->content, "<", 1)
@@ -154,7 +185,7 @@ int	clean_redir(t_list *lst)
 				free(aux);
 				if (!lst->next)
 				{
-					printf("minishell: syntax error near unexpected token `newline`\n");
+					printf("2minishell: syntax error near unexpected token `newline`\n");
 					return (1);
 				}
 			}

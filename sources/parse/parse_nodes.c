@@ -96,7 +96,6 @@ t_def	*parse_nodes(t_list *lst, t_env *env)
 	size = 0;
 	flag = 0;
 	nodes = NULL;
-	// print_list(lst);
 	while (lst)
 	{
 		if (size == 0)
@@ -107,19 +106,15 @@ t_def	*parse_nodes(t_list *lst, t_env *env)
 		if (flag == 1)
 		{
 			new = create_node(size, lst);
-			// print_nodes(new);
-			// printf("%s\t%s\t%s\t%s\n", new->argv[0], new->argv[1], new->argv[2], new->argv[3]);
+			// print_double(new->argv);
 			clean_com(new->argv, env);
-			// (void)env;
 			mini_lstadd_back(&nodes, new);
 			flag = 0;
 		}
 		size--;
-		// printf("%p\t%p\n", lst, lst->next);
 		lst = lst->next;
 		if (size == 0 && lst && lst->next)
 			lst = lst->next;
-		// printf("%p\t%p\n", lst, lst->next);
 	}
 	// print_nodes(nodes);
 	return (nodes);

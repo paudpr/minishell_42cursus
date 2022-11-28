@@ -49,7 +49,7 @@ void	print_redir_err_tokens(int i, char type)
 	int	count;
 
 	count = 0;
-	printf("minishell: syntax error near unexpected token '%c", type);
+	printf("1minishell: syntax error near unexpected token '%c", type);
 	while (count < i && count < 2)
 	{
 		printf("%c", type);
@@ -66,6 +66,7 @@ int	error_redir_tokens(t_list **lst, char flag)
 	aux = *lst;
 	aux = aux->next;
 	i = 0;
+	printf("ENTRO AQUUIIIIII\n");
 	while (aux && !ft_strncmp(aux->content, &flag, 1))
 	{
 		i++;
@@ -85,36 +86,51 @@ int	parse_redir_tokens(t_list *lst)
 	int		i;
 
 	i = 0;
+
 	while (lst)
 	{
 		if (!ft_strncmp(lst->content, "<", 1)									//si es una redirección
 			|| !ft_strncmp(lst->content, ">", 1))
 		{
+			printf("1-> %s\n", lst->content);
 			aux = ft_strdup(lst->content);
 			flag = aux[0];
 			lst = lst->next;
+			printf("2-> %s\n", lst->content);
 			if (lst && !ft_strncmp(lst->content, &flag, 1)) 					//si es un heredoc o un append
 			{
+				printf("AAAAAAAAAAAAA\n");
 				lst = lst->next;
 				if (!lst)
 					return (1);
 				free(aux);
 				aux = ft_strdup(lst->content);
 				if (lst && !ft_strncmp(lst->content, &flag, 1))					//si es un fallo porque muchas redirecciones 
+				{
+					printf("11111\n");
 					return (error_redir_tokens(&lst, aux[0]));
+				}
 				else if (lst && ft_strncmp(lst->content, &flag, 1)
 					&& (!ft_strncmp(lst->content, "|", 1)
 						|| !ft_strncmp(lst->content, "<", 1)
-						|| !ft_strncmp(lst->content, ">", 1)))					//si es un fallo porque mezcla de redirecciones
+						|| !ft_strncmp(lst->content, ">", 1)))					//si es un fallo porque mezcla redirecciones
+						{
+							printf("222222\n");
 					return (error_redir_tokens(&lst, aux[0]));
+
+						}
 				else
+				{
+					printf("333333\n");
 					lst = lst->next;
+				}
 			}
 			else if (lst && ft_strncmp(lst->content, &flag, 1)					//si mezcla redirecciones simples
 				&& (!ft_strncmp(lst->content, "|", 1)
 					|| !ft_strncmp(lst->content, "<", 1)
 					|| !ft_strncmp(lst->content, ">", 1)))
 			{
+				printf("BBBBBBBBBBBBB\n");
 				free(aux);
 				aux = ft_strdup(lst->content);
 				return (error_redir_tokens(&lst, aux[0]));
