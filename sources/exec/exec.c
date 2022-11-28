@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pauladelpinoramirez <pauladelpinoramire    +#+  +:+       +#+        */
+/*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 15:52:43 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/11/14 14:43:58 by pauladelpin      ###   ########.fr       */
+/*   Updated: 2022/11/28 16:51:46 by pdel-pin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ static void	do_one_command(t_def *def, t_cmds *cmds, int *check)
 	if (pid == 0)
 	{
 		check_redir(def, cmds);
+		do_builtin(cmds, check);
 		exec(cmds);
 		exit(EXIT_FAILURE);
 	}
@@ -114,11 +115,7 @@ void	do_process(t_def *def, t_cmds *cmds)
 	while (i < ft_double_len(def->argv))
 	{
 		if (def->next == NULL && cmds->num == 0 && check == 0)
-		{
-			do_builtin(cmds, &check);
-			if (cmds->bin == 0)
-				do_one_command(def, cmds, &check);
-		}
+			do_one_command(def, cmds, &check);
 		else if (def->next == NULL && check == 0)
 			do_last_command(def, cmds, &check);
 		else if (check == 0)
