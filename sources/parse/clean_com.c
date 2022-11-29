@@ -35,8 +35,7 @@ int	size_var(char *str)
 		return (1);
 	while (i < (int)ft_strlen(str) && ft_isalpha(str[i]))
 		i++;
-	// if (i == (int)ft_strlen(str) - 1)
-	// 	i--;
+	
 	return (i);
 }
 
@@ -166,7 +165,7 @@ void clean_com(char **str, t_env *env)
 			{
 				// printf("*****\n");
 				var = build_str(var, get_var(&str[j][i], env), 1);
-				i += size_var(&str[j][i]);
+				i += size_var(&str[j][i]) - 1;
 			}
 			else
 			{
@@ -177,7 +176,12 @@ void clean_com(char **str, t_env *env)
 		}
 		free(str[j]);
 		// printf("var -> %s\n", var);
-		str[j] = ft_strdup(var);
+		// char *prueba = ft_strdup("");
+		// printf("%s\t->\t%c\t%d\n", prueba, prueba[0], prueba[0]);
+		if(var[0] != 0)
+			str[j] = ft_strdup(var);
+		else
+			str[j] = NULL;
 		free(var);
 		j++;
 	}

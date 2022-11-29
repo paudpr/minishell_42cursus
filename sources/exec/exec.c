@@ -6,7 +6,7 @@
 /*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 15:52:43 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/11/28 16:51:46 by pdel-pin         ###   ########.fr       */
+/*   Updated: 2022/11/28 17:03:13 by pdel-pin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static void	do_commands(t_def *def, t_cmds *cmds, int *check)
 		dup2(cmds->pipe_fd[cmds->num][1], STDOUT_FILENO);
 		close(cmds->pipe_fd[cmds->num][1]);
 		check_redir(def, cmds);
-		do_builtin(cmds, check);
+		do_builtin(cmds, check, def);
 		exec(cmds);
 		exit(EXIT_FAILURE);
 	}
@@ -72,7 +72,7 @@ static void	do_last_command(t_def *def, t_cmds *cmds, int *check)
 	if (pid == 0)
 	{
 		check_redir(def, cmds);
-		do_builtin(cmds, check);
+		do_builtin(cmds, check, def);
 		exec(cmds);
 		exit(0);
 	}
@@ -96,7 +96,7 @@ static void	do_one_command(t_def *def, t_cmds *cmds, int *check)
 	if (pid == 0)
 	{
 		check_redir(def, cmds);
-		do_builtin(cmds, check);
+		do_builtin(cmds, check, def);
 		exec(cmds);
 		exit(EXIT_FAILURE);
 	}
@@ -115,7 +115,11 @@ void	do_process(t_def *def, t_cmds *cmds)
 	while (i < ft_double_len(def->argv))
 	{
 		if (def->next == NULL && cmds->num == 0 && check == 0)
-			do_one_command(def, cmds, &check);
+		{
+			do_builtin(cmds, &check, def);
+			if (cmds->bin == 0)
+				do_one_command(def, cmds, &check);
+		}
 		else if (def->next == NULL && check == 0)
 			do_last_command(def, cmds, &check);
 		else if (check == 0)

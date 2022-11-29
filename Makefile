@@ -62,15 +62,13 @@ OBJS_DIR = $(addprefix $(OBJ_DIR)/,$(OBJS_NAME_DIR))
 OBJS_NAME = $(SRCS_NAME:%.c=%.o)
 OBJS = $(addprefix $(OBJ_DIR)/, $(OBJS_NAME))
 
-
 .PHONY: all re clean fclean
 
 all: $(NAME)
 
-
 $(NAME): $(OBJS) 
 	make -C $(LIBFT_DIR)
-	$(CC) $^ -o $@ $(CFLAGS) $(LDFLAGS) $(LDLIBS)
+	$(CC) $^ -o $@ $(LDLIBS) $(LDFLAGS) $(CFLAGS)
 
 debug: CFLAGS += -fsanitize=address -g3
 debug: $(NAME)

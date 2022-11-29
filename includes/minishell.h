@@ -6,7 +6,7 @@
 /*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 15:52:10 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/11/28 16:51:36 by pdel-pin         ###   ########.fr       */
+/*   Updated: 2022/11/28 17:05:45 by pdel-pin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	do_process(t_def *def, t_cmds *cmds);
 void	check_redir(t_def *def, t_cmds *cmds);
 
 // builtin.c
-void	do_builtin(t_cmds *cmds, int *check);
+void	do_builtin(t_cmds *cmds, int *check, t_def *def);
 
 //utils.c
 char	**sort_double(char **str);
