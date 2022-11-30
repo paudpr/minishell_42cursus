@@ -6,7 +6,7 @@
 /*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 15:52:18 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/11/28 17:31:59 by pdel-pin         ###   ########.fr       */
+/*   Updated: 2022/11/30 11:00:25 by pdel-pin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static char	*cd_rel_dir(t_cmds *cmds)
 	return (new);
 }
 
-//va al directorio indicado. cd (path)
+// va al directorio indicado. cd (path)
 void	cd_move_dir(t_cmds *cmds)
 {
 	char	*new;
@@ -84,31 +84,32 @@ void	cd_move_dir(t_cmds *cmds)
 	free(new);
 }
 
-void create_oldpwd(t_cmds *cmds)		// crea old pwd si no existe -> para el caso en que no haya entorno
-{
-	int i;
-	int check;
-	char **copy;
+// void create_oldpwd(t_cmds *cmds)	// crea old pwd si no existe
+									// no existe si no hay entorno
+// {
+// 	int i;
+// 	int check;
+// 	char **copy;
 
-	i = -1;
-	check = 0;
-	while(++i < ft_double_len(cmds->env->env))
-	{
-		if(!ft_strncmp("OLDPWD=", cmds->env->env[i], ft_strlen("OLDPWD=")))
-			check++;
-	}
-	if(check == 1)
-	{
-		copy = malloc(sizeof(char *) * (ft_double_len(cmds->env->env) + 1));
-		i = -1;
-		while(++i < ft_double_len(cmds->env->env))
-			copy[i] = ft_strdup(cmds->env->env[i]);
-		copy[i] = ft_strdup("OLDPWD=");
-		copy[i + 1] = 0;
-		ft_free_double(cmds->env->env);
-		cmds->env->env = copy;
-	}
-}
+// 	i = -1;
+// 	check = 0;
+// 	while (++i < ft_double_len(cmds->env->env))
+// 	{
+// 		if (!ft_strncmp("OLDPWD=", cmds->env->env[i], ft_strlen("OLDPWD=")))
+// 			check++;
+// 	}
+// 	if (check == 1)
+// 	{
+// 		copy = malloc(sizeof(char *) * (ft_double_len(cmds->env->env) + 1));
+// 		i = -1;
+// 		while (++i < ft_double_len(cmds->env->env))
+// 			copy[i] = ft_strdup(cmds->env->env[i]);
+// 		copy[i] = ft_strdup("OLDPWD=");
+// 		copy[i + 1] = 0;
+// 		ft_free_double(cmds->env->env);
+// 		cmds->env->env = copy;
+// 	}
+// }
 
 void	do_cd(t_cmds *cmds)
 {

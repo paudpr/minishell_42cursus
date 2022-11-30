@@ -12,7 +12,7 @@ int	check_closed_coms(char *str)
 	{
 		if (str[i] == '"' || str[i] == '\'')
 		{
-			if(i == 0 || (i > 0 && str[i - 1] != '\\'))
+			if (i == 0 || (i > 0 && str[i - 1] != '\\'))
 			{
 				flag = str[i];
 				break ;
@@ -34,7 +34,7 @@ int	check_closed_coms(char *str)
 		free(str);
 		return (1);
 	}
-	// line = NULL;									// para que funcione como en bash y siga recogiendo hasta encontrar la comilla de cierre
+	// line = NULL;				// para que funcione como en bash y siga recogiendo hasta encontrar la comilla de cierre
 	// if(num % 2 != 0)
 	// 	line = get_next_line(0);
 	// while(line)

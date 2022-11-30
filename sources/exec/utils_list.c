@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_list.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pauladelpinoramirez <pauladelpinoramire    +#+  +:+       +#+        */
+/*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 15:53:01 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/11/13 22:53:45 by pauladelpin      ###   ########.fr       */
+/*   Updated: 2022/11/30 11:01:27 by pdel-pin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_def	*mini_lstnew(void *content, int *array)
 void	mini_lstadd_back(t_def **lst, t_def *new)
 {
 	t_def	*p;
-	
+
 	if (!*lst)
 		*lst = new;
 	else

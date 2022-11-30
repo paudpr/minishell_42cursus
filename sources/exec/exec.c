@@ -6,7 +6,7 @@
 /*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 15:52:43 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/11/28 17:03:13 by pdel-pin         ###   ########.fr       */
+/*   Updated: 2022/11/30 16:34:41 by pdel-pin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 static void	exec(t_cmds *cmds)
 {
 	char		*cmd;
-	extern char	**environ;
 
 	cmd = NULL;
 	if (cmds->cmds_argv != NULL)
@@ -114,8 +113,12 @@ void	do_process(t_def *def, t_cmds *cmds)
 	i = 0;
 	while (i < ft_double_len(def->argv))
 	{
+		if (cmds->num != 0)
+			change_last_exec(cmds, ft_strdup("/"), 2);
 		if (def->next == NULL && cmds->num == 0 && check == 0)
 		{
+			change_last_exec(cmds, ft_strjoin(cmds->cmds_path,
+					cmds->cmds_argv[0]), 1);
 			do_builtin(cmds, &check, def);
 			if (cmds->bin == 0)
 				do_one_command(def, cmds, &check);
@@ -129,6 +132,6 @@ void	do_process(t_def *def, t_cmds *cmds)
 			i++;
 			cmds->hd++;
 		}
-	i++;
+		i++;
 	}
 }

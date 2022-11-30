@@ -70,7 +70,6 @@ t_def	*create_node(int size, t_list *lst)
 	{
 		new->argv[i] = ft_strdup(lst->content);
 		new->type[i] = get_type(new->argv[i]);
-		// printf("%d -> %s \n", new->type[i], new->argv[i]);
 		if (new->type[i] && new->type[i] < 5)
 		{
 			i++;
@@ -106,7 +105,6 @@ t_def	*parse_nodes(t_list *lst, t_env *env)
 		if (flag == 1)
 		{
 			new = create_node(size, lst);
-			// print_double(new->argv);
 			clean_com(new->argv, env);
 			mini_lstadd_back(&nodes, new);
 			flag = 0;
@@ -116,6 +114,5 @@ t_def	*parse_nodes(t_list *lst, t_env *env)
 		if (size == 0 && lst && lst->next)
 			lst = lst->next;
 	}
-	// print_nodes(nodes);
 	return (nodes);
 }

@@ -44,8 +44,9 @@ SRCS_EXEC = main_exec.c \
 			bin_unset.c \
 			bin_utils.c \
 
-SRCS_PARSE = init_exec.c \
-			main_parse.c \
+SRCS_PARSE = main_parse.c \
+			split_blocks.c \
+			clean_redir.c \
 			parse_nodes.c \
 			parse_tokens.c \
 			parse_com.c \

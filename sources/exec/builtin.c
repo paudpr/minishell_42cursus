@@ -6,7 +6,7 @@
 /*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 15:52:37 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/11/28 17:05:29 by pdel-pin         ###   ########.fr       */
+/*   Updated: 2022/11/30 11:00:47 by pdel-pin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,10 @@ static void	check_bin(t_cmds *cmds, t_def *def)
 		cmds->bin = 1;
 		do_pwd(cmds);
 	}
+}
+
+static void	check_bin2(t_cmds *cmds, t_def *def)
+{
 	if (ft_strncmp(cmds->cmds_argv[0], "export", ft_strlen("export")) == 0
 		&& ft_strlen("export") == ft_strlen(cmds->cmds_argv[0]))
 	{
@@ -42,10 +46,6 @@ static void	check_bin(t_cmds *cmds, t_def *def)
 		cmds->bin = 1;
 		do_export(cmds);
 	}
-}
-
-static void	check_bin2(t_cmds *cmds, t_def *def)
-{
 	if (ft_strncmp(cmds->cmds_argv[0], "unset", ft_strlen("unset")) == 0
 		&& ft_strlen("unset") == ft_strlen(cmds->cmds_argv[0]))
 	{
@@ -60,6 +60,10 @@ static void	check_bin2(t_cmds *cmds, t_def *def)
 		cmds->bin = 1;
 		do_env(cmds);
 	}
+}
+
+static void	check_bin3(t_cmds *cmds, t_def *def)
+{
 	if (ft_strncmp(cmds->cmds_argv[0], "exit", ft_strlen("exit")) == 0
 		&& ft_strlen("exit") == ft_strlen(cmds->cmds_argv[0]))
 	{
@@ -75,6 +79,7 @@ void	do_builtin(t_cmds *cmds, int *check, t_def *def)
 	{
 		check_bin(cmds, def);
 		check_bin2(cmds, def);
+		check_bin3(cmds, def);
 		*check = 1;
 	}
 }

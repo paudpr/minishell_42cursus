@@ -6,11 +6,50 @@
 /*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 15:52:39 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/10/03 15:52:40 by pdel-pin         ###   ########.fr       */
+/*   Updated: 2022/11/30 16:17:50 by pdel-pin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	change_last_exec_aux(t_cmds *cmds, char *cmd, int i)
+{
+	int		index;
+	char	*aux;
+	char	*aux2;
+
+	if (ft_double_len(cmds->cmds_argv) < 2)
+		cmds->env->env[i] = ft_strjoin("_=", cmd);
+	else
+	{
+		aux = ft_strjoin("_=", cmd);
+		aux2 = ft_strjoin(aux, " ");
+		free(aux);
+		index = ft_double_len(cmds->cmds_argv) - 1;
+		cmds->env->env[i] = ft_strjoin(aux2, cmds->cmds_argv[index]);
+		free(aux2);
+	}
+}
+
+void	change_last_exec(t_cmds *cmds, char *cmd, int type)
+{
+	int		i;
+
+	i = ft_double_len(cmds->env->env) - 1;
+	while (i >= 0)
+	{
+		if (!ft_strncmp(cmds->env->env[i], "_=", 2))
+		{
+			free(cmds->env->env[i]);
+			if (type == 1)
+				change_last_exec_aux(cmds, cmd, i);
+			else
+				cmds->env->env[i] = ft_strjoin("_=", cmd);
+		}
+		i--;
+	}
+	free(cmd);
+}
 
 t_env	*get_struct_env(char **environ)
 {

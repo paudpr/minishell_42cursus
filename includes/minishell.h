@@ -6,7 +6,7 @@
 /*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 15:52:10 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/11/28 17:05:45 by pdel-pin         ###   ########.fr       */
+/*   Updated: 2022/11/30 16:11:42 by pdel-pin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ typedef struct s_cmds
 /* EXEC */
 
 // env.c
+void	change_last_exec(t_cmds *cmds, char *cmd, int type);
 t_env	*get_struct_env(char **environ);
 void	build_environ(t_env *env);
 void	copy_environ(char **environ, t_env *env);
@@ -139,6 +140,15 @@ int		var_exists(t_cmds *cmds, int i, int len);
 /* PARSE */
 
 void	main_parse(t_def **def, char *line, t_env *env);
+
+// split_blocks.c
+t_list	*split_blocks(char *line);
+int		check_next(char *line, int i, char flag);
+int		len_block(char *line, int i);
+int		ignore_spaces(char *line, int i);
+
+// clean_redir.c
+int	clean_redir(t_list *lst);
 
 // parse_nodes.c
 char	*build_str(char *str_1, char *str_2, int type);
