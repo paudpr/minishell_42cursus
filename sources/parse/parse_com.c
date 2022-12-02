@@ -1,5 +1,31 @@
 #include "minishell.h"
 
+// void wait_close_coms(char *str, int num, char flag)
+// {
+// 	int		i;
+// 	char	*line;
+// 	char	*aux;
+
+// 	line = NULL;
+// 	while(num % 2 != 0)
+// 	{
+// 		i = -1;
+// 		write(1, "> ", 2);
+// 		line = get_next_line(0);
+// 		while (line[++i])
+// 		{
+// 			if (line[i] == flag)
+// 				num++;
+// 		}
+
+
+// 		free(line);
+// 	}
+
+
+// 	printf("--------------------------------------> %s\n", str);
+// }
+
 int	check_closed_coms(char *str)
 {
 	int		i;
@@ -28,12 +54,20 @@ int	check_closed_coms(char *str)
 		if (str[i] == flag && (i > 0 && str[i - 1] == '\\'))
 			num--;
 	}
+	// if(num % 2 != 0)
+		// wait_close_coms(str, num, flag);
 	if (num % 2 != 0)
 	{
 		printf("minishell: syntax error near unexpected token '%c'\n", flag);
 		free(str);
 		return (1);
 	}
+
+
+
+
+
+
 	// line = NULL;				// para que funcione como en bash y siga recogiendo hasta encontrar la comilla de cierre
 	// if(num % 2 != 0)
 	// 	line = get_next_line(0);
