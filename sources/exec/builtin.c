@@ -6,7 +6,7 @@
 /*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 15:52:37 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/11/30 11:00:47 by pdel-pin         ###   ########.fr       */
+/*   Updated: 2022/12/09 16:20:41 by pdel-pin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ static void	check_bin3(t_cmds *cmds, t_def *def)
 
 void	do_builtin(t_cmds *cmds, int *check, t_def *def)
 {
+	// printf("check -> %p\n", check);
 	if (cmds->cmds_argv != NULL)
 	{
 		check_bin(cmds, def);

@@ -6,7 +6,7 @@
 /*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 15:52:43 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/12/01 14:54:31 by pdel-pin         ###   ########.fr       */
+/*   Updated: 2022/12/09 16:25:11 by pdel-pin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,6 @@ static void	do_one_command(t_def *def, t_cmds *cmds, int *check)
 	if (pid == 0)
 	{
 		check_redir(def, cmds);
-		do_builtin(cmds, check, def);
 		exec(cmds);
 		exit(EXIT_FAILURE);
 	}
@@ -117,8 +116,9 @@ void	do_process(t_def *def, t_cmds *cmds)
 			change_last_exec(cmds, ft_strdup("/"), 2);
 		if (def->next == NULL && cmds->num == 0 && check == 0)
 		{
-			change_last_exec(cmds, ft_strjoin(cmds->cmds_path,
-					cmds->cmds_argv[0]), 1);
+			if(ft_double_len(cmds->cmds_argv))
+				change_last_exec(cmds, ft_strjoin(cmds->cmds_path,
+						cmds->cmds_argv[0]), 1);
 			do_builtin(cmds, &check, def);
 			if (cmds->bin == 0)
 				do_one_command(def, cmds, &check);

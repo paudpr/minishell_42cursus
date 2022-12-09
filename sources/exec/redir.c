@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pauladelpinoramirez <pauladelpinoramire    +#+  +:+       +#+        */
+/*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 15:52:57 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/11/14 14:45:09 by pauladelpin      ###   ########.fr       */
+/*   Updated: 2022/12/09 16:23:35 by pdel-pin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ static char	*hd_filename(t_cmds *cmds)
 
 	num = ft_itoa(cmds->hd);
 	heredoc = ft_strjoin("/tmp/heredoc", num);
+	free(num);
 	return (heredoc);
 }
 
