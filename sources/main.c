@@ -11,6 +11,7 @@ int	main(void)
 	t_env		*env;
 
 	def = NULL;
+	ret_value = 0;
 	env = get_struct_env(environ);
 	while (1)
 	{

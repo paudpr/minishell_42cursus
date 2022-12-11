@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pauladelpinoramirez <pauladelpinoramire    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 15:52:10 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/12/09 13:34:30 by pdel-pin         ###   ########.fr       */
+/*   Updated: 2022/12/11 22:46:38 by pauladelpin      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct s_cmds
 	int		bin;
 }	t_cmds;
 
+int		ret_value;
 
 /* EXEC */
 

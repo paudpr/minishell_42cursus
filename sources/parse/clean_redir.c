@@ -21,6 +21,7 @@ static int	clean_redir_check(t_list *lst)
 		{
 			printf("minishell: ");
 			printf("syntax error near unexpected token 'newline'\n");
+			ret_value = 258;
 			return (1);
 		}
 	}
@@ -38,6 +39,7 @@ int	clean_redir(t_list *lst)
 			{
 				printf("minishell: ");
 				printf("syntax error near unexpected token 'newline'\n");
+				ret_value = 258;
 				return (1);
 			}
 			if (clean_redir_check(lst))

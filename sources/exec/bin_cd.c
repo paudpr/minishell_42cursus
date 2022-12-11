@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bin_cd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pauladelpinoramirez <pauladelpinoramire    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 15:52:18 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/11/30 11:00:25 by pdel-pin         ###   ########.fr       */
+/*   Updated: 2022/12/10 20:55:31 by pauladelpin      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,9 @@ void	do_cd(t_cmds *cmds)
 		else if (ft_strncmp(cmds->cmds_argv[1], "-", len) == 0
 			&& len == ft_strlen("-"))
 			cd_return_dir(cmds);
+		else if (ft_strncmp(cmds->cmds_argv[1], "~", len) == 0
+			&& len == ft_strlen("~"))
+			cd_home_dir(cmds);
 		else
 			cd_move_dir(cmds);
 	}

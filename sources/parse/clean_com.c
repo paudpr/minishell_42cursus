@@ -98,6 +98,14 @@ char	*get_last_exec(t_env *env)
 	return (ft_strdup(""));
 }
 
+char *get_ret_value(void)
+{
+	char *code;
+
+	code = ft_itoa(ret_value);
+	return(code);
+}
+
 char	*get_var(char *str, t_env *env)
 {
 	int		i;
@@ -116,9 +124,9 @@ char	*get_var(char *str, t_env *env)
 	if (str[i] == '_')
 		return (get_last_exec(env));
 	if(str[i] == '.')
-		return(ft_strdup("$."));
-	// if(str[i] = '?')			// cosa de señales
-	// 	return (señales);
+		return (ft_strdup("$."));
+	if(str[i] == '?')
+		return (get_ret_value());
 	while (str[i] && ft_isalpha(str[i]))
 		i++;
 	aux = ft_substr(str, 1, i - 1);
@@ -166,7 +174,10 @@ char	*build_str(char *str_1, char *str_2, int type)
 	if (type == 1)
 		aux = ft_strjoin(str_1, str_2);
 	else
+	{
 		aux = ft_strdup("Error parsing\n");
+		ret_value = 258;
+	}
 	free(str_1);
 	free(str_2);
 	return (aux);
