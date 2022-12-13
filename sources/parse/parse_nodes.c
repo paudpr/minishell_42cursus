@@ -46,9 +46,69 @@ int	get_type(char *argv)
 		type = T_APP;
 	else if (!ft_strncmp(argv, ">", 1))
 		type = T_ROUT;
+	else if (!ft_strncmp(argv, "*", 1))
+		type = T_WC;
 	else
 		type = T_CMD;
 	return (type);
+}
+
+t_list *get_files(void)
+{
+	DIR *dir;
+	struct dirent *items;
+	t_list *lst;
+	char check_hidden;
+
+	lst = NULL;
+	dir = opendir(".");
+	if (dir != NULL)
+	{
+		items = readdir(dir);
+		while((items = readdir(dir)) != NULL)
+		{
+			check_hidden = (char)items->d_name[0];
+			if (check_hidden != '.')
+				ft_lstadd_back(&lst, ft_lstnew(ft_strdup(items->d_name)));
+		}
+	}
+	closedir(dir);
+	return(lst);
+}
+
+t_def *get_wildcard(t_def **node)
+{
+	int i;
+	t_def *new;
+	t_list *lst;
+	t_list *aux;
+
+	lst = get_files();
+	if (lst == NULL)
+		return (node);
+	new = ft_calloc(1, sizeof(t_def));
+	if (new == NULL)
+		return (new);
+	i = ft_double_len((*node)->argv) + ft_lstsize(lst);
+	new->argv = ft_calloc(i + 1, sizeof(char *));
+	if (new->argv == NULL)
+		return (NULL);
+	new->type = ft_calloc(i + 1, sizeof(int));
+	if (new->type == NULL)
+		return (NULL);
+	print_nodes(*node);
+	free_list(node);
+	while (lst)
+	{
+		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		aux = lst;
+		lst = lst->next;
+		free(aux);
+	}
+	free(lst);
+
+
+	return(*node);
 }
 
 t_def	*create_node(int size, t_list *lst)
@@ -79,6 +139,8 @@ t_def	*create_node(int size, t_list *lst)
 			if (i >= size)
 				break ;
 		}
+		if (new->type[i] && new->type[i] == 6)
+			new = get_wildcard(&new);
 		i++;
 		lst = lst->next;
 	}

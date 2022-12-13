@@ -98,11 +98,11 @@ char	*get_last_exec(t_env *env)
 	return (ft_strdup(""));
 }
 
-char *get_ret_value(void)
+char *get_g_exit_status(void)
 {
 	char *code;
 
-	code = ft_itoa(ret_value);
+	code = ft_itoa(g_exit_status);
 	return(code);
 }
 
@@ -126,7 +126,7 @@ char	*get_var(char *str, t_env *env)
 	if(str[i] == '.')
 		return (ft_strdup("$."));
 	if(str[i] == '?')
-		return (get_ret_value());
+		return (get_g_exit_status());
 	while (str[i] && ft_isalpha(str[i]))
 		i++;
 	aux = ft_substr(str, 1, i - 1);
@@ -176,7 +176,7 @@ char	*build_str(char *str_1, char *str_2, int type)
 	else
 	{
 		aux = ft_strdup("Error parsing\n");
-		ret_value = 258;
+		g_exit_status = 258;
 	}
 	free(str_1);
 	free(str_2);

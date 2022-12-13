@@ -64,7 +64,7 @@ int	check_next(char *line, int i, char flag)
 			{
 				printf("minishell: ");
 				printf("syntax error near unexpected token '%c'\n", line[i]);
-				ret_value = 258;
+				g_exit_status = 258;
 				return (1);
 			}
 		}

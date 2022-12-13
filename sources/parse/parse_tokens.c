@@ -5,13 +5,13 @@ int	parse_pipe_aux(int i)
 	if (i == 1)
 	{
 		printf("minishell: syntax error near unexpected token '|'\n");
-		ret_value = 258;
+		g_exit_status = 258;
 		return (1);
 	}
 	else if (i == 2)
 	{
 		printf("minishell: syntax error near unexpected token '||'\n");
-		ret_value = 258;
+		g_exit_status = 258;
 		return (1);
 	}
 	return (0);
@@ -58,7 +58,7 @@ void	print_redir_err_tokens(int i, char type)
 		count++;
 	}
 	printf("'\n");
-	ret_value = 258;
+	g_exit_status = 258;
 }
 
 int	error_redir_tokens(t_list *lst, char flag, int type)

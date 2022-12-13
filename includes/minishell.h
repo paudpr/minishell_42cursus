@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pauladelpinoramirez <pauladelpinoramire    +#+  +:+       +#+        */
+/*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 15:52:10 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/12/11 22:46:38 by pauladelpin      ###   ########.fr       */
+/*   Updated: 2022/12/13 13:02:19 by pdel-pin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # define T_ROUT	3
 # define T_APP	4
 # define T_CMD	5
+# define T_WC	6
 
 # include <stdio.h>
 # include <stdlib.h>
@@ -26,6 +27,8 @@
 
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <termios.h>
+# include <dirent.h>
 # include <readline/readline.h>
 # include <readline/history.h> 
 # include "../libft/libft.h"
@@ -56,7 +59,7 @@ typedef struct s_cmds
 	int		bin;
 }	t_cmds;
 
-int		ret_value;
+int		g_exit_status;
 
 /* EXEC */
 
@@ -174,7 +177,13 @@ int		size_var(char *str);
 int		size_quoted(char *str);
 
 /* clean_com.c */
-void clean_com(char **str, t_env *env);
+void	clean_com(char **str, t_env *env);
+
+/* signal.c */
+void	sig_default_sigint(int signal);
+void	sig_default(void);
+void	sig_process(int pid);
+void	sig_process_sigint(int signal);
 
 
 
