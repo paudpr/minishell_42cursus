@@ -1,30 +1,25 @@
 #include "minishell.h"
 
-// void wait_close_coms(char *str, int num, char flag)
-// {
-// 	int		i;
-// 	char	*line;
-// 	char	*aux;
+static char	get_flag_com(char *str)
+{
+	int		i;
+	char	flag;
 
-// 	line = NULL;
-// 	while(num % 2 != 0)
-// 	{
-// 		i = -1;
-// 		write(1, "> ", 2);
-// 		line = get_next_line(0);
-// 		while (line[++i])
-// 		{
-// 			if (line[i] == flag)
-// 				num++;
-// 		}
-
-
-// 		free(line);
-// 	}
-
-
-// 	printf("--------------------------------------> %s\n", str);
-// }
+	i = -1;
+	flag = 0;
+	while (str[++i])
+	{
+		if (str[i] == '"' | str[i] == '\'')
+		{
+			if (i == 0 || (i > 0 && str[i - 1] == '\\'))
+			{
+				flag = str[i];
+				break ;
+			}
+		}
+	}
+	return (flag);
+}
 
 int	check_closed_coms(char *str)
 {
@@ -32,19 +27,7 @@ int	check_closed_coms(char *str)
 	int		num;
 	char	flag;
 
-	i = -1;
-	flag = 0;
-	while (str[++i])
-	{
-		if (str[i] == '"' || str[i] == '\'')
-		{
-			if (i == 0 || (i > 0 && str[i - 1] != '\\'))
-			{
-				flag = str[i];
-				break ;
-			}
-		}
-	}
+	flag = get_flag_com(str);
 	i = -1;
 	num = 0;
 	while (str[++i] && flag != 0)
@@ -63,22 +46,6 @@ int	check_closed_coms(char *str)
 		free(str);
 		return (1);
 	}
-
-
-
-
-
-
-	// line = NULL;				// para que funcione como en bash y siga recogiendo hasta encontrar la comilla de cierre
-	// if(num % 2 != 0)
-	// 	line = get_next_line(0);
-	// while(line)
-	// {
-	// 	free(str);
-	// 	str = ft_strjoin(aux, line);
-	// 	check_closed_coms(str);
-	// 	// free(line);								// peta aqui
-	// }
 	return (0);
 }
 

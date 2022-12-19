@@ -6,7 +6,7 @@
 /*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 15:52:10 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/12/13 13:02:19 by pdel-pin         ###   ########.fr       */
+/*   Updated: 2022/12/19 15:03:33 by pdel-pin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,16 @@
 # include <readline/readline.h>
 # include <readline/history.h> 
 # include "../libft/libft.h"
+
+# define RED "\033[1;31m"
+# define GREEN "\033[1;32m"
+# define BLUE "\033[1;34m"
+# define CYAN "\033[1;36m"
+# define GREY "\033[1;90m"
+# define YELLOW "\033[1;33m"
+# define MAGENTA "\033[1;35m"
+# define DARKGREEN "\e[0;32;40m"
+# define RESET "\033[0m"
 
 typedef struct s_def
 {
@@ -89,7 +99,7 @@ int		check_hd(t_def *def);
 void	clean_hd(int hd);
 
 // exec.c
-void	do_process(t_def *def, t_cmds *cmds);
+void	do_process(t_def *def, t_cmds *cmds, int check, int i);
 
 // redir.c
 void	check_redir(t_def *def, t_cmds *cmds);
@@ -185,7 +195,8 @@ void	sig_default(void);
 void	sig_process(int pid);
 void	sig_process_sigint(int signal);
 
-
+/* wildcard.c */
+t_def	*get_wildcard(t_def **node, char *argv, int type);
 
 // luego borrar para poner parse bien
 void	get_list(t_def **def, char *argv);	//quitar cuando esté parseo

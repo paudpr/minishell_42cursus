@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_list.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pauladelpinoramirez <pauladelpinoramire    +#+  +:+       +#+        */
+/*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 15:53:01 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/12/15 20:24:09 by pauladelpin      ###   ########.fr       */
+/*   Updated: 2022/12/19 15:03:03 by pdel-pin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,14 +62,15 @@ int	mini_lstsize(t_def *def)
 	return (i);
 }
 
-void print_list(t_list *lst)
+void	print_list(t_list *lst)
 {
-	int i;
+	int	i;
 
 	i = 1;
-	while(lst)
+	while (lst)
 	{
-		printf("NODE %d -> %p\tNext-> %p\tContent -> %s\n", i, lst, lst->next, lst->content);
+		printf("NODE %d -> %p\tNext-> %p\tContent -> %s\n",
+			i, lst, lst->next, lst->content);
 		i++;
 		lst = lst->next;
 	}

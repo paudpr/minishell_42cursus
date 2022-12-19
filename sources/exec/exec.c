@@ -6,7 +6,7 @@
 /*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 15:52:43 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/12/09 16:25:11 by pdel-pin         ###   ########.fr       */
+/*   Updated: 2022/12/19 15:00:16 by pdel-pin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,20 +103,15 @@ static void	do_one_command(t_def *def, t_cmds *cmds, int *check)
 	*check = 1;
 }
 
-void	do_process(t_def *def, t_cmds *cmds)
+void	do_process(t_def *def, t_cmds *cmds, int check, int i)
 {
-	int	i;
-	int	check;
-
-	check = 0;
-	i = 0;
-	while (i < ft_double_len(def->argv))
+	while (++i < ft_double_len(def->argv))
 	{
 		if (cmds->num != 0)
 			change_last_exec(cmds, ft_strdup("/"), 2);
 		if (def->next == NULL && cmds->num == 0 && check == 0)
 		{
-			if(ft_double_len(cmds->cmds_argv))
+			if (ft_double_len(cmds->cmds_argv))
 				change_last_exec(cmds, ft_strjoin(cmds->cmds_path,
 						cmds->cmds_argv[0]), 1);
 			do_builtin(cmds, &check, def);
@@ -132,6 +127,5 @@ void	do_process(t_def *def, t_cmds *cmds)
 			i++;
 			cmds->hd++;
 		}
-		i++;
 	}
 }

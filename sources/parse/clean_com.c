@@ -33,7 +33,8 @@ int	size_var(char *str)
 	if (i < (int)ft_strlen(str) && (ft_isdigit(str[i])
 			|| str[i] == '?' || str[i] == '"' || str[i] == '\''))
 		return (1);
-	if (str[i] == '#' || str[i] == '$' || str[i] == '_' || str[i] == '-' || str[i] == '.')
+	if (str[i] == '#' || str[i] == '$' || str[i] == '_'
+		|| str[i] == '-' || str[i] == '.')
 		return (2);
 	while (i < (int)ft_strlen(str) && ft_isalpha(str[i]))
 		i++;
@@ -98,12 +99,12 @@ char	*get_last_exec(t_env *env)
 	return (ft_strdup(""));
 }
 
-char *get_g_exit_status(void)
+char	*get_g_exit_status(void)
 {
-	char *code;
+	char	*code;
 
 	code = ft_itoa(g_exit_status);
-	return(code);
+	return (code);
 }
 
 char	*get_var(char *str, t_env *env)
@@ -123,9 +124,9 @@ char	*get_var(char *str, t_env *env)
 		return (ft_strdup("himBH"));
 	if (str[i] == '_')
 		return (get_last_exec(env));
-	if(str[i] == '.')
+	if (str[i] == '.')
 		return (ft_strdup("$."));
-	if(str[i] == '?')
+	if (str[i] == '?')
 		return (get_g_exit_status());
 	while (str[i] && ft_isalpha(str[i]))
 		i++;

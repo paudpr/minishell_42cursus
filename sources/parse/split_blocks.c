@@ -25,7 +25,7 @@ int	len_block(char *line, int i)
 			{
 				flag = line[i + len];
 				len++;
-				while (line[i + len])
+				while ((i + len) < (int)(ft_strlen(line) - 1))
 				{
 					if (flag == line[i + len] && line[i + len - 1] != '\\')
 					{
@@ -55,7 +55,7 @@ int	check_next(char *line, int i, char flag)
 {
 	i++;
 	(void)flag;
-	if (line[i] && line[i] != '<' && line[i] != '>')
+	if (i < (int)ft_strlen(line) - 1 && line[i] != '<' && line[i] != '>')
 	{
 		if (line[i] == ' ')
 		{
