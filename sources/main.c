@@ -43,8 +43,8 @@ int	main(void)
 	disable_output();
 	while (1)
 	{
-		sig_default();
-		line = readline(DARKGREEN "minishell >" RESET);
+		// sig_default();
+		line = readline(DARKGREEN "minishell > " RESET);
 		if (line == NULL) //eof -> ctrl-D
 		{
 			printf("exit\n");

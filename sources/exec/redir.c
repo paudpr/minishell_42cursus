@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pauladelpinoramirez <pauladelpinoramire    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 15:52:57 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/12/09 16:23:35 by pdel-pin         ###   ########.fr       */
+/*   Updated: 2022/12/14 23:14:00 by pauladelpin      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	check_redir(t_def *def, t_cmds *cmds)
 
 	i = -1;
 	flag = 0;
-	while (def->argv[++i])
+	while (++i < ft_double_len(def->argv))
 	{
 		if (def->type[i] == T_HD && flag == 0)
 		{
