@@ -1,139 +1,34 @@
 #include "minishell.h"
 
-// t_list	*clean_files_start(t_list **lst, char *argv)
-// {
-// 	int		i;
-// 	int		len;
-// 	t_list	*aux;
-// 	t_list	*prev;
-// 	t_list	*del;
-
-// 	i = 0;
-// 	aux = *lst;
-// 	prev = NULL;
-// 	len = ft_strlen(argv);
-// 	while (aux)
-// 	{
-// 		if(i == 0 && ft_strncmp(argv, aux->content, len))
-// 		{
-// 			del = *lst;
-// 			lst = &aux->next;
-// 			aux = aux->next;
-// 			free_lst(del);
-// 			i = -1;
-// 		}
-// 		else if (ft_strncmp(argv, aux->content, len))
-// 		{
-// 			del = aux;
-// 			prev->next = aux->next;
-// 			aux = aux->next;
-// 			if (!aux->next)
-// 				break ;
-// 			aux = aux->next;
-// 			prev = prev->next;
-// 			free(del);
-// 		}
-// 		else
-// 		{
-// 			prev = aux;
-// 			aux = aux->next;
-// 		}
-// 		// considerar caso especifico paraa el final
-// 		i++;
-// 	}
-// 	return (*lst);
-// }
-
-void	clean_files_start(t_list **lst, char *argv)
+t_list *clean_files_start(t_list *lst, char *argv)
 {
-	int		i;
+	t_list	*new;
 	t_list	*aux;
-	t_list	*prev;
-	t_list	*del;
 
-	i = 0;
-	aux = *lst;
-	prev = NULL;
-	del = NULL;
-	printf("antes -> %d\n", ft_lstsize(*lst));
-	print_list(*lst);
-	// printf("%s\t%s\t%d\n", argv, aux->content, ft_strncmp(argv, aux->content, ft_strlen(argv)));
-		i = 0;
+	new = NULL;
+	aux = lst;
+	print_list(aux);
 	while (aux)
 	{
-		// printf("i->%d\tcmp->%d\t%p\t%p\t%p\t%p\n", i, ft_strncmp(argv, aux->content, ft_strlen(argv)), aux, del, *lst, lst);
-		// printf("i->%d\tcmp->%d\n", i, 5);
-		// printf("bucle i->%d\n", i);
-		printf("-\nlst -> %p\t%p\t%s\n", lst, *lst, argv);
-		printf("aux ->%p\t%s\n%p\n", aux, aux->content, aux->next);
-		printf("del ->%p\n", del);
-		printf("prev ->%p\n-\n", prev);
-		// if (i == 0 && !ft_strncmp(argv, aux->content, ft_strlen(argv)))
-		// {
-		// 	printf("ELIMINO -> \n");
-		// 	del = *lst;
-		// 	del->next = NULL;
-		// 	lst = &aux->next;
-		// 	aux = *lst;
-		// 	// free_lst(del);		// peta sanitizer heap use after free
-		// 	printf(" <- TERMINO DE ELIMINAR\n");
-		// }
-		if (aux->next == NULL)
-		{
-			
-		}
-		if(ft_strncmp(argv, aux->content, ft_strlen(argv)))
-		{
-			printf("entro aqui -> %s\n", aux->content);
-			del = aux;
-			aux = aux->next;
-			del->next = NULL;
-			free_lst(del);
-			if(aux->next == NULL)
-		}
-		else
-		{
-			aux = aux->next;
-
-		}
-		i++;
-		printf("------\n");
-		// printf("%p\n", aux);
-		// if(i == 0 && ft_strncmp(argv, aux->content, ft_strlen(argv)))		// caso primero (cabeza) hay que eliminarlo
-		// {
-		// 	del = *lst;
-		// 	del->next = NULL;
-		// 	lst = &aux->next;
-		// 	aux = aux->next;
-		// 	free_lst(del);
-		// 	i = -1;
-		// }
-		// else if (ft_strncmp(argv, aux->content, ft_strlen(argv))) 		// caso hay que eliminar nodo entre medias
-		// {
-		// 	del = aux;
-		// 	prev->next = aux->next;
-		// 	aux = aux->next;
-		// 	free(del);
-		// }
-		// else		// no hay que eliminarlo
-		// {
-		// 	prev = aux;
-		// 	aux = aux->next;
-		// }
-		// // considerar caso especifico paraa el final
-		// i++;
+		if (!ft_strncmp(aux->content, argv, ft_strlen(argv)))
+			ft_lstadd_back(&new, ft_lstnew(aux->content));
+		aux = aux->next;
 	}
-	print_list(*lst);
-	// printf("después -> %d\n", ft_lstsize(*lst));
+	
+	print_list(lst);
 	free(argv);
-	// print_list(*lst);
+	if (ft_lstsize(new) == 0)
+		return (lst);
+	return (new);
 }
+
 
 // t_list	*clean_files_end(t_list **lst, char *argv)
 // {
 // 	int	len;
 
 // 	len = ft_strlen(argv);
+// 	free(argv);
 // 	return (*lst);
 // }
 
@@ -142,6 +37,7 @@ t_list	*get_files(int type, char *argv)
 	DIR				*dir;
 	struct dirent	*items;
 	t_list			*lst;
+	t_list			*aux;
 	char			check_hidden;
 
 	lst = NULL;
@@ -158,13 +54,23 @@ t_list	*get_files(int type, char *argv)
 		}
 	}
 	closedir(dir);
-	// (void)type;
-	// (void)argv;
-	// printf("get_files -> %d\t%s\t%s\n", type, ft_substr(argv, 1, ft_strlen(argv) - 1), ft_substr(argv, 0, ft_strlen(argv) - 1));
+	aux = NULL;
 	// if (type == 1)
-	// 	lst = clean_files_end(&lst, ft_substr(argv, 1, ft_strlen(argv) - 1));
+	// 	aux = clean_files_end(&lst, ft_substr(argv, 0, ft_strlen(argv) - 1));
 	if (type == 2)
-		clean_files_start(&lst, ft_substr(argv, 0, ft_strlen(argv) - 1));
+		aux = clean_files_start(lst, ft_substr(argv, 0, ft_strlen(argv) - 1));
+	// print_list(aux);																	// por algun motivo estos dos comparten la dirección de memoria, aunque no tienen el mismo contenido
+	// print_list(lst);
+	if (type == 1 || type == 2)
+	{
+		printf("-> es wildcard complejo - %i \n", type);
+		// printf("%p\t%p\t%s\n", aux, aux->next, aux->content);
+		
+		free_lst(lst);			// hace que el return de despues pete por que tienen la misma dirección de memoria por algún motivo de aux
+		
+		// printf("%p\t%p\t%s\n", aux, aux->next, aux->content);
+		return (aux);
+	}
 	return (lst);
 }
 
@@ -210,7 +116,8 @@ t_def	*get_wildcard(t_def **node, char *argv, int type)
 
 	type = type_wildcard(argv);
 	lst = get_files(type, argv);
-	// print_list(lst);
+	printf("%p\t%p\t%s\n", lst, lst->next, lst->content);
+	printf("---------------------> lista limpia \n");
 	new = get_wildcard_norm(ft_double_len((*node)->argv) - 1 + ft_lstsize(lst));
 	if (lst == NULL || new == NULL)
 		return (*node);
@@ -238,7 +145,7 @@ t_def	*get_wildcard(t_def **node, char *argv, int type)
 		i++;
 	}
 	// print_nodes(new);
-	free_lst(aux);
+	// free_lst(aux);
 	free_list(node);
 	return (new);
 }

@@ -1,25 +1,25 @@
 #include "minishell.h"
 
-void	print_nodes(t_def *def)
-{
-	int	i;
+// void	print_nodes(t_def *def)
+// {
+// 	int	i;
 
-	while (def)
-	{
-		printf("%p\t%p\n", def, def->next);
-		i = -1;
-		while (++i < ft_double_len(def->argv))
-			printf("%s\t", def->argv[i]);
-		i = -1;
-		printf("\n");
-		while (++i < ft_double_len(def->argv))
-			printf("%d\t", def->type[i]);
-		printf("\n\n");
-		def = def->next;
-	}
-}
+// 	while (def)
+// 	{
+// 		printf("%p\t%p\n", def, def->next);
+// 		i = -1;
+// 		while (++i < ft_double_len(def->argv))
+// 			printf("%s\t", def->argv[i]);
+// 		i = -1;
+// 		printf("\n");
+// 		while (++i < ft_double_len(def->argv))
+// 			printf("%d\t", def->type[i]);
+// 		printf("\n\n");
+// 		def = def->next;
+// 	}
+// }
 
-int	count_argvs(t_list *lst)
+int	count_argvs(t_list *lst, int *flag)
 {
 	int	count;
 
@@ -31,6 +31,7 @@ int	count_argvs(t_list *lst)
 		count++;
 		lst = lst->next;
 	}
+	*flag = 1;
 	return (count);
 }
 
@@ -54,9 +55,8 @@ int	get_type(char *argv)
 	return (type);
 }
 
-t_def	*create_node(int size, t_list *lst)
+t_def	*create_node_norm(int size)
 {
-	int		i;
 	t_def	*new;
 
 	new = ft_calloc(1, sizeof(t_def));
@@ -68,12 +68,20 @@ t_def	*create_node(int size, t_list *lst)
 	new->type = ft_calloc(size + 1, sizeof(int));
 	if (new->type == NULL)
 		return (NULL);
+	return (new);
+}
+
+t_def	*create_node(int size, t_list *lst)
+{
+	int		i;
+	t_def	*new;
+
+	new = create_node_norm(size);
 	i = 0;
 	while (i < size)
 	{
 		new->argv[i] = ft_strdup(lst->content);
 		new->type[i] = get_type(new->argv[i]);
-		// printf("++++ %s\n", new->argv[i]);
 		if (new->type[i] && new->type[i] < 5)
 		{
 			i++;
@@ -84,7 +92,8 @@ t_def	*create_node(int size, t_list *lst)
 				break ;
 		}
 		if (new->type[i] && new->type[i] == 6)
-			new = get_wildcard(&new, new->argv[i], 0);
+			new = get_wildcard(&new);
+			// new = get_wildcard(&new, new->argv[i], 0);
 		i++;
 		lst = lst->next;
 	}
@@ -104,10 +113,7 @@ t_def	*parse_nodes(t_list *lst, t_env *env)
 	while (lst)
 	{
 		if (size == 0)
-		{
-			size = count_argvs(lst);
-			flag = 1;
-		}
+			size = count_argvs(lst, &flag);
 		if (flag == 1)
 		{
 			new = create_node(size, lst);

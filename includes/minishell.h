@@ -6,7 +6,7 @@
 /*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 15:52:10 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/12/19 15:03:33 by pdel-pin         ###   ########.fr       */
+/*   Updated: 2022/12/28 16:23:37 by pdel-pin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,7 @@ int		var_exists(t_cmds *cmds, int i, int len);
 void	main_parse(t_def **def, char *line, t_env *env);
 
 // split_blocks.c
-t_list	*split_blocks(char *line);
+t_list	*split_blocks(char *line, int i);
 int		check_next(char *line, int i, char flag);
 int		len_block(char *line, int i);
 int		ignore_spaces(char *line, int i);
@@ -180,7 +180,7 @@ int		parse_pipe_aux(int i);
 int		parse_com(t_list *lst);
 int		check_closed_coms(char *str);
 char	*build_str(char *str_1, char *str_2, int type);
-char	*get_quoted(char *str, t_env *env);
+char	*get_quoted(char *str, t_env *env, int i, char flag);
 char	*get_var(char *str, t_env *env);
 char	*check_expansion(char *var, t_env *env);
 int		size_var(char *str);
@@ -189,6 +189,11 @@ int		size_quoted(char *str);
 /* clean_com.c */
 void	clean_com(char **str, t_env *env);
 
+/* var_expansion.c */
+char	*get_var(char *str, t_env *env);
+char	*check_expansion(char *var, t_env *env);
+int		size_var(char *str);
+
 /* signal.c */
 void	sig_default_sigint(int signal);
 void	sig_default(void);
@@ -196,7 +201,8 @@ void	sig_process(int pid);
 void	sig_process_sigint(int signal);
 
 /* wildcard.c */
-t_def	*get_wildcard(t_def **node, char *argv, int type);
+t_def	*get_wildcard(t_def **node);
+// t_def	*get_wildcard(t_def **node, char *argv, int type);
 
 // luego borrar para poner parse bien
 void	get_list(t_def **def, char *argv);	//quitar cuando esté parseo

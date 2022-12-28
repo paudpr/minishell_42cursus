@@ -6,7 +6,7 @@
 /*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 15:53:01 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/12/19 15:03:03 by pdel-pin         ###   ########.fr       */
+/*   Updated: 2022/12/28 12:10:49 by pdel-pin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,16 @@ void	print_list(t_list *lst)
 	int	i;
 
 	i = 1;
-	while (lst)
+	if (!lst)
+		(printf("la lista es nula\n"));
+	else
 	{
-		printf("NODE %d -> %p\tNext-> %p\tContent -> %s\n",
-			i, lst, lst->next, lst->content);
-		i++;
-		lst = lst->next;
+		while (lst)
+		{
+			printf("NODE %d -> %p\tNext-> %p\tContent -> %s\n",
+				i, lst, lst->next, lst->content);
+			i++;
+			lst = lst->next;
+		}
 	}
 }

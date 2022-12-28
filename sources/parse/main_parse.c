@@ -21,7 +21,7 @@ void	main_parse(t_def **def, char *line, t_env *env)
 
 	if (!line)
 		def = NULL;
-	lst = split_blocks(line);
+	lst = split_blocks(line, 0);
 	if (lst)
 	{
 		aux = lst;
