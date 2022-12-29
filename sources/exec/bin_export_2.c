@@ -6,7 +6,7 @@
 /*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 15:52:27 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/10/03 15:52:29 by pdel-pin         ###   ########.fr       */
+/*   Updated: 2022/12/29 15:08:07 by pdel-pin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ int	check_valid_var(t_cmds *cmds, int i)
 
 	if (ft_isalpha(cmds->cmds_argv[i][0]) != 1)
 	{
+		g_exit_status = 1;
 		perror("minishell: export: not a valid identifier");
 		return (0);
 	}
@@ -56,6 +57,7 @@ int	check_valid_var(t_cmds *cmds, int i)
 	{
 		if (ft_isalnum(cmds->cmds_argv[i][j]) != 1)
 		{
+			g_exit_status = 1;
 			perror("minishell: export: not a valid identifier");
 			return (0);
 		}

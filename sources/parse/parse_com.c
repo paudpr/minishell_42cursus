@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_com.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/12/29 11:28:54 by pdel-pin          #+#    #+#             */
+/*   Updated: 2022/12/29 11:48:28 by pdel-pin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static char	get_flag_com(char *str)
@@ -37,8 +49,8 @@ int	check_closed_coms(char *str)
 		if (str[i] == flag && (i > 0 && str[i - 1] == '\\'))
 			num--;
 	}
-	// if(num % 2 != 0)
-		// wait_close_coms(str, num, flag);
+	if(num % 2 != 0)
+		wait_close_coms(str, num, flag);
 	if (num % 2 != 0)
 	{
 		printf("minishell: syntax error near unexpected token '%c'\n", flag);

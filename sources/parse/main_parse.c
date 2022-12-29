@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main_parse.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/12/29 11:28:33 by pdel-pin          #+#    #+#             */
+/*   Updated: 2022/12/29 11:49:49 by pdel-pin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	free_lst(t_list *lst)
@@ -21,7 +33,7 @@ void	main_parse(t_def **def, char *line, t_env *env)
 
 	if (!line)
 		def = NULL;
-	lst = split_blocks(line, 0);
+	lst = split_blocks(line);
 	if (lst)
 	{
 		aux = lst;

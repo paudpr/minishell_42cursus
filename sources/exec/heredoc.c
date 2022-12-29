@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pauladelpinoramirez <pauladelpinoramire    +#+  +:+       +#+        */
+/*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 15:52:47 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/11/14 14:44:08 by pauladelpin      ###   ########.fr       */
+/*   Updated: 2022/12/29 13:53:38 by pdel-pin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ static char	*get_hd(char *eof)
 	while (1)
 	{
 		write(1, "> ", 2);
+		sig_heredoc();
 		read = get_next_line(0);
 		if ((ft_strncmp(read, eof, len) == 0) && ((ft_strlen(read) - 1) == len)
 			&& (read[len] == '\n'))
@@ -51,6 +52,7 @@ static char	*get_hd(char *eof)
 		free(read);
 		i++;
 	}
+	sig_default();
 }
 
 static void	create_file(char *infile, char *line)

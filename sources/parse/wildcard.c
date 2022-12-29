@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   wildcard.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/12/29 11:29:11 by pdel-pin          #+#    #+#             */
+/*   Updated: 2022/12/29 11:50:02 by pdel-pin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 t_list *clean_files_start(t_list *lst, char *argv)
@@ -14,8 +26,6 @@ t_list *clean_files_start(t_list *lst, char *argv)
 			ft_lstadd_back(&new, ft_lstnew(aux->content));
 		aux = aux->next;
 	}
-	
-	print_list(lst);
 	free(argv);
 	if (ft_lstsize(new) == 0)
 		return (lst);

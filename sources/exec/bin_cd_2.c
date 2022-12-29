@@ -6,7 +6,7 @@
 /*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 15:52:16 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/10/03 15:52:17 by pdel-pin         ###   ########.fr       */
+/*   Updated: 2022/12/29 14:57:28 by pdel-pin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,10 @@ void	cd_home_dir(t_cmds *cmds)
 		change_var(cmds->env, "PWD=", dir);
 	}
 	else
+	{
+		g_exit_status = 1;
 		printf("minishell: cd: HOME not set\n");
+	}
 }
 
 //va un directorio hacia atrás. cd ..

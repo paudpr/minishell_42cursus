@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   split_blocks.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/12/29 11:47:46 by pdel-pin          #+#    #+#             */
+/*   Updated: 2022/12/29 11:47:57 by pdel-pin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	ignore_spaces(char *line, int i)
@@ -9,30 +21,6 @@ int	ignore_spaces(char *line, int i)
 		i++;
 	}
 	return (i);
-}
-
-int		len_block_norm(char *line, char flag, int i, int *len)
-{
-	int	iter;
-
-	iter = i + *len;
-	while ((iter) < (int)(ft_strlen(line) - 1))
-	{
-		if (flag == line[iter] && line[iter - 1] != '\\')
-		{
-			len++;
-			while (line[iter])
-			{
-				if (line[iter] == ' '
-					|| line[iter] == '<' || line[iter] == '>'
-					|| line[iter] == '|')
-					return (iter - i);
-				(*len)++;
-			}
-		}
-		(*len)++;
-	}
-	return (0);
 }
 
 int	len_block(char *line, int i)
@@ -49,8 +37,22 @@ int	len_block(char *line, int i)
 			{
 				flag = line[i + len];
 				len++;
-				if (len_block_norm(line, flag, i, &len))
-					return (len_block_norm(line, flag, i, &len));
+				while ((i + len) < (int)(ft_strlen(line) - 1))
+				{
+					if (flag == line[i + len] && line[i + len - 1] != '\\')
+					{
+						len++;
+						while (line[i + len])
+						{
+							if (line[i + len] == ' '
+								|| line[i + len] == '<' || line[i + len] == '>'
+								|| line[i + len] == '|')
+								return (len);
+							len++;
+						}
+					}
+					len++;
+				}
 			}
 		}
 		else if (line[i + len] == ' ' || line[i + len] == '<'
@@ -82,29 +84,34 @@ int	check_next(char *line, int i, char flag)
 	return (0);
 }
 
-t_list	*split_blocks(char *line, int i)
+t_list	*split_blocks(char *line)
 {
 	t_list	*lst;
+	int		i;
+	int		len;
 
+	i = 0;
+	len = 0;
 	lst = ft_lstnew(ft_strdup(line));
 	while (i < (int)ft_strlen(line))
 	{	
 		i = ignore_spaces(line, i);
 		if (line[i] && (line[i] == '<' || line[i] == '>' || line[i] == '|'))
 		{
+			len = 1;
 			if (check_next(line, i + 1, line[i]))
 			{
 				free_lst(lst);
 				return (NULL);
 			}
-			ft_lstadd_back(&lst, ft_lstnew(ft_substr(line, i, 1)));
-			i += 1;
+			ft_lstadd_back(&lst, ft_lstnew(ft_substr(line, i, len)));
+			i += len;
 		}
 		else if (line[i])
 		{
-			ft_lstadd_back(&lst, ft_lstnew(ft_substr(line,
-						i, len_block(line, i))));
-			i += len_block(line, i);
+			len = len_block(line, i);
+			ft_lstadd_back(&lst, ft_lstnew(ft_substr(line, i, len)));
+			i += len;
 		}
 	}
 	return (lst);

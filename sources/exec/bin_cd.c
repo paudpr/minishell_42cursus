@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bin_cd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pauladelpinoramirez <pauladelpinoramire    +#+  +:+       +#+        */
+/*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 15:52:18 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/12/10 20:55:31 by pauladelpin      ###   ########.fr       */
+/*   Updated: 2022/12/29 14:56:38 by pdel-pin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,10 @@ void	cd_return_dir(t_cmds *cmds)
 			new = ft_strdup(cmds->env->env[i]);
 	}
 	if (j != 1 || new == NULL)
+	{
+		g_exit_status = 1;
 		printf("minishell: cd: OLDPWD not set\n");
+	}
 	else
 		do_cd_return_dir(cmds, new);
 }
@@ -73,7 +76,10 @@ void	cd_move_dir(t_cmds *cmds)
 		new = ft_strdup(cmds->cmds_argv[1]);
 	getcwd(dir, sizeof(dir));
 	if (chdir(new) != 0)
+	{
+		g_exit_status = 1;
 		perror("minishell: cd");
+	}
 	else
 	{
 		change_var(cmds->env, "OLDPWD=", dir);

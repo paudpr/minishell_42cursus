@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/12/29 11:26:57 by pdel-pin          #+#    #+#             */
+/*   Updated: 2022/12/29 14:06:23 by pdel-pin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	disable_output(void)
@@ -28,16 +40,16 @@ int	main(void)
 	t_env		*env;
 
 	def = NULL;
-	g_exit_status = 0;
+	g_exit_status = 0;			///actualizar despues de fallos
 	env = get_struct_env(environ);
 	disable_output();
 	while (1)
 	{
-		// sig_default();
+		sig_default();
 		line = readline(DARKGREEN "minishell > " RESET);
 		if (line == NULL) //eof -> ctrl-D
 		{
-			printf("exit\n");
+			printf("exit");
 			exit(0);
 		}
 		if (line != NULL && *line != 0)

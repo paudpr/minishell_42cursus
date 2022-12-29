@@ -51,9 +51,10 @@ SRCS_PARSE = main_parse.c \
 			parse_tokens.c \
 			parse_com.c \
 			clean_com.c \
+			com_close.c \
 			var_expansion.c \
 			wildcard_clean.c \
-			#signal.c
+			signal.c
 
 SRCS = main.c
 

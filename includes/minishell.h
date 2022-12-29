@@ -6,7 +6,7 @@
 /*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 15:52:10 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/12/28 16:23:37 by pdel-pin         ###   ########.fr       */
+/*   Updated: 2022/12/29 13:53:54 by pdel-pin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,8 @@ int		var_exists(t_cmds *cmds, int i, int len);
 void	main_parse(t_def **def, char *line, t_env *env);
 
 // split_blocks.c
-t_list	*split_blocks(char *line, int i);
+// t_list	*split_blocks(char *line, int i);
+t_list	*split_blocks(char *line);
 int		check_next(char *line, int i, char flag);
 int		len_block(char *line, int i);
 int		ignore_spaces(char *line, int i);
@@ -189,6 +190,9 @@ int		size_quoted(char *str);
 /* clean_com.c */
 void	clean_com(char **str, t_env *env);
 
+/* com_close.c */
+void	wait_close_coms(char *str, int num, char flag);
+
 /* var_expansion.c */
 char	*get_var(char *str, t_env *env);
 char	*check_expansion(char *var, t_env *env);
@@ -199,6 +203,7 @@ void	sig_default_sigint(int signal);
 void	sig_default(void);
 void	sig_process(int pid);
 void	sig_process_sigint(int signal);
+void	sig_heredoc(void);
 
 /* wildcard.c */
 t_def	*get_wildcard(t_def **node);
