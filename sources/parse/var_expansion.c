@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   var_expansion.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pauladelpinoramirez <pauladelpinoramire    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 11:29:06 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/12/29 11:29:07 by pdel-pin         ###   ########.fr       */
+/*   Updated: 2023/01/04 10:38:52 by pauladelpin      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,23 @@
 
 int	size_var(char *str)
 {
-	int	i;
+	int		i;
+	char	*code;
 
 	i = 1;
 	if (i < (int)ft_strlen(str) && (ft_isdigit(str[i])
-			|| str[i] == '?' || str[i] == '"' || str[i] == '\''))
+			|| str[i] == '"' || str[i] == '\''))
 		return (1);
 	if (str[i] == '#' || str[i] == '$' || str[i] == '_'
 		|| str[i] == '-' || str[i] == '.')
 		return (2);
+	if (str[i] == '?')
+	{
+		code = ft_itoa(g_exit_status);
+		i = ft_strlen(code);
+		free (code);
+		return (i + 1);
+	}
 	while (i < (int)ft_strlen(str) && ft_isalpha(str[i]))
 		i++;
 	return (i);

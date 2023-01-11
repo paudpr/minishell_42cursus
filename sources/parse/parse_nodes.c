@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_nodes.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pauladelpinoramirez <pauladelpinoramire    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 11:28:56 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/12/29 11:28:57 by pdel-pin         ###   ########.fr       */
+/*   Updated: 2023/01/03 13:30:40 by pauladelpin      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,8 +104,9 @@ t_def	*create_node(int size, t_list *lst)
 				break ;
 		}
 		if (new->type[i] && new->type[i] == 6)
-			new = get_wildcard(&new);
-			// new = get_wildcard(&new, new->argv[i], 0);
+			new = get_wildcard(&new, new->argv[i], 0, &i);
+			// new = get_wildcard(&new);
+			// tengo que dar valor nuevo a size aqui para que me lo termine
 		i++;
 		lst = lst->next;
 	}

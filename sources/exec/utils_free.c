@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   utils_free.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pauladelpinoramirez <pauladelpinoramire    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 15:52:59 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/10/03 15:53:00 by pdel-pin         ###   ########.fr       */
+/*   Updated: 2023/01/03 22:49:57 by pauladelpin      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_list(t_def **def)
+void	free_def(t_def **def)
 {
 	int		i;
 	t_def	*copy;

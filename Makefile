@@ -8,9 +8,11 @@ CC = gcc
 CFLAGS = -Wall -Werror -Wextra -g3
 CFLAGS += -I $(INC_DIR) -I $(LIBFT_DIR) -I /Users/$(USER)/.brew/opt/readline/include
 CFLAGS += "-I/Users/$(USER)/.brew/opt/readline/include"
+#CFLAGS += "-I/usr/local/opt/readline/include"
 
 LDFLAGS = -L $(LIBFT_DIR)
 LDFLAGS += "-L/Users/$(USER)/.brew/opt/readline/lib"
+#LDFLAGS += "-L/usr/local/opt/readline"
 
 LDLIBS = -lft
 LDLIBS += -lreadline
@@ -53,8 +55,8 @@ SRCS_PARSE = main_parse.c \
 			clean_com.c \
 			com_close.c \
 			var_expansion.c \
-			wildcard_clean.c \
-			signal.c
+			wildcard.c \
+			#signal.c
 
 SRCS = main.c
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bin_echo_pwd_exit.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pauladelpinoramirez <pauladelpinoramire    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 15:52:21 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/12/29 15:21:00 by pdel-pin         ###   ########.fr       */
+/*   Updated: 2023/01/04 10:38:46 by pauladelpin      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,27 +65,48 @@ void	do_pwd(t_cmds *cmds)
 	printf("%s\n", pwd);
 }
 
+int check_alldigit(char *str)
+{
+	int i;
+
+	i = 0;
+	while(str[i])
+	{
+		if (!ft_isdigit(str[i]))
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 void	do_exit(t_cmds *cmds)
 {
 	int	len;
-	int	code;
 
 	len = ft_double_len(cmds->cmds_argv);
-	printf("exit\n");
+	printf("exit\n");			// este es el motivo por que me imprime exit incluso cuando está como ultimo comando
 	if (len > 2)
 	{
-		g_exit_status = 255;
-		printf("minishell: exit: too many arguments\n");
+		if (!check_alldigit(cmds->cmds_argv[1]))
+		{
+			g_exit_status = 1;
+			printf("minishell: exit: too many arguments\n");
+		}
+		else
+		{
+			g_exit_status = 255;
+			printf("minishell: exit: %s: numeric argument required\n", cmds->cmds_argv[1]);
+			exit(g_exit_status);
+		}
 	}
-	else if (len == 2)
+	else if (len == 2 && check_alldigit(cmds->cmds_argv[1]))
 	{
-		code = ft_atoi(cmds->cmds_argv[1]);
-		exit(code);
+		g_exit_status = 255;
+		printf("minishell: exit: %s: numeric argument required\n", cmds->cmds_argv[1]);
 	}
 	else if (len == 1)
+	{
+		g_exit_status = 0;
 		exit(0);
+	}
 }
-
-// primero que sean numericos -> si hace exit y codigo 255
-// comprobar qque todos los argumentos sean numericos code = 255 y si hacce exit
-// comprobar que solo haya uno o hay error de muchos argumentos code = 1 y no hace exit

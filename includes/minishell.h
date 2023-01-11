@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pauladelpinoramirez <pauladelpinoramire    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 15:52:10 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/12/29 13:53:54 by pdel-pin         ###   ########.fr       */
+/*   Updated: 2023/01/03 22:49:57 by pauladelpin      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ int		mini_lstsize(t_def *def);
 void	free_pipe(t_cmds *cmds, int size);
 void	free_struct(t_cmds *vals);
 void	free_env(t_env *env);
-void	free_list(t_def **def);
+void	free_def(t_def **def);
 
 // bin_*.c
 void	do_echo(t_cmds *cmds);
@@ -206,8 +206,8 @@ void	sig_process_sigint(int signal);
 void	sig_heredoc(void);
 
 /* wildcard.c */
-t_def	*get_wildcard(t_def **node);
-// t_def	*get_wildcard(t_def **node, char *argv, int type);
+// t_def	*get_wildcard(t_def **node);
+t_def	*get_wildcard(t_def **node, char *argv, int type, int *i);
 
 // luego borrar para poner parse bien
 void	get_list(t_def **def, char *argv);	//quitar cuando esté parseo

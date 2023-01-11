@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pauladelpinoramirez <pauladelpinoramire    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 11:26:57 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/12/29 14:06:23 by pdel-pin         ###   ########.fr       */
+/*   Updated: 2023/01/03 22:49:57 by pauladelpin      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	main(void)
 	disable_output();
 	while (1)
 	{
-		sig_default();
+		// sig_default();
 		line = readline(DARKGREEN "minishell > " RESET);
 		if (line == NULL) //eof -> ctrl-D
 		{
@@ -57,7 +57,7 @@ int	main(void)
 		main_parse(&def, line, env);
 		main_exec(def, env);
 		free(line);
-		free_list(&def);
+		free_def(&def);
 	}
 	free_env(env);
 	return (0);

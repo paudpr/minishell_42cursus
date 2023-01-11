@@ -3,26 +3,48 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pauladelpinoramirez <pauladelpinoramire    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 11:29:11 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/12/29 11:50:02 by pdel-pin         ###   ########.fr       */
+/*   Updated: 2023/01/04 09:59:30 by pauladelpin      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_list *clean_files_start(t_list *lst, char *argv)
+t_list *clean_files_start(t_list *lst, char *argv)		// hace leaks
 {
 	t_list	*new;
 	t_list	*aux;
 
 	new = NULL;
 	aux = lst;
-	print_list(aux);
 	while (aux)
 	{
+		// printf("%p\n", aux);			// leakkkkkksssssss
 		if (!ft_strncmp(aux->content, argv, ft_strlen(argv)))
+			ft_lstadd_back(&new, ft_lstnew(aux->content));
+		aux = aux->next;
+	}
+	free(argv);
+	if (ft_lstsize(new) == 0)
+		return (lst);
+	// free_lst(lst);			// esto peta sanitizer
+	return (new);
+}
+
+t_list	*clean_files_end(t_list *lst, char *argv)		// también hace leaks
+{
+	char	*copy;
+	t_list	*new;
+	t_list	*aux;
+
+	new = NULL;
+	aux = lst;
+	while (aux)
+	{
+		copy = ft_strrchr(aux->content, argv[0]);
+		if (!ft_strncmp(aux->content, copy, ft_strlen(copy)))
 			ft_lstadd_back(&new, ft_lstnew(aux->content));
 		aux = aux->next;
 	}
@@ -32,22 +54,11 @@ t_list *clean_files_start(t_list *lst, char *argv)
 	return (new);
 }
 
-
-// t_list	*clean_files_end(t_list **lst, char *argv)
-// {
-// 	int	len;
-
-// 	len = ft_strlen(argv);
-// 	free(argv);
-// 	return (*lst);
-// }
-
 t_list	*get_files(int type, char *argv)
 {
 	DIR				*dir;
 	struct dirent	*items;
 	t_list			*lst;
-	t_list			*aux;
 	char			check_hidden;
 
 	lst = NULL;
@@ -64,23 +75,12 @@ t_list	*get_files(int type, char *argv)
 		}
 	}
 	closedir(dir);
-	aux = NULL;
-	// if (type == 1)
-	// 	aux = clean_files_end(&lst, ft_substr(argv, 0, ft_strlen(argv) - 1));
-	if (type == 2)
-		aux = clean_files_start(lst, ft_substr(argv, 0, ft_strlen(argv) - 1));
-	// print_list(aux);																	// por algun motivo estos dos comparten la dirección de memoria, aunque no tienen el mismo contenido
-	// print_list(lst);
-	if (type == 1 || type == 2)
-	{
-		printf("-> es wildcard complejo - %i \n", type);
-		// printf("%p\t%p\t%s\n", aux, aux->next, aux->content);
-		
-		free_lst(lst);			// hace que el return de despues pete por que tienen la misma dirección de memoria por algún motivo de aux
-		
-		// printf("%p\t%p\t%s\n", aux, aux->next, aux->content);
-		return (aux);
-	}
+	if(type == 0)
+		return (lst);
+	else if (type == 2)
+		return (clean_files_start(lst, ft_substr(argv, 0, ft_strlen(argv) - 1)));
+	else if (type == 1)
+		return (clean_files_end(lst, ft_substr(argv, 1, ft_strlen(argv) - 1)));
 	return (lst);
 }
 
@@ -116,58 +116,43 @@ static t_def	*get_wildcard_norm(int i)
 }
 
 //tiene que devolver una lista con los argumentos revisados
-t_def	*get_wildcard(t_def **node, char *argv, int type)
+t_def	*get_wildcard(t_def **node, char *argv, int type, int *i)
 {
-	int		i;
 	int		j;
+	int		len;
 	t_def	*new;
 	t_list	*lst;
 	t_list	*aux;
 
 	type = type_wildcard(argv);
 	lst = get_files(type, argv);
-	printf("%p\t%p\t%s\n", lst, lst->next, lst->content);
-	printf("---------------------> lista limpia \n");
-	new = get_wildcard_norm(ft_double_len((*node)->argv) - 1 + ft_lstsize(lst));
+	len = ft_double_len((*node)->argv) - 1 + ft_lstsize(lst);
+	new = get_wildcard_norm(len);
 	if (lst == NULL || new == NULL)
 		return (*node);
-	i = 0;
 	j = 0;
 	aux = lst;
-	while (i < ft_double_len((*node)->argv))
+	while (j < len)
 	{
-		if (!ft_strncmp((*node)->argv[i], "*", 1))
+		if ((*node)->type[j] != T_WC && j < ft_double_len((*node)->argv))
 		{
-			while (lst)
-			{
-				new->argv[j] = ft_strdup(lst->content);
-				new->type[j] = 5;
-				j++;
-				lst = lst->next;
-			}
+			new->argv[j] = ft_strdup((*node)->argv[j]);
+			new->type[j] = (*node)->type[j];
+			j++;
 		}
 		else
 		{
-			new->argv[j] = ft_strdup((*node)->argv[i]);
-			new->type[j] = (*node)->type[i];
-			j++;
+			while (aux)
+			{
+				new->argv[j] = ft_strdup(aux->content);
+				new->type[j] = T_CMD;
+				aux = aux->next;
+				j++;
+			}	
 		}
-		i++;
 	}
-	// print_nodes(new);
-	// free_lst(aux);
-	free_list(node);
+	*i = j;
+	free_lst(lst);
+	free_def(node);
 	return (new);
 }
-
-
-// static void get_wildcard_norm2(t_def **node, int j, t_list *lst, char *argv)
-// {
-	
-// }
-
-
-
-
-
-// new, j, lst, (*node)->argv[i]

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard_clean.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdel-pin <pdel-pin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pauladelpinoramirez <pauladelpinoramire    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 11:29:08 by pdel-pin          #+#    #+#             */
-/*   Updated: 2022/12/29 11:29:09 by pdel-pin         ###   ########.fr       */
+/*   Updated: 2023/01/03 22:49:57 by pauladelpin      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,6 @@ t_def	*get_wildcard(t_def **node)
 		i++;
 	}
 	free_lst(aux);
-	free_list(node);
+	free_def(node);
 	return (new);
 }
