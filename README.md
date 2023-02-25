@@ -43,6 +43,12 @@ Creating a shell is creating a software to communicate with a computer using lin
 
 ## How to use
 
+Need installed readline library
+
+```sh
+brew install readline
+```
+
 Run `make`
 
 ```sh
